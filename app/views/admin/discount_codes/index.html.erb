@@ -1,0 +1,24 @@
+<div>
+  <h4>微信用户访问记录</h4>
+</div>
+
+<table class="table table-bordered table-hover">
+  <tr>
+    <th>特惠码</th>
+    <th>状态</th>
+    <th>医生</th>
+  </tr>
+
+  <% @codes.each do |code| %>
+      <tr>
+        <td><%=code.code%></td>
+        <td><%=code.status%></td>
+        <td><%=code.user.name if code.member_id%></td>
+        <td><%= link_to '编辑', edit_admin_discount_code_path(code) %></td>
+      </tr>
+  <% end %>
+</table>
+
+<div class="pagination">
+  <%= will_paginate @codes, :container => false %>
+</div>

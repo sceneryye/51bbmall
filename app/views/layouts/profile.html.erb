@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>trade-V 跨境贸易直通车</title>
+  <meta name="description" content="trade-V 跨境贸易直通车.">
+  <%= stylesheet_link_tag    "patch/profiles" %>
+  <%= javascript_include_tag "patch/profiles" %>
+  <%= stylesheet_link_tag    "patch/#{controller_name}"  if controller_name != "profiles"%>
+  <%= javascript_include_tag "patch/#{controller_name}" if controller_name != "profiles"%>
+  <%=render "shared/baidu"%>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= yield %>
+
+<%= javascript_include_tag "google-analytics" %>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<section class="pricing">
+        <div class="container">
+            <div class="box first">
+                <div class="center">
+                    <h3><%=@good.name %></h3>
+                </div>
+                <div class="gap"></div>
+                <div id="pricing-table" class="row">
+                    <div class="col-sm-8">
+                        <ul class="plan">
+                            <li><img src="<%=@good.big_pic %>" style="width:100%"></li>
+                        </ul>
+                    </div>
+                    <%=form_for :product,:url=>add_cart_index_path do |f|%>
+				    <%=f.hidden_field :goods_id,:value=>@good.goods_id%>
+				    <%=f.hidden_field :type_id,:value=>@good.type_id%>                    
+                    <div class="col-sm-4">
+                        <ul class="plan">                         	                          
+                           
+                            <% if signed_in? %>
+                                <%if @user.discount_code%>
+                                 <li class="plan-price"> 特惠码价
+                                   ￥<span id="product_price"><%=@good.default_product.price if @good.default_product%></span></li>
+                                   <li class="plan-name">会员价：￥<span style="text-decoration:line-through"><%=@good.default_product.mktprice if @good.default_product%></span></li>
+                                <%else%>
+                                   <li class="plan-price"> 会员价：￥<span id="product_price"><%=@good.default_product.mktprice if @good.default_product%></span></li>
+                                <%end%>
+					        <% else %>
+					            <!-- <a href="/login" class="login" style="font-size:14px;color:#D30000;">[会员专享]</a> -->
+                                <li class="plan-price"> 会员价：￥<span id="product_price"><%=@good.default_product.mktprice if @good.default_product%></span></li>
+					       <%end%>
+                            <li><a href="/login">输入特惠码优惠购买佐餐茶：买二送一</a></li>
+                            
+                            <li><%=render :partial=>"store/goods/product/new_spec",:locals=>{ :good=>@good }%></li>
+                            <li><%=raw @good.desc%></li> 
+                            <li>规格:<%=raw @good.spec_info%></li>
+                            <li class="plan-action"><%=f.submit "加入购物车",:class=>"btn btn-success btn-lg"%></li>
+                            <li style="display:none"><%if signed_in?%>
+						      <%=link_to "已收藏",unfav_good_path(@good,:rel=>"good_#{@good.goods_id}"),:class=>"add_to_favorites",:remote=>true,:method=>:put,:confirm=>"是否取消收藏?" if @good.favorited_by?(@user)%>
+						      <%=link_to "加入我的收藏夹",fav_good_path(@good,:rel=>"good_#{@good.goods_id}"),:class=>"add_to_favorites",:remote=>true,:method=>:put unless @good.favorited_by?(@user)%>
+						      <%else%>
+						        <a href="javascript:void(0);" class="add_to_favorites login">加入我的收藏夹</a>
+						      <%end%>
+						    </li>
+                        </ul>
+                    </div>
+                    <%end%>
+                    
+                </div> 
+            </div> 
+        </div>
+    </section><!--/#pricing-->
+
+     <section id="about-us">
+        <div class="container">
+            <div class="box">
+                <div class="center">
+                    <p class="lead">
+                        商品详情<br>
+						<img src="/img/qinghong.jpg" style="width:100%">
+                    </p>
+                </div>
+                <div class="gap"></div>
+               
+            </div><!--/.box-->
+        </div><!--/.container-->
+    </section><!--/#about-us-->
+
+<section id="contact">
+  <div class="container">
+      <div class="box last">
+        <div class="row">
+          <div class="col-sm-12">
+          <%if @good.has_cols? %>
+            <div id="new_look">
+            	<%= render "new_look2"%>
+            	<%= render "reco_new_look" if @good.reco_collocation_goods.count > 0%>
+            </div>
+            <%else%>
+            <%= render "reco_goods" %>
+            <%end%>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+
+<script type="text/javascript">
+  window.onload = function() {
+    document.getElementById("preloader").style.display = 'none';
+  }
+</script>

@@ -1,0 +1,12 @@
+<%=render "shared/metable", :resource=>@brand%>
+
+<%=content_for :head do%>
+<%= stylesheet_link_tag "store/brands" %>
+<%= javascript_include_tag "store/brands" %>
+<%end%>
+
+<%=render "store/shared/brand_position"%>
+
+<%=render "store/shared/brand"%>
+
+

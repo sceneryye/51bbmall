@@ -1,0 +1,7 @@
+tmp/**/*
+tmp/*
+log/*.log
+Gemfile.lock
+.DS_Store
+config/ecstore.yml
+config/database.yml

@@ -1,0 +1,427 @@
+ <section id="main-slider" class="carousel">
+        <div class="carousel-inner" >
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-content">
+                        <img src="/images/a01/homepage/slice_01.png" style="width:100%">
+                    </div>
+                </div>
+            </div><!--/.item-->
+             <div class="item">
+                <div class="container">
+                    <div class="carousel-content">
+                        <h2>清泓佐餐茶</h1>
+                        <p class="lead">吃货要想不发胖，就找清泓佐餐茶！</p>
+                    </div>
+                </div>
+            </div><!--/.item-->
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-content">
+                        <h2>清泓佐餐茶</h1>
+                        <p class="lead">三高怎么办？还是找清泓佐餐茶！</p>
+                    </div>
+                </div>
+            </div><!--/.item-->
+           
+        </div><!--/.carousel-inner-->
+
+        <a class="prev" href="#main-slider" data-slide="prev"><i class="icon-angle-left"></i></a>
+        <a class="next" href="#main-slider" data-slide="next"><i class="icon-angle-right"></i></a>
+ </section><!--/#main-slider-->
+
+ <section id="products" class="pricing">
+        <div class="container">
+            <div class="box first">
+                 <div class="center">
+                    <h2>产品中心</h2>
+                </div>
+                <div id="pricing-table" class="row">
+            <%@goods.each do |goods|%>
+                    <div class="col-sm-6">
+                        <ul class="plan">
+                            <li class="plan-name"><%=goods.name%></li>
+                            <li>
+                                <%=link_to good_path(goods.bn), :target=>"_blank" do %>
+                                    <%=image_tag goods.list_default_pic,:alt=>goods.name,:style=>"width:100%"%>
+                                    <%#=image_tag goods.list_hover_pic,:alt=>goods.name,:class=>"hover"%>
+                                <%end%>
+                            </li>
+                            <%if signed_in?%> 
+                                <%if @user.discount_code%>                  
+                                    <li class="plan-price">特惠码价： &yen;<%=goods.price%></li>
+                                    <li>会员价： &yen;<span style="text-decoration:line-through;"><%=goods.mktprice%></span></li>
+                                <%else%>
+                                    <li class="plan-price">会员价： &yen;<%=goods.mktprice%></li>
+                                <%end%>
+                            <%else%>
+                            <li class="plan-price">会员价： &yen;<%=goods.mktprice%></li>
+                            <%end%>
+                            
+                            <li class="plan-action" style="display:none">
+                            <%=link_to "查看详情",good_path(goods.bn),:target=>"_blank",:class=>"btn btn-primary btn-lg"%>
+                            </li>
+                        </ul>
+                    </div>
+            <%end%> 
+                </div> 
+            </div> 
+        </div>
+ </section><!--/#products-->
+
+ <section id="membership" class="pricing">
+    <div class="container">
+        <div class="box">
+            <div class="center">
+                <h2>会员专享</h2>
+                <p class="lead">Members enjoy Preferential<br>会员消费卡尊享优惠</p>                
+            </div><!--/.center-->  
+            <div id="pricing-table" class="row">
+                <div class="col-sm-3">
+                    <ul class="plan">
+                        <li class="plan-price">贵宾卡会员</li>
+                        <li>首次消费要求：￥2000元</li>
+                        <li class="plan-name">折扣：9折</li>
+                        <li>积分：正常积分</li>
+                    </ul>
+                </div><!--/.col-sm-3-->
+               <div class="col-sm-3">
+                    <ul class="plan">
+                        <li class="plan-price">金卡会员</li>
+                        <li>首次消费要求：￥5000元</li>
+                        <li class="plan-name">折扣：8折</li>
+                        <li>积分：正常积分</li>
+                    </ul>
+                </div><!--/.col-sm-3-->
+                <div class="col-sm-3">
+                    <ul class="plan">
+                        <li class="plan-price">铂金卡会员</li>
+                        <li>首次消费要求：￥10000元</li>
+                        <li class="plan-name">折扣：6.5折</li>
+                        <li>积分：正常积分</li>
+                    </ul>
+                </div><!--/.col-sm-3-->
+                <div class="col-sm-3">
+                    <ul class="plan">
+                        <li class="plan-price">钻石卡会员</li>
+                        <li>首次消费要求：￥20000元</li>
+                        <li class="plan-name">折扣：6折</li>
+                        <li>积分：正常积分</li>
+                    </ul>
+                </div><!--/.col-sm-3-->
+            </div> 
+        </div> 
+    </div>
+</section><!--/#membership-->
+   
+<section id="portfolio">
+    <div class="container">
+        <div class="box">
+            <div class="center gap">
+                <h2>清泓佐餐茶介绍</h2>
+                <p class="lead">清泓佐餐茶是高糖食品的头号敌人，绿色纯天然，无任何化学降糖成份。</p>
+            </div><!--/.center-->
+            <ul class="portfolio-filter">
+                <li><a class="btn btn-primary active" href="#" data-filter="*">所有介绍</a></li>
+                <li><a class="btn btn-primary active" href="#" data-filter=".item1">阻糖专家</a></li>
+                <li><a class="btn btn-primary active" href="#" data-filter=".item2">预防比治疗更重要</a></li>
+                <li><a class="btn btn-primary active" href="#" data-filter=".item3">高糖食品是头号敌人</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".chinacio">中国CIO卫生证书</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".zhejiang">浙江药监局监测报告</a></li>
+                <li><a class="btn btn-primary" href="" data-filter=".taiwan">台湾原产地证</a></li>
+                <li><a class="btn btn-primary" href="" data-filter=".taiwansgs">台湾SGS检测报告</a></li>
+            </ul><!--/#portfolio-filter-->
+            <ul class="portfolio-items col-1">
+                <li class="portfolio-item item1">
+                    <div class="item-inner">
+                        <div class="portfolio-image">
+                            <img src="/images/a01/homepage/item1_b.jpg" alt="阻糖专家，健康卫士" style="width:100%" />                           
+                        </div>
+                        <h5>阻糖专家，健康卫士</h5>
+                    </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item item2">
+                    <div class="item-inner">
+                       <div class="portfolio-image">
+                            <img src="/images/a01/homepage/home1-1.gif" alt="预防比治疗更重要" style="width:100%" /> 
+                             <img src="/images/a01/homepage/home1-2.gif" alt="预防比治疗更重要" style="width:100%" /> 
+                             <img src="/images/a01/homepage/home1-3.gif" alt="预防比治疗更重要" style="width:100%" /> 
+                             <img src="/images/a01/homepage/home1-4.gif" alt="预防比治疗更重要" style="width:100%" />                       
+                        </div>
+                        <h5>预防比治疗更重要</h5>         
+                    </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item item3">
+                    <div class="item-inner">
+                        <div class="portfolio-image">
+                            <img src="/images/a01/homepage/item3_b.jpg" alt="中国人的高糖食品=头号敌人" style="width:100%" />   
+                            <img src="/images/a01/homepage/home3-2.gif" alt="中国人的高糖食品=头号敌人" style="width:100%" />
+                             
+
+                        </div>
+                        <h5>中国人的高糖食品=头号敌</h5>          
+                    </div>           
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item chinacio">
+                    <div class="item-inner">
+                        <div class="portfolio-image">
+                            <img src="/images/a01/homepage/item5_b.jpg" alt="中国CIO卫生证书" style="width:100%" />                           
+                        </div>
+                        <h5>中国CIO卫生证书</h5>        
+                    </div>           
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item zhejiang">
+                    <div class="item-inner">
+                        <div class="portfolio-image">
+                            <img src="/images/a01/homepage/item6_b.jpg" alt="浙江药监局监测报告" style="width:100%" />                           
+                        </div>
+                        <h5>浙江药监局监测报告</h5>        
+                    </div>           
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item taiwan">
+                    <div class="item-inner">
+                        <div class="portfolio-image">
+                            <img src="/images/a01/homepage/item7_b.jpg" alt="台湾原产地证" style="width:100%" />                           
+                        </div>
+                        <h5>台湾原产地证</h5>        
+                    </div>           
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item taiwansgs">
+                    <div class="item-inner">
+                        <div class="portfolio-image">
+                            <img src="/images/a01/homepage/item8_b.jpg" alt="台湾SGS检测报告" style="width:100%" />                           
+                        </div>
+                        <h5>台湾SGS检测报告</h5>        
+                    </div>           
+                </li><!--/.portfolio-item-->
+               
+            </ul>   
+        </div><!--/.box-->
+    </div><!--/.container-->
+</section><!--/#portfolio-->
+    
+<section id="specialist" class="pricing">
+    <div class="container">
+        <div class="box">
+            <div class="center">
+                 <h2>专家顾问</h2>
+                <p class="lead">基因解码及医学营养专家 --- 董烨</p>
+            </div>
+            <div class="gap"></div>
+            <div id="pricing-table" class="row">
+                <div class="col-sm-3">
+                    <ul class="plan">
+                        <li><img src="/images/a01/homepage/specialist_dongye.jpg" style="width:100%"></li>
+                    </ul>
+                </div>
+                    <ul class="plan"> 
+                        <li class="plan-price">现任国家人类基因组南方研究中心申友基因事业部 副主任<br/>杭州保亨生物科技有限公司 专家顾问</li>
+                        <li class="plan-name">最高学历：上海第二医科大学 临床医学硕士 （1970年生辰）</li>
+                        <li>专业特长：在糖尿病、肥胖、心脑血管疾病等领域，创新性地将一系列“预警性临床指标”引入到健康管理领域，提出了“精细化健康管理”的创新理念，并形成了以基因解码为依据的个性化慢病风险管理体系。</li>
+                        <li>基因解码及医学营养专家。具有医学硕士学历、上海三甲医院多年临床工作经验、10年健康管理经历、5年基因解码及个性化营养调治经验；</li>
+                        <li>受邀加入了国家级基因平台——国家人类基因组南方研究中心申友生物“肿瘤生长发展基因解码项目”研发专家组，任申友事业部副主任，全程参与研发了中国第一个覆盖肿瘤生长发展全阶段的权威基因解码套餐，为国人个性化肿瘤预防提供了根本依据。</li>
+                       
+                    </ul>
+                </div>
+                
+            </div> 
+        </div> 
+    </div>
+</section><!--/#specialist-->   
+
+<section id="services">
+    <div class="container">
+        <div class="box">
+            <div class="center">
+                 <h2>案例分享</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color1"></i>
+                        <h4>罗 X X</h4>
+                        <p>性别：男</p>
+                        <p>年龄：76</p>
+                        <p>职业：高级工程师</p>
+                        <p>文化程度：本科</p>
+                        <p>基本病况：痛风已有七、八年，发现血糖高三年，痛风开始吃西药，后服中药。血糖没吃药，只是少吃海鲜和糖含高的食物。</p>
+                        <p>服茶效果：服茶三个月，第一个月血糖在空腹7.2,第二个月6.5,第三个月6.0左右。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color2"></i>
+                        <h4>廖 X X</h4>
+                        <p>性别：女</p>
+                        <p>年龄：74</p>
+                        <p>职业：职员</p>
+                        <p>文化程度：中学</p>
+                        <p>基本病况：高血压有十五年以上病史，高血糖4-5年时间，空腹血糖7.5左右,失眠时会上至8左右,平时服高血压药。</p>
+                        <p>服茶效果：服茶一个月空腹7左右，二个月后一般都在6.5左右,三个月后6.2左右。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color3"></i>
+                        <h4>罗 X</h4>
+                        <p>性别：男</p>
+                        <p>年龄：74</p>
+                        <p>职业：干部</p>
+                        <p>文化程度：大本</p>
+                        <p>基本病况：高血脂、冠心病，前后安装支架6个，服用西药降脂药，转胺酶居高不下，有5年多时间，高血糖空腹在8-9左右。</p>
+                        <p>服茶效果：服茶一个月血糖不变，服茶二个半月后空腹血糖从8-9点下降至7点左右，三个月后稳定在6.5以下,转胺酶基本正常。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color4"></i>
+                        <h4>林 X X</h4>
+                        <p>性别：女</p>
+                        <p>年龄：72</p>
+                        <p>职业：干部</p>
+                        <p>文化程度：大本</p>
+                        <p>基本病况：高血压二十年病史，高血糖十余年史，开始十几年不吃药，近三、四年开始吃降糖药和降糖保健品。</p>
+                        <p>服茶效果：服茶一个月，感到胃不适，停了半个月又服茶三个月，血糖空腹从8-9点降到6左右，餐后在9-10点。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color5"></i>
+                        <h4>俞 X X</h4>
+                        <p>性别：男</p>
+                        <p>年龄：74</p>
+                        <p>职业：干部</p>
+                        <p>文化程度：大本</p>
+                        <p>基本病况：高血脂、高血糖、冠心病，西药一直吃，偶尔吃中药，降糖保健品长年不断，空腹血糖10点左右。</p>
+                        <p>服茶效果：吃了三个月以后，血糖空腹从10降至8左右，餐后14-15点降12-13点。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color6"></i>
+                        <h4>陈 X X</h4>
+                        <p>性别：女</p>
+                        <p>年龄：67</p>
+                        <p>职业：职员</p>
+                        <p>文化程度：初中</p>
+                        <p>基本病况：血糖高，喜吃甜食，空腹7左右，餐后12左右。</p>
+                        <p>服茶效果：服茶一个半月，控制吃甜食，空腹5.6左右,餐后9点左右。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color7"></i>
+                        <h4>蔡 X X</h4>
+                        <p>性别：男</p>
+                        <p>年龄：66</p>
+                        <p>职业：干部</p>
+                        <p>文化程度：大专</p>
+                        <p>基本病况高血脂、高血糖，服降糖药二种，同时打胰岛素。空腹12左右，餐后17-18左右。</p>
+                        <p>服茶效果：服茶已有四个月，西药减了一种，胰岛素照打，空腹一般在8点左右，餐后一般14-15左右。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color1"></i>
+                        <h4>龚 X X</h4>
+                        <p>性别：男</p>
+                        <p>年龄：65</p>
+                        <p>职业：职员</p>
+                        <p>文化程度：初中</p>
+                        <p>基本病况：糖尿病3年以上病史，服降糖药3年，3片/日，口渴，空腹9点左右，餐后14点左右。</p>
+                        <p>服茶一个月口不渴。服茶二个月血糖空腹7点左右，餐后13点。三个月后空腹6.5,餐后12点,日减一片达美康西药。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color2"></i>
+                        <h4>黄 X</h4>
+                        <p>性别：男</p>
+                        <p>年龄：52</p>
+                        <p>职业：技术人员</p>
+                        <p>文化程度：大学本科</p>
+                        <p>基本病况：脂肪肝、胆结石、高血糖空腹11点，餐后16点左右。</p>
+                        <p>服茶效果：配合中药，服用二个月，血糖空腹7点左右，餐后12左右。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color3"></i>
+                        <h4>王 X X</h4>
+                        <p>性别：男</p>
+                        <p>年龄：60</p>
+                        <p>职业：总经理</p>
+                        <p>文化程度：高中</p>
+                        <p>基本病况：高血糖8年多，一直在吃西药。空腹9左右,餐后13-15左右</p>
+                        <p>服茶效果：坚持服茶二个月空腹6.2点左右,餐后9.7点左右。</p>
+                    </div>
+                </div><!--/.col-md-4-->
+            </div><!--/.row-->
+        </div><!--/.box-->
+    </div><!--/.container-->
+</section><!--/#services-->
+
+<section id="contact">
+    <div class="container">
+        <div class="box last">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>留言咨询</h1>
+                    <p>请留下您的联系方式，我们将尽快回复您。</p>
+                    <div class="status alert alert-success" style="display: none"></div>
+                    <form id="main-contact-form" class="contact-form" name="contact-form" method="post" action="sendemail.php" role="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" required="required" placeholder="姓名">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" required="required" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <textarea name="message" id="message" required="required" class="form-control" rows="8" placeholder="请输入留言"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success btn-lg">提交留言</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div><!--/.col-sm-6-->
+                <div class="col-sm-6">
+                    <h1>公司地址</h1>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <address>
+                                <strong>杭州保亨生物科技有限公司</strong><br>
+                                浙江省杭州市西湖区下满觉陇15号<br>
+                                <abbr title="Phone">全国免费服务热线:</abbr> 400-826-4568<br/>
+                                <abbr title="Phone">销售总部电话:</abbr> 0571-85809861<br/>
+                                <abbr title="Phone">手机:</abbr> 15397091988
+                            </address>
+                        </div>
+                    </div>
+                    <h1>其他联系方式</h1>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="social">
+                                <li><a href="#"><i class="icon-facebook icon-social"></i> 新浪微博</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social">                                    
+                                <li><a href="#"><i class="icon-google-plus icon-social"></i> 腾讯微信</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--/.col-sm-6-->
+            </div><!--/.row-->
+        </div><!--/.box-->
+    </div><!--/.container-->
+</section><!--/#contact-->
