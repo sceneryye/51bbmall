@@ -36,7 +36,9 @@ namespace :auth do
     get 'callback',:on=>:collection
   end
   resources :bbmall do
-    get 'callback', :on => :member
+    get 'user_reg', :on => :collection
+    post 'user_reg', :on => :collection
+    get 'user_login', :on => :collection
   end
 end
 
