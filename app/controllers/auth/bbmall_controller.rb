@@ -1,6 +1,7 @@
 #encoding:utf-8
 require 'digest/md5'
 #require 'rc4'
+require 'rest-client'
 
 
 
@@ -26,7 +27,7 @@ class Auth::BbmallController < ApplicationController
     brand_id = 'itd'
     client_id = 'itd'
     #phone = params[:phone]
-    phone = '15900300040' 
+    phone = '15800694393' 
     key = '2c31b08f6a79f06f'
     rc4_key = '1bb762f7ce24ceee'
     ts = Time.now.to_i
@@ -36,6 +37,7 @@ class Auth::BbmallController < ApplicationController
     info_hash[:brand_id] = brand_id
     info_hash[:client_id] = client_id #'test'
     info_hash[:phone] = phone
+    info_hash[:ts] = ts
     
     
 
@@ -43,13 +45,14 @@ class Auth::BbmallController < ApplicationController
     info_hash[:sign]  = Digest::MD5.hexdigest(unsign)
 
     json =  info_hash.to_json
+    #return render :text => json
     
 
     url = 'http://103.16.125.100:9018/user_reg' #生产地址
     #url = 'http://www.baidu.com'
 
     #RestClient.get(url) 
-    return render :text => 'Is this OK, too?'
+    #return render :text => 'Is this OK, too?'
     res_data = RestClient.get url, json
       #res_data_xml = res_data.force_encoding('gb2312').encode
       res_data_hash = ActiveSupport::JSON.decode(res_data)
