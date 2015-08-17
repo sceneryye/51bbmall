@@ -1,4 +1,4 @@
-I18n.default_locale = 'zh_cn'
+#I18n.default_locale = 'zh_cn'
 
 LOCALES_DIRECTORY = "#{Rails.root}/config/locales/"
 

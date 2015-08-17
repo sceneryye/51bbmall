@@ -2,105 +2,108 @@
 require 'httpclient'
 Modengke::Application.routes.draw do
 
-resources :cases
+  resources :cases
 
-resources :commissions do
-  collection do
-   get  'platform'
-   get 'bank_info'
-  end
+  resources :commissions do
+    collection do
+     get  'platform'
+     get 'bank_info'
+   end
 
-  member do
+   member do
     get 'paid'
   end
 end
 
-  mount WeixinRailsMiddleware::Engine, at: "/"
+mount WeixinRailsMiddleware::Engine, at: "/"
 
-  root :to=>"home#index",:constraints=>{ :subdomain=>/^(www)?$/ }
-  get 'blank'=>"home#blank"
-  get 'home'=>"home#index"
+root :to=>"home#index",:constraints=>{ :subdomain=>/^(www)?$/ }
+get 'blank'=>"home#blank"
+get 'home'=>"home#index"
 
 
-  resources :pages, :only=>[:show]
+resources :pages, :only=>[:show]
 
-  namespace :auth do
-    resources :accounts
-    resources :weixin do
-      get 'callback',:on=>:member
-    end
-    resources :weibo do
-      get 'callback',:on=>:collection
-    end
-    resources :douban do
-      get 'callback',:on=>:collection
-    end
+namespace :auth do
+  resources :accounts
+  resources :weixin do
+    get 'callback',:on=>:member
   end
-
-  resources :sessions
-  
-  get 'register'=>'users#new'
-  resources :users do
-    get 'forgot_password', :on=>:collection
-    post 'send_reset_password_instruction', :on=>:collection    
-    get 'reset_password',:on=>:collection
-    post 'search', :on=>:collection
-    post 'change_password',:on=>:collection
-    post 'update' ,:on=>:member
+  resources :weibo do
+    get 'callback',:on=>:collection
   end
+  resources :douban do
+    get 'callback',:on=>:collection
+  end
+  resources :bbmall do
+    get 'callback', :on => :member
+  end
+end
 
-  resources :vshop do
-    collection do
-      get 'login'
-      get 'register'
-      get 'article'
-      get 'apply'
-      post 'search'
-      post 'change_password'
-      get 'goods'
-      get 'orders'
-      get 'members'
-      get 'weixin'
-      post "destory"
-    end
-    member do
-      get :user
-      get :category
-      get :commodity
-      get :order
+resources :sessions
+
+get 'register'=>'users#new'
+resources :users do
+  get 'forgot_password', :on=>:collection
+  post 'send_reset_password_instruction', :on=>:collection    
+  get 'reset_password',:on=>:collection
+  post 'search', :on=>:collection
+  post 'change_password',:on=>:collection
+  post 'update' ,:on=>:member
+end
+
+resources :vshop do
+  collection do
+    get 'login'
+    get 'register'
+    get 'article'
+    get 'apply'
+    post 'search'
+    post 'change_password'
+    get 'goods'
+    get 'orders'
+    get 'members'
+    get 'weixin'
+    post "destory"
+  end
+  member do
+    get :user
+    get :category
+    get :commodity
+    get :order
      # post :payments
-      get :payments
-      get :native
-      post :paynotifyurl
-      get :paynotifyurl
-      get :feedback
-    end
-  end
+     get :payments
+     get :native
+     post :paynotifyurl
+     get :paynotifyurl
+     get :feedback
+   end
+ end
 
-  get 'auto_login'=>"sessions#auto_login"
+ get 'auto_login'=>"sessions#auto_login"
  # get 'login'=>"sessions#new"
  get 'login'=>"sessions#login"
-  get 'mlogin'=>"sessions#new_mobile"
-  get 'mregister'=>"sessions#register_mobile"
-  post 'login'=>"sessions#create"
-  post 'mlogin'=>"sessions#create"
-  get 'logout'=>"sessions#destroy"
-  get 'topmenu'=>"home#topmenu"
+ get 'mlogin'=>"sessions#new_mobile"
+ get 'mregister'=>"sessions#register_mobile"
+ post 'login'=>"sessions#create"
+ post 'mlogin'=>"sessions#create"
+ get 'logout'=>"sessions#destroy"
+ get 'topmenu'=>"home#topmenu"
 
-  scope :module=> "events" do
-    resources :user_survey, :controller=>"survey" do
-      post "add_mobile", :on=>:collection
-    end
+ scope :module=> "events" do
+  resources :user_survey, :controller=>"survey" do
+    post "add_mobile", :on=>:collection
   end
+end
 
-  namespace :events do
-    resources :applicants
-  end
+namespace :events do
+  resources :applicants
+end
 
-  resources :events
+resources :events
 
 
-  scope :module => "blog" do
+scope :module => "blog" do
     #constraints :subdomain => "blog" do
     root :to => "articles#index"
     resources :articles
@@ -362,7 +365,7 @@ end
 
     get 'search' => "search#index", :as=> :search
     get 'mproducts' =>"goods#mproduct", :as=>"goods" ,:controller=>"goods"
-   
+
     resources :products, :as=>"goods", :controller=>"goods" do
       # get 'newin',:on=>:collection
       get 'newest',:on=>:collection
@@ -426,7 +429,7 @@ end
         post 'new_manco'
         get 'new_mobile_addr'
         get 'new_manco_addr'
-       get 'departure'
+        get 'departure'
         post 'arrival'
         get 'arrival'
         get 'mobile_show_order'
@@ -445,7 +448,7 @@ end
       collection do
         get 'callback'
         get 'debug'
-         get 'pay'
+        get 'pay'
         match ':adapter/notify'=>"payments#notify", :as=>"notify"
         match ':adapter/callback'=>"payments#callback", :as=>"callback"
       end
@@ -521,27 +524,27 @@ end
     end
 
     resources :member_addrs do
-         get "mobile"  ,:on=>:collection
-        get 'new_memberaddr_add' ,:on=>:collection
-      get '_form_manco_second' ,:on=>:collection
-      post 'addship' ,:on=>:collection
-    end
-    resources :aftersales do
-      get 'instruction', :on=>:collection
-    end
-
-    resource :validation do
-      get 'email'
-      get 'mobile'
-      post 'verify'
-      post 'sent'
-      get 'verify_email'
-    end
+     get "mobile"  ,:on=>:collection
+     get 'new_memberaddr_add' ,:on=>:collection
+     get '_form_manco_second' ,:on=>:collection
+     post 'addship' ,:on=>:collection
+   end
+   resources :aftersales do
+    get 'instruction', :on=>:collection
   end
 
-  resources :comments,:only=>[:create]
+  resource :validation do
+    get 'email'
+    get 'mobile'
+    post 'verify'
+    post 'sent'
+    get 'verify_email'
+  end
+end
 
-  mount Ckeditor::Engine => '/ckeditor'
+resources :comments,:only=>[:create]
+
+mount Ckeditor::Engine => '/ckeditor'
 
 
 

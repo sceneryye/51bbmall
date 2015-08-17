@@ -17,6 +17,9 @@ gem 'hashie'
 gem 'faraday'
 gem "geocoder"
 gem 'spreadsheet'
+
+# RC-4 decrypt-encrypt
+gem 'ruby-rc4'
 #gem 'weibo_2' #,:git=>"https://github.com/simsicon/weibo_2.git"
 
 # Gems used only for assets and not required
