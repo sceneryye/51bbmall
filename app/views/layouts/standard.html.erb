@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-7">
                             <div class="advanced-search box-radius">
-                                <form class="form-inline" action="/search?q=abc">
+                                <form class="form-inline" action="/search">
                                     <div class="form-group search-category">
                                         <select id="category-select" class="search-category-select" style="display: none;">
                                             <option value="1">所有分类</option>
@@ -43,7 +43,7 @@
                                         </span> -->
                                     </div>
                                     <div class="form-group search-input">
-                                        <input type="text" placeholder="请输入您要查询的商品" id="search_input">
+                                        <input type="text" placeholder="请输入您要查询的商品" id="search_input" name="q">
                                     </div>
                                     <button type="submit" class="btn-search"><i class="fa fa-search"></i></button>
                                 </form>
@@ -82,7 +82,7 @@
                         <div class="col-sm-5 cart-mobile">
                             <div class="block-wrap-cart">
                                 <div class="iner-block-cart box-radius">
-                                    <a href="cart.html">
+                                    <a href="/cart">
                                         <span class="total">￥459.00</span>
                                     </a>
                                 </div>
@@ -101,7 +101,7 @@
                                                 <div class="p-right">
                                                     <p class="p-name">Donec Ac Tempus</p>
                                                     <p class="product-price">$139.98</p>
-                                                    <p>Qty: 1</p>
+                                                    <p>数量: 1</p>
                                                 </div>
                                             </li>
                                             <li class="product-info">
@@ -114,17 +114,17 @@
                                                 <div class="p-right">
                                                     <p class="p-name">Donec Ac Tempus</p>
                                                     <p class="product-price">$139.98</p>
-                                                    <p>Qty: 1</p>
+                                                    <p>数量: 1</p>
                                                 </div>
                                             </li>
                                         </ul>
                                         </div>
                                         <div class="toal-cart">
-                                            <span>Total</span>
+                                            <span>总计</span>
                                             <span class="toal-price pull-right">$279.96</span>
                                         </div>
                                         <div class="cart-buttons">
-                                            <a href="checkout.html" class="button-radius btn-check-out">Checkout<span class="icon"></span></a>
+                                            <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +153,7 @@
                                         <ul class="nav navbar-nav">
                                             <li class="active"><a href="/">首页</a></li>
                                             <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle">
+                                                <a href="/tuan" class="dropdown-toggle">
                                                 <img src="/img/icon_sale.png" alt="Category status">
                                                 限时特价</a>
                                                 <ul class="dropdown-menu mega_dropdown" role="menu" style="width: 850px;">
@@ -344,7 +344,7 @@
                                             <li>
                                                 <div class="block-wrap-cart">
                                                     <div class="iner-block-cart">
-                                                        <a href="cart.html">
+                                                        <a href="/cart">
                                                             <span class="total">$459.00</span>
                                                         </a>
                                                     </div>
@@ -386,7 +386,7 @@
                                                                 <span class="toal-price pull-right">$279.96</span>
                                                             </div>
                                                             <div class="cart-buttons">
-                                                                <a href="checkout.html" class="button-radius btn-check-out">Checkout<span class="icon"></span></a>
+                                                                <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -505,20 +505,6 @@
                                  </ul>
                             </div>
                         </div>
-                       <!--  <div class="col-md-32 col-sm-4 block-link-wapper">
-                            <div class="block-link">
-                                <ul class="list-link">
-                                    <li class="head"><a href="#">Information</a></li>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">Band of Trust</a></li>
-                                    <li><a href="#">ShopClues History</a></li>
-                                    <li><a href="#">News</a></li>
-                                    <li><a href="#">In the Press</a></li>
-                                    <li><a href="#">Awards New</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                 </ul>
-                            </div>
-                        </div> -->
                         <div class="col-md-3 col-sm-4 block-link-wapper">
                             <div class="block-link">
                                 <ul>

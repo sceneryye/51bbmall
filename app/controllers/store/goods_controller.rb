@@ -8,6 +8,9 @@ class Store::GoodsController < ApplicationController
   before_filter :find_tags, :only=>[:cheuksgroup,:newest]
   
 
+  def tuan
+  end
+
  def mproduct
    if params[:id]=="78" ||params[:supplier_id]=="78"
 

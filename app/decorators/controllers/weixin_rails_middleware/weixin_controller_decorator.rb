@@ -30,42 +30,54 @@ WeixinRailsMiddleware::WeixinController.class_eval do
 
         title="二维码"
         desc =""
-        pic_url="http://www.baohengbio.com/images/a0#{id}/homepage/getqrcode_h.jpg"
-        link_url="http://www.baohengbio.com/images/a0#{id}/homepage/getqrcode.jpg"
+        pic_url="http://123.57.35.69
+/images/a0#{id}/homepage/getqrcode_h.jpg"
+        link_url="http://123.57.35.69
+/images/a0#{id}/homepage/getqrcode.jpg"
 
         title1="关于我们"
         desc1 =""
-        pic_url1="http://www.baohengbio.com/images/a0#{id}/homepage/logo.jpg"
-        link_url1="http://www.baohengbio.com/pages/#{@weixin_public_account.url}_aboutus"
+        pic_url1="http://123.57.35.69
+/images/a0#{id}/homepage/logo.jpg"
+        link_url1="http://123.57.35.69
+/pages/#{@weixin_public_account.url}_aboutus"
 
         articles = [generate_article(title, desc, pic_url, link_url),generate_article(title1, desc1, pic_url1, link_url1)]
 
       when '买'
         title="[测试商品]-----------------"
         desc ="测试商品0.01元，佣金3.00元"
-        pic_url="http://www.baohengbio.com/images/a072/a0729002_b_1.jpg"
-        link_url="http://www.baohengbio.com/mproducts?id=a980000&fp=mproducts&supplier_id=#{id}"
+        pic_url="http://123.57.35.69
+/images/a072/a0729002_b_1.jpg"
+        link_url="http://123.57.35.69
+/mproducts?id=a980000&fp=mproducts&supplier_id=#{id}"
         articles = [generate_article(title, desc, pic_url, link_url)]
 
       when 'on_sale'
         title="法兰克福香肠350克/ Frankfurter Sausages 350g仅售¥40元"
         desc =""
-        pic_url="http://www.baohengbio.com/images/a077/a0771030_m.jpg"
-        link_url="http://www.baohengbio.com/mproducts?id=a0771030&from=weixin&wechatuser=#{user}&supplier_id=#{id}"
+        pic_url="http://123.57.35.69
+/images/a077/a0771030_m.jpg"
+        link_url="http://123.57.35.69
+/mproducts?id=a0771030&from=weixin&wechatuser=#{user}&supplier_id=#{id}"
         articles = [generate_article(title, desc, pic_url, link_url)]     
 
       when 'new'
         title="那不勒斯萨拉米香肠200克"
         desc =""
-        pic_url="http://www.baohengbio.com/images/a077/a0771043_m.jpg"
-        link_url="http://www.baohengbio.com/mproducts?id=a0771043&from=weixin&wechatuser=#{user}&supplier_id=#{id}"
+        pic_url="http://123.57.35.69
+/images/a077/a0771043_m.jpg"
+        link_url="http://123.57.35.69
+/mproducts?id=a0771043&from=weixin&wechatuser=#{user}&supplier_id=#{id}"
         articles = [generate_article(title, desc, pic_url, link_url)]
 
       when '测试'
         title="[测试商品]-----------------"
         desc ="测试商品0.01元，佣金3.00元"
-        pic_url="http://www.baohengbio.com/images/a072/a0729002_b_1.jpg"
-        link_url="http://www.baohengbio.com/mproducts?id=a980000&fp=mproducts&supplier_id=#{id}&from=weixin&wechatuser=#{user}"
+        pic_url="http://123.57.35.69
+/images/a072/a0729002_b_1.jpg"
+        link_url="http://123.57.35.69
+/mproducts?id=a980000&fp=mproducts&supplier_id=#{id}&from=weixin&wechatuser=#{user}"
         articles = [generate_article(title, desc, pic_url, link_url)]
 
       when 'share'
@@ -77,8 +89,10 @@ WeixinRailsMiddleware::WeixinController.class_eval do
 
         title="您的总佣金收益是: #{share}元"
         desc ="查看佣金详情请点击"
-        pic_url='http://www.baohengbio.com/assets/vshop/commission_banner.jpg'
-        link_url="http://www.baohengbio.com/share?FromUserName=#{user}&supplier_id=#{id}"
+        pic_url='http://123.57.35.69
+/assets/vshop/commission_banner.jpg'
+        link_url="http://123.57.35.69
+/share?FromUserName=#{user}&supplier_id=#{id}"
 
         title1="如何轻松赚佣金"
         desc1 =""
@@ -89,15 +103,19 @@ WeixinRailsMiddleware::WeixinController.class_eval do
       when 'subscribe'
         title="您好，保亨生物科技欢迎您的光临！"
         desc =""
-        pic_url="http://www.baohengbio.com/images/a0#{id}/homepage/post.jpg"
-        link_url="http://www.baohengbio.com/"     
+        pic_url="http://123.57.35.69
+/images/a0#{id}/homepage/post.jpg"
+        link_url="http://123.57.35.69
+/"     
         articles = [generate_article(title, desc, pic_url, link_url)]
      
       else
         desc =""
         title="您好，我们将尽快回复您的问题"
-        pic_url="http://www.baohengbio.com/images/a0#{id}/homepage/logo.jpg"
-        link_url="http://www.baohengbio.com/vshop/#{id}"
+        pic_url="http://123.57.35.69
+/images/a0#{id}/homepage/logo.jpg"
+        link_url="http://123.57.35.69
+/vshop/#{id}"
         articles = [generate_article(title, desc, pic_url, link_url)]
     end
     if articles
