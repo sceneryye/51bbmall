@@ -4,7 +4,7 @@ class Store::CartController < ApplicationController
 
 
   def index
-		render :layout=>"cart"
+		render :layout=>"standard"
   end
 
   def mobile

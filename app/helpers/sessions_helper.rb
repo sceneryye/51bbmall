@@ -23,12 +23,12 @@ module SessionsHelper
          expires = nil
          expires = 1.week.from_now if remember_me == "1"
          if Rails.env == "production"
-	         cookies[:MEMBER] = {:value=>account.gen_secret_string_for_cookie,:expires=>expires,:domain=>'.baohengbio.com'}
-	         cookies[:loginName] = {:value=>account.login_name,:expires=>expires,:domain=>'.baohengbio.com'}
-	         cookies[:UNAME] = {:value=>account.login_name,:expires=>expires,:domain=>'.baohengbio.com'}
-	         cookies[:MLV] = {:value=>account.user.member_lv_id,:expires=>expires,:domain=>'.baohengbio.com'}
-	         cookies[:CUR] = {:value=>account.user.cur,:expires=>expires,:domain=>'.baohengbio.com'}
-	         cookies[:LANG] = {:value=>account.user.lang,:expires=>expires,:domain=>'.baohengbio.com'}
+	         cookies[:MEMBER] = {:value=>account.gen_secret_string_for_cookie,:expires=>expires,:domain=>'123.57.35.69'}
+	         cookies[:loginName] = {:value=>account.login_name,:expires=>expires,:domain=>'123.57.35.69'}
+	         cookies[:UNAME] = {:value=>account.login_name,:expires=>expires,:domain=>'123.57.35.69'}
+	         cookies[:MLV] = {:value=>account.user.member_lv_id,:expires=>expires,:domain=>'123.57.35.69'}
+	         cookies[:CUR] = {:value=>account.user.cur,:expires=>expires,:domain=>'123.57.35.69'}
+	         cookies[:LANG] = {:value=>account.user.lang,:expires=>expires,:domain=>'123.57.35.69'}
 	       else
 	   	     cookies[:MEMBER] = {:value=>account.gen_secret_string_for_cookie,:expires=>expires}
 	         cookies[:loginName] = {:value=>account.login_name,:expires=>expires}
@@ -43,7 +43,7 @@ module SessionsHelper
 		current_account = nil
 		[:MEMBER,:loginName,:UNAME,:MLV,:CUR,:LANG].each do |e|
 			if Rails.env == "production"
-				cookies.delete(e.to_s,:domain=>".baohengbio.com")
+				cookies.delete(e.to_s,:domain=>"123.57.35.69")
 			else
 				cookies.delete(e.to_s)
 			end
@@ -56,16 +56,16 @@ module SessionsHelper
 
 	def login_path
 		subdomain = "trade-v"
-  		subdomain = "www" if Rails.env == "production"
+  		subdomain = "" if Rails.env == "production"
   		return_url = request.url
   		return_url = request.env["HTTP_REFERER"] if request.xhr?
 
   		
 
-    cookies[:unlogin_url] = {:value=>return_url,:domain=>".baohengbio.com"}
+    cookies[:unlogin_url] = {:value=>return_url,:domain=>"123.57.35.69"}
 
     #"http://#{subdomain}.#{request.domain}/passport-login.html"
-    "http://www.baohengbio.com/login"
+    "http://123.57.35.69/login"
 	end
 
 	def goto_login_path
@@ -77,13 +77,13 @@ module SessionsHelper
 	end
 
 	def site_path
-		return "http://www.baohengbio.com/" if Rails.env == "development"
-		"http://www.baohengbio.com/"
+		return "http://123.57.35.69/" if Rails.env == "development"
+		"http://123.57.35.69/"
 	end
 
 	def site
-		return "http://www.baohengbio.com" if Rails.env == "development"
-		"http://www.baohengbio.com"
+		return "http://123.57.35.69" if Rails.env == "development"
+		"http://123.57.35.69"
 	end
 
 

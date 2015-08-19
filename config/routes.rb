@@ -374,6 +374,7 @@ scope :module => "blog" do
 
     get 'search' => "search#index", :as=> :search
     get 'mproducts' =>"goods#mproduct", :as=>"goods" ,:controller=>"goods"
+    get 'tuan' =>"goods#tuan", :as=>"goods" ,:controller=>"goods"
 
     resources :products, :as=>"goods", :controller=>"goods" do
       # get 'newin',:on=>:collection

@@ -180,8 +180,15 @@
             $(this).toggleClass('active');
             $(this).children('ul').slideToggle();
             
-            return false;
+          //  return false;
         })
+
+         $('.add-cart-product').on('click', function() {
+            $(this).closest("form").submit();                            
+            return false;
+        });
+                                                
+       
         // Zoom
         if($('.easyzoom').length >0){
             // Instantiate EasyZoom instances
