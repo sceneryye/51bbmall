@@ -57,24 +57,25 @@
                                       <ul class="dropdown-menu">
                                             <li><a href="#"><i class="fa fa-user"></i> 个人中心</a></li>
                                             <li><a href="#"><i class="fa fa-heart-o"></i>收藏夹</a></li>
-                                            <li><a href="#"><i class="fa fa-arrow-circle-right"></i> 结账</a></li>
-                                            <li><a href="#"><i class="fa fa-sign-in"></i> 登录</a></li>
+                                            <li><a href="/cart"><i class="fa fa-arrow-circle-right"></i> 结账</a></li>
+                                            <li><a href="/member/orders"><i class="fa fa-list"></i> 订单</a></li>
+
+                                            
                                       </ul>
                                     </div>
-                                    <div class="dropdown language" style="display: none">
-                                      <a data-toggle="dropdown" role="button"><img src="/img/en.jpg" alt="languae1"> English</a>
-                                      <ul class="dropdown-menu">
-                                            <li><a href="#"><img src="/img/en.jpg" alt="languae2">English</a></li>
-                                            <li><a href="#"><img src="/img/fr.jpg" alt="languae3">French</a></li>
-                                      </ul>
+                                    <%if @user%>
+                                    <div class="language">
+                                        <%=@user.mobile%>                                     
                                     </div>
-                                    <div class="dropdown currency"  style="display: none">
-                                      <a data-toggle="dropdown" role="button" aria-expanded="false">USD</a>
-                                      <ul class="dropdown-menu">
-                                            <li><a href="#">$ USD</a></li>
-                                            <li><a href="#">€ EUR</a></li>
-                                      </ul>
+                                    <div class="currency" >
+                                      <a href="/logout"><i class="fa fa-sign-in"></i> 退出</a>
                                     </div>
+                                    <%else%>
+                                    <div class="language">
+                                        <a href="/login"><i class="fa fa-sign-in"></i> 登录/注册</a>
+                                     
+                                    </div>
+                                    <%end%>
                                 </div>
                             </div>
                         </div>
@@ -598,6 +599,5 @@
 
     <script type="text/javascript" src="/js/easyzoom.js"></script>
 
-
-
-<div class="ui-selectmenu-menu ui-front" style="top: 62px; left: 409px;"><ul aria-hidden="true" aria-labelledby="category-select-button" id="category-select-menu" class="ui-menu ui-widget ui-widget-content ui-corner-bottom" role="listbox" tabindex="0" aria-activedescendant="ui-id-1" aria-disabled="false" style="width: 141px;"><li class="ui-menu-item ui-state-focus" id="ui-id-1" tabindex="-1" role="option">所有分类</li><li class="ui-menu-item" id="ui-id-2" tabindex="-1" role="option">Men</li><li class="ui-menu-item" id="ui-id-3" tabindex="-1" role="option">Women</li></ul></div></body></html>
+</body>
+</html>

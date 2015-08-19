@@ -1,533 +1,300 @@
-    <link rel="stylesheet" type="text/css" href="/stylesheets/easyzoom.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/easyzoom.css">
+
 <div class="container product-page">
+ <%= render "store/shared/position" if @cat%>        
+    <div class="row">
         <div class="row">
-            <div class="block block-breadcrumbs">
-                <ul>
-                    <li class="home">
-                        <a href="/img/Edo - Product detail.html"><i class="fa fa-home"></i></a>
-                        <span></span>
-                    </li>
-                    <li><a href="/img/Edo - Product detail.html">Beauty &amp; Perfumes</a><span></span></li>
-                    <li>Men</li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="block block-product-image">
-                        <div class="product-image easyzoom easyzoom--overlay easyzoom--with-thumbnails is-error">
-                            <a href="<%=@good.big_pic.split(",")[0]%>">
-                                <img src="<%=@good.big_pic.split(",")[0]%>" alt="Product" width="450" height="450">
-                            </a>
-                        </div>
-                        <div class="text">Hover on the image to zoom</div>
-                        <div class="product-list-thumb">
-                            <ul class="thumbnails kt-owl-carousel owl-carousel owl-theme owl-loaded" data-margin="10" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:2},&quot;600&quot;:{&quot;items&quot;:2},&quot;1000&quot;:{&quot;items&quot;:3}}">
-                                
-                                
-                                
-                            <%for value in 0..(@good.big_pic.split(",").length-1)%>
-                            <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: 0s; width: 452px;"><div class="owl-item active" style="width: 103px; margin-right: 10px;">
-                             
-      
+        <div class="col-sm-5">
+                <div class="block block-product-image">
+                    <div class="product-image easyzoom easyzoom--overlay easyzoom--with-thumbnails">
+                        <a href="<%=@good.big_pic.split(",")[0]%>">
+                            <img src="<%=@good.big_pic.split(",")[0]%>" alt="<%=@good.name%>" width="450" height="450">
+                        </a>
+                    </div>
+                    <div class="text">鼠标悬浮放大商品图片</div>
+                    <div class="product-list-thumb">
+                        <ul class="thumbnails kt-owl-carousel" data-margin="10" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"1000":{"items":3}}'>
+                         <%for value in 0..(@good.big_pic.split(",").length-1)%>
                             <li>
-                                    <a class="selected" href="<% @good.big_pic.split(",")[value]%>" data-standard="data/zoom/standard.jpg">
-                                        <%=image_tag @good.big_pic.split(",")[value]%>
-                                    </a>
-                                </li>
-                                </div>
-                               <%end%>
-                               <!--  <div class="owl-item active" style="width: 103px; margin-right: 10px;"><li>
-                                    <a href="http://kutethemes.com/demo/edo/html/data/zoom/full2.jpg" data-standard="data/zoom/standard2.jpg">
-                                        <img src="/img/thumb2.jpg" alt="">
-                                    </a>
-                                </li></div>
-                                <div class="owl-item active last-item" style="width: 103px; margin-right: 10px;"><li>
-                                    <a href="http://kutethemes.com/demo/edo/html/data/zoom/full3.jpg" data-standard="data/zoom/standard3.jpg">
-                                        <img src="/img/thumb3.jpg" alt="">
-                                    </a>
-                                </li></div>
-                                <div class="owl-item" style="width: 103px; margin-right: 10px;"><li>
-                                    <a href="http://kutethemes.com/demo/edo/html/data/zoom/full4.jpg" data-standard="data/zoom/standard4.jpg">
-                                        <img src="/img/thumb4.jpg" alt="">
-                                    </a>
-                                </li></div> -->
-                                </div></div>
-                                <div class="owl-controls"><div class="owl-nav"><div class="owl-prev" style="">prev</div><div class="owl-next" style="">next</div></div><div class="owl-dots" style=""><div class="owl-dot active"><span></span></div><div class="owl-dot"><span></span></div></div></div></ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-7">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-7">
-                            <div class="block-product-info">
-                            <%=form_for :product,:url=>add_cart_index_path do |f|%>
-                                <%=f.hidden_field :goods_id,:value=>@good.goods_id%>
-                                <%=f.hidden_field :type_id,:value=>@good.type_id%>            
-                                <h2 class="product-name"><%=@good.name %></h2>
-                                <div class="price-box">
-                                    <span class="product-price"> ¥<%=@good.default_product.price if @good.default_product%></span>
-                                    <span class="product-price-old"> ¥<%=@good.default_product.mktprice if @good.default_product%></span>
-                                </div>
-                                <div class="product-star">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                </div>
-                                <div class="desc"><%=raw @good.desc%><br> 
-                                    规格:<%=raw @good.spec_info%>
-                                </div>
-                                <div class="variations-box">
-                                <%=render :partial=>"store/goods/product/new_spec",:locals=>{ :good=>@good }%>
-                                    <table class="variations-table">
-                                        <tbody><tr>
-                                            <td class="table-label">Color</td>
-                                            <td class="table-value">
-                                                <ul class="list-check-box color">
-                                                    <li><a class="selected" href="/img/Edo - Product detail.html"><span style="background:#4d6dbd;">Blue</span></a></li>
-                                                    <li><a href="/img/Edo - Product detail.html"><span style="background:#fb5d5d;">Blue</span></a></li>
-                                                    <li><a href="/img/Edo - Product detail.html"><span style="background:#2fbcda;">Blue</span></a></li>
-                                                    <li><a href="/img/Edo - Product detail.html"><span style="background:#ffe00c;">Blue</span></a></li>
-                                                    <li><a href="/img/Edo - Product detail.html"><span style="background:#72b226;">Blue</span></a></li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="table-label">Size</td>
-                                            <td class="table-value">
-                                                <ul class="list-check-box">
-                                                    <li><a href="/img/Edo - Product detail.html">XL</a></li>
-                                                    <li><a href="/img/Edo - Product detail.html">X</a></li>
-                                                    <li><a href="/img/Edo - Product detail.html">S</a></li>
-                                                    <li><a href="/img/Edo - Product detail.html">XS</a></li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="table-label">Qty</td>
-                                            <td class="table-value">
-                                                <div class="box-qty">
-                                                    <a href="/img/Edo - Product detail.html" class="quantity-minus">-</a>
-                                                    <input type="text" class="quantity" value="1">
-                                                    <a href="/img/Edo - Product detail.html" class="quantity-plus">+</a>
-                                                </div>
-                                                <%=f.submit "加入购物车",:class=>"btn btn-success btn-lg"%>
-                                                <a href="/img/Edo - Product detail.html" class="button-radius btn-add-cart">Buy<span class="icon"></span></a>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </div>
-                                <div class="box-control-button">
-                                    <a class="link-wishlist" href="/img/Edo - Product detail.html">wishlist</a>
-                                    <a class="link-compare" href="/img/Edo - Product detail.html">Compare</a>
-                                    <a class="link-sendmail" href="/img/Edo - Product detail.html">Email to a Friend</a>
-                                    <a class="link-print" href="/img/Edo - Product detail.html">Print</a>
-                                </div>
-                            <%end%>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-5">
-                            <!-- block  top sellers -->
-                            <div class="block block-top-sellers">
-                                <div class="block-head">
-                                    <div class="block-title">
-                                        <div class="block-icon">
-                                            <img src="/img/top-seller-icon.png" alt="store icon">
-                                        </div>
-                                        <div class="block-title-text text-sm">top</div>
-                                        <div class="block-title-text text-lg">SELLERS</div>
-                                    </div>
-                                </div>
-                                <div class="block-inner">
-                                    <ul class="products kt-owl-carousel owl-carousel owl-theme owl-loaded" data-margin="10" data-items="1" data-autoplay="true" data-loop="true" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:1},&quot;600&quot;:{&quot;items&quot;:2},&quot;1000&quot;:{&quot;items&quot;:1}}">
-                                        
-                                        
-                                    <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-924px, 0px, 0px); transition: 0.25s; width: 1386px;"><div class="owl-item cloned" style="width: 221px; margin-right: 10px;"><li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/img/Edo - Product detail.html"><img src="/img/p1(1).jpg" alt=""></a>
-                                                        <a title="Quick View" href="/img/Edo - Product detail.html" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/img/Edo - Product detail.html">Cotton Lycra Leggings</a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">$139.98</span>
-                                                        <span class="product-price-old">$169.00</span>
-                                                    </div>
-                                                    <div class="product-star">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half-o"></i>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/img/Edo - Product detail.html">Add Wishlist</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/img/Edo - Product detail.html">Add Compare</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/img/Edo - Product detail.html">Buy<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li></div><div class="owl-item cloned" style="width: 221px; margin-right: 10px;"><li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/img/Edo - Product detail.html"><img src="/img/p2(1).jpg" alt=""></a>
-                                                        <a title="Quick View" href="/img/Edo - Product detail.html" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/img/Edo - Product detail.html">Cotton Lycra Leggings</a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">$139.98</span>
-                                                        <span class="product-price-old">$169.00</span>
-                                                    </div>
-                                                    <div class="product-star">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half-o"></i>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/img/Edo - Product detail.html">Add Wishlist</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/img/Edo - Product detail.html">Add Compare</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/img/Edo - Product detail.html">Buy<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li></div><div class="owl-item" style="width: 221px; margin-right: 10px;"><li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/img/Edo - Product detail.html"><img src="/img/p1(1).jpg" alt=""></a>
-                                                        <a title="Quick View" href="/img/Edo - Product detail.html" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/img/Edo - Product detail.html">Cotton Lycra Leggings</a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">$139.98</span>
-                                                        <span class="product-price-old">$169.00</span>
-                                                    </div>
-                                                    <div class="product-star">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half-o"></i>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/img/Edo - Product detail.html">Add Wishlist</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/img/Edo - Product detail.html">Add Compare</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/img/Edo - Product detail.html">Buy<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li></div><div class="owl-item" style="width: 221px; margin-right: 10px;"><li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/img/Edo - Product detail.html"><img src="/img/p2(1).jpg" alt=""></a>
-                                                        <a title="Quick View" href="/img/Edo - Product detail.html" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/img/Edo - Product detail.html">Cotton Lycra Leggings</a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">$139.98</span>
-                                                        <span class="product-price-old">$169.00</span>
-                                                    </div>
-                                                    <div class="product-star">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half-o"></i>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/img/Edo - Product detail.html">Add Wishlist</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/img/Edo - Product detail.html">Add Compare</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/img/Edo - Product detail.html">Buy<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li></div><div class="owl-item cloned active last-item" style="width: 221px; margin-right: 10px;"><li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/img/Edo - Product detail.html"><img src="/img/p1(1).jpg" alt=""></a>
-                                                        <a title="Quick View" href="/img/Edo - Product detail.html" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/img/Edo - Product detail.html">Cotton Lycra Leggings</a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">$139.98</span>
-                                                        <span class="product-price-old">$169.00</span>
-                                                    </div>
-                                                    <div class="product-star">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half-o"></i>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/img/Edo - Product detail.html">Add Wishlist</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/img/Edo - Product detail.html">Add Compare</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/img/Edo - Product detail.html">Buy<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li></div><div class="owl-item cloned" style="width: 221px; margin-right: 10px;"><li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/img/Edo - Product detail.html"><img src="/img/p2(1).jpg" alt=""></a>
-                                                        <a title="Quick View" href="/img/Edo - Product detail.html" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/img/Edo - Product detail.html">Cotton Lycra Leggings</a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">$139.98</span>
-                                                        <span class="product-price-old">$169.00</span>
-                                                    </div>
-                                                    <div class="product-star">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half-o"></i>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/img/Edo - Product detail.html">Add Wishlist</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/img/Edo - Product detail.html">Add Compare</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/img/Edo - Product detail.html">Buy<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li></div></div></div><div class="owl-controls"><div class="owl-nav"><div class="owl-prev" style="">prev</div><div class="owl-next" style="">next</div></div><div class="owl-dots" style=""><div class="owl-dot active"><span></span></div><div class="owl-dot"><span></span></div></div></div></ul>
-                                </div>
-                            </div>
-                            <!-- block  top sellers -->
-                        </div>
-                        <div class="col-sm-12 col-md-12">
-                            <div class="block block-category-list">
-                                <div class="block-inner">
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/1.png" alt="Icon">
-                                        <img class="icon2" src="/img/1-1.png" alt="Icon">
-                                        <span>Women</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/2.png" alt="Icon">
-                                        <img class="icon2" src="/img/2-1.png" alt="Icon">
-                                        <span>Men</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/3.png" alt="Icon">
-                                        <img class="icon2" src="/img/3-1.png" alt="Icon">
-                                        <span>Kids &amp; Baby</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/4.png" alt="Icon">
-                                        <img class="icon2" src="/img/4-1.png" alt="Icon">
-                                        <span>Bags &amp; Shoes</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/5.png" alt="Icon">
-                                        <img class="icon2" src="/img/5-1.png" alt="Icon">
-                                        <span>Business</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/6.png" alt="Icon">
-                                        <img class="icon2" src="/img/6-1.png" alt="Icon">
-                                        <span>Electronics</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/7.png" alt="Icon">
-                                        <img class="icon2" src="/img/7-1.png" alt="Icon">
-                                        <span>Sports</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/8.png" alt="Icon">
-                                        <img class="icon2" src="/img/8-1.png" alt="Icon">
-                                        <span>Jewelry &amp; Watches</span>
-                                    </a>
-                                    <a href="/img/Edo - Product detail.html">
-                                        <img class="icon1" src="/img/9.png" alt="Icon">
-                                        <img class="icon2" src="/img/9-1.png" alt="Icon">
-                                        <span>Home &amp; Garden</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                                <a class="<%='selected' if value==0%>" href="<%=@good.big_pic.split(",")[value]%>" data-standard="<%=@good.big_pic.split(",")[value]%>">
+                                    <%=image_tag @good.big_pic.split(",")[value]%>
+                                </a>
+                            </li>
+                        <%end%>                               
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <!-- Product tab -->
-            <div class="block block-tabs tab-left">
-                <div class="block-head">
-                    <ul class="nav-tab">                                   
-                        <li class="active"><a data-toggle="tab" href="http://kutethemes.com/demo/edo/html/detail.html#tab-1">商品详情</a></li>
-                        <li><a data-toggle="tab" href="http://kutethemes.com/demo/edo/html/detail.html#tab-2">商品参数</a></li>
-                        <li><a data-toggle="tab" href="http://kutethemes.com/demo/edo/html/detail.html#tab-3">会员评价</a></li>
-                    </ul>
-                </div>
-                <div class="block-inner">
-                    <div class="tab-container">
-                        <div id="tab-1" class="tab-panel active">
-                            <p>
-                                <%=raw @good.intro%>
-                            </p>
+            <div class="col-sm-7">
+                <div class="row">
+                    <div class="col-sm-12 col-md-7">
+                        <div class="block-product-info">
+                        <%=form_for :product,:url=>add_cart_index_path,:class=>"form_add_cart" do |f|%>
+                            <%=f.hidden_field :goods_id,:value=>@good.goods_id%>
+                            <%=f.hidden_field :type_id,:value=>@good.type_id%>            
+                            <h2 class="product-name"><%=@good.name %></h2>
+                            <div class="price-box">
+                                <span class="product-price"> ¥<%=@good.default_product.price if @good.default_product%></span>
+                                <span class="product-price-old"> ¥<%=@good.default_product.mktprice if @good.default_product%></span>
+                            </div>
+                            <div class="product-star">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                            </div>
+                            <div class="desc"><%=raw @good.desc%><br> 
+                                规格:<%=raw @good.spec_info%>
+                            </div>
+                            <div class="variations-box">
+                            <%=render :partial=>"store/goods/product/new_spec",:locals=>{ :good=>@good }%>
+                                <table class="variations-table">
+                                    <tbody><tr>
+                                        <td class="table-label">Color</td>
+                                        <td class="table-value">
+                                            <ul class="list-check-box color">
+                                                <li><a class="selected" href="/img/Edo - Product detail.html"><span style="background:#4d6dbd;">Blue</span></a></li>
+                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#fb5d5d;">Blue</span></a></li>
+                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#2fbcda;">Blue</span></a></li>
+                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#ffe00c;">Blue</span></a></li>
+                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#72b226;">Blue</span></a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">Size</td>
+                                        <td class="table-value">
+                                            <ul class="list-check-box">
+                                                <li><a href="/img/Edo - Product detail.html">XL</a></li>
+                                                <li><a href="/img/Edo - Product detail.html">X</a></li>
+                                                <li><a href="/img/Edo - Product detail.html">S</a></li>
+                                                <li><a href="/img/Edo - Product detail.html">XS</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-label">数量</td>
+                                        <td class="table-value">
+                                            <div class="box-qty">
+                                                <a href="#" class="quantity-minus">-</a>
+                                                <input type="text" class="quantity" value="1">
+                                                <a href="#" class="quantity-plus">+</a>
+                                            </div>
+                                            <a href="#" class="button-radius btn-add-cart add-cart-product">加入购物车<span class="icon"></span></a>
+                                           
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </div>
+                            <div class="box-control-button">
+                                <a class="link-wishlist" href="#">收藏</a>
+                                <a class="link-compare" href="#">比较商品</a>
+                                <a class="link-sendmail" href="#">分享给朋友</a>
+                                <a class="link-print" href="#">打印</a>
+                            </div>
+                        <%end%>
                         </div>
-                        <div id="tab-2" class="tab-panel">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>Compositions</td>
-                                        <td>Cotton</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Styles</td>
-                                        <td>Girly</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Properties</td>
-                                        <td>Colorful Dress</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="tab-3" class="tab-panel">
-                            <div id="reviews">
-                                <h4 class="comments-title">1 review for "Cotton Lycra Leggings"</h4>
-                                <ol class="comment-list">
-                                    <li class="comment">
-                                        <div class="comment-avatar">
-                                            <img src="/img/avatar.jpg" alt="Avatar">
-                                        </div>
-                                        <div class="comment-content">
-                                            <div class="comment-meta">
-                                                <a href="/img/Edo - Product detail.html" class="comment-author">jon Conner</a>
-                                                <span class="comment-date">March 14, 2013 at 8:03 am</span>
-                                                <div class="review-rating">
+                    </div>
+                    <div class="col-sm-12 col-md-5">
+                        <!-- block  top sellers -->
+                        <div class="block block-top-sellers">
+                            <div class="block-head">
+                                <div class="block-title">
+                                    <div class="block-icon">
+                                        <img src="/img/top-seller-icon.png" alt="store icon">
+                                    </div>
+                                    <div class="block-title-text text-sm">top</div>
+                                    <div class="block-title-text text-lg">SELLERS</div>
+                                </div>
+                            </div>
+                            <div class="block-inner">
+                                <ul class="products kt-owl-carousel" data-margin="10" data-items="1" data-autoplay="true" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":2},"1000":{"items":1}}'>
+                                <%@top_sellers.each do |good|%>
+                                    <li class="product">
+                                        <div class="product-container">
+                                            <div class="product-left">
+                                                <div class="product-thumb">
+                                                    <%=link_to good_path(good.bn), :target=>"_blank",:class=>"product-img" do %>
+                                                        <%=image_tag good.list_default_pic,:alt=>good.name%>
+                                                    <%end%>
+                                                    <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                                                </div>
+                                            </div>
+                                            <div class="product-right">
+                                                <div class="product-name">                            
+                                                    <%=link_to good.name,good_path(good.bn),:target=>"_blank"%>
+                                                </div>
+                                                <div class="price-box">
+                                                    <span class="product-price">￥<%=good.price%></span>
+                                                    <span class="product-price-old">￥<%=good.mktprice%></span>
+                                                </div>
+                                                <div class="product-star">
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star-half-o"></i>
                                                 </div>
-                                            </div>
-                                            <div class="comment-entry">
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
-                                            </div>
-                                            <div class="comment-actions">
-                                                <a class="comment-reply-link" href="/img/Edo - Product detail.html"><i class="fa fa-share"></i> Reply</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="comment">
-                                        <div class="comment-avatar">
-                                            <img src="/img/avatar.jpg" alt="Avatar">
-                                        </div>
-                                        <div class="comment-content">
-                                            <div class="comment-meta">
-                                                <a href="/img/Edo - Product detail.html" class="comment-author">jon Conner</a>
-                                                <span class="comment-date">March 14, 2013 at 8:03 am</span>
-                                                <div class="review-rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star-half-o"></i>
+                                                <div class="product-button">
+                                                    <a class="btn-add-wishlist" title="Add to Wishlist" href="<%=good_path(good.bn)%>">收藏</a>
+                                                    <a class="btn-add-comparre" title="Add to Compare" href="<%=good_path(good.bn)%>">比较</a>
+                                                    <a class="button-radius btn-add-cart" title="Add to Cart" href="<%=good_path(good.bn)%>">购买<span class="icon"></span></a>
                                                 </div>
                                             </div>
-                                            <div class="comment-entry">
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
-                                            </div>
-                                            <div class="comment-actions">
-                                                <a class="comment-reply-link" href="/img/Edo - Product detail.html"><i class="fa fa-share"></i> Reply</a>
-                                            </div>
                                         </div>
                                     </li>
-                                </ol>
-                                <div class="comment-form">
-                                    <h3 class="comment-reply-title">Leave a Review</h3>
-                                    <small>Your email address will not be published. Required fields are marked *</small>
-                                    <div class="rating">
-                                        <label class="required">Your rating</label>
-                                        <div class="form-rating">
-                                            <label class="radio-inline">
-                                              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1
-                                            </label>
-                                            <label class="radio-inline">
-                                              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2
-                                            </label>
-                                            <label class="radio-inline">
-                                              <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3
-                                            </label>
-                                            <label class="radio-inline">
-                                              <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4"> 4
-                                            </label>
-                                            <label class="radio-inline">
-                                              <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5"> 5
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <p>
-                                        <label class="required">Name</label>
-                                        <input type="text">
-                                    </p>
-                                    <p>
-                                        <label class="required">Email</label>
-                                        <input type="text">
-                                    </p>
-                                    <p>
-                                        <label>Website</label>
-                                        <input type="text">
-                                    </p>
-                                    <p>
-                                        <label class="required">Comment</label>
-                                        <textarea rows="5"></textarea>  
-                                    </p>
-                                    <p>
-                                        <button class="button">Post review</button>
-                                    </p>
-                                </div>
+                                    <%end%>                                        
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Product tab -->
-            <%if @good.has_cols? %>
-                <%= render "new_look2"%>
-                <%= render "reco_new_look" if @good.reco_collocation_goods.count > 0%>
-            <%else%>
-              <%= render "reco_goods" %>
-            <%end%>
         </div>
     </div>
- 
+    <div class="row">
+        <!-- Product tab -->
+        <div class="block block-tabs tab-left">
+            <div class="block-head">
+                <ul class="nav-tab">                                   
+                    <li class="active"><a data-toggle="tab" href="#tab-1">商品详情</a></li>
+                    <li><a data-toggle="tab" href="#tab-2">商品参数</a></li>
+                    <li><a data-toggle="tab" href="#tab-3">会员评价</a></li>
+                </ul>
+            </div>
+            <div class="block-inner">
+                <div class="tab-container">
+                    <div id="tab-1" class="tab-panel active">
+                        <p>
+                            <%=raw @good.intro%>
+                        </p>
+                    </div>
+                    <div id="tab-2" class="tab-panel">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Compositions</td>
+                                    <td>Cotton</td>
+                                </tr>
+                                <tr>
+                                    <td>Styles</td>
+                                    <td>Girly</td>
+                                </tr>
+                                <tr>
+                                    <td>Properties</td>
+                                    <td>Colorful Dress</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="tab-3" class="tab-panel">
+                        <div id="reviews">
+                            <h4 class="comments-title">1 review for "Cotton Lycra Leggings"</h4>
+                            <ol class="comment-list">
+                                <li class="comment">
+                                    <div class="comment-avatar">
+                                        <img src="/img/avatar.jpg" alt="Avatar">
+                                    </div>
+                                    <div class="comment-content">
+                                        <div class="comment-meta">
+                                            <a href="/img/Edo - Product detail.html" class="comment-author">jon Conner</a>
+                                            <span class="comment-date">March 14, 2013 at 8:03 am</span>
+                                            <div class="review-rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-half-o"></i>
+                                            </div>
+                                        </div>
+                                        <div class="comment-entry">
+                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
+                                        </div>
+                                        <div class="comment-actions">
+                                            <a class="comment-reply-link" href="/img/Edo - Product detail.html"><i class="fa fa-share"></i> Reply</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="comment">
+                                    <div class="comment-avatar">
+                                        <img src="/img/avatar.jpg" alt="Avatar">
+                                    </div>
+                                    <div class="comment-content">
+                                        <div class="comment-meta">
+                                            <a href="/img/Edo - Product detail.html" class="comment-author">jon Conner</a>
+                                            <span class="comment-date">March 14, 2013 at 8:03 am</span>
+                                            <div class="review-rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-half-o"></i>
+                                            </div>
+                                        </div>
+                                        <div class="comment-entry">
+                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
+                                        </div>
+                                        <div class="comment-actions">
+                                            <a class="comment-reply-link" href="/img/Edo - Product detail.html"><i class="fa fa-share"></i> Reply</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                            <div class="comment-form">
+                                <h3 class="comment-reply-title">Leave a Review</h3>
+                                <small>Your email address will not be published. Required fields are marked *</small>
+                                <div class="rating">
+                                    <label class="required">Your rating</label>
+                                    <div class="form-rating">
+                                        <label class="radio-inline">
+                                          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1
+                                        </label>
+                                        <label class="radio-inline">
+                                          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2
+                                        </label>
+                                        <label class="radio-inline">
+                                          <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3
+                                        </label>
+                                        <label class="radio-inline">
+                                          <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4"> 4
+                                        </label>
+                                        <label class="radio-inline">
+                                          <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5"> 5
+                                        </label>
+                                    </div>
+                                </div>
+                                <p>
+                                    <label class="required">Name</label>
+                                    <input type="text">
+                                </p>
+                                <p>
+                                    <label class="required">Email</label>
+                                    <input type="text">
+                                </p>
+                                <p>
+                                    <label>Website</label>
+                                    <input type="text">
+                                </p>
+                                <p>
+                                    <label class="required">Comment</label>
+                                    <textarea rows="5"></textarea>  
+                                </p>
+                                <p>
+                                    <button class="button">Post review</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Product tab -->
+        <%if @good.has_cols? %>
+            <%= render "new_look2"%>
+            <%= render "reco_new_look" if @good.reco_collocation_goods.count > 0%>
+        <%else%>
+          <%= render "reco_goods" %>
+        <%end%>
+    </div>
+</div>

@@ -79,6 +79,16 @@ class Store::GoodsController < ApplicationController
  end
 
   def show
+    goods_ids =""
+    sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Top Sellers'"
+    results = ActiveRecord::Base.connection.execute(sql)
+    results.each(:as => :hash) do |row|
+      goods_ids= row["goods_ids"]
+    end
+    sql = " bn in (#{goods_ids})"
+    @top_sellers = Ecstore::Good.where(sql)
+
+
     @wechat_user=params[:wechatuser]
 
     @good = Ecstore::Good.includes(:specs,:spec_values,:cat).where(:bn=>params[:id]).first
@@ -92,9 +102,9 @@ class Store::GoodsController < ApplicationController
 
     @recommend_goods = []
     if @cat.goods.size >= 4
-      @recommend_goods =  @cat.goods.where("goods_id <> ?", @good.goods_id).order("goods_id desc").limit(4)
+      @recommend_goods =  @cat.goods.where("goods_id <> ?", @good.goods_id).order("goods_id desc").limit(5)
     else
-      @recommend_goods += @cat.goods.where("goods_id <> ?", @good.goods_id).limit(4).to_a
+      @recommend_goods += @cat.goods.where("goods_id <> ?", @good.goods_id).limit(5).to_a
       @recommend_goods += @cat.parent_cat.all_goods.select{|good| good.goods_id != @good.goods_id }[0,4-@recommend_goods.size] if @cat.parent_cat && @recommend_goods.size < 4
       @recommend_goods.compact!
       # if @cat.parent_cat.parent_cat && @recommend_goods.size < 4

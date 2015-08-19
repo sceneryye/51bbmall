@@ -1,26 +1,32 @@
-<div class="tree-menu" id="cats_tree">
-	<%@top_cats.each_with_index do |top_cat,index|%>
-		<div class="title-level1">
-			<%=link_to top_cat.cat_name, "#"%>
-		</div>
-		<ul class="items-level1 folded <%='expand' if @cat.present? ? @cat.cat_paths.include?(top_cat) : index == 0%>">
-			<%top_cat.categories.order("p_order asc").each do |scat|%>
-				<%if scat.all_goods.size > 0%>
-					<li class="item-level1">
-						<div class="title-level2"><%=link_to scat.cat_name,cat_path(scat,:gtype=>params[:gtype])%></div>
-						<%if scat.categories.present?%>
-							<ul class="items-level2">
-							<%scat.categories.each do |tcat|%>
-								<%if tcat.all_goods.size>0%>
-								<li class="item-level2"><%=link_to tcat.cat_name,cat_path(tcat,:gtype=>params[:gtype])%></li>
+<div class="block block-sidebar">
+	<div class="block-head">
+		<h5 class="widget-title">商品分类</h5>
+	</div>
+	<div class="block-inner">
+		<div class="block-list-category">
+			<ul class="tree-menu">
+				<%@top_cats.each_with_index do |top_cat,index|%>		
+                <li class="<%='active' if @cat.present? ? @cat.cat_paths.include?(top_cat) : index == 0%>">
+                	<%=link_to top_cat.cat_name, "#"%>
+                    <ul style="display:none;<%='display: block' if @cat.present? ? @cat.cat_paths.include?(top_cat) : index == 0%>">
+                    	<%top_cat.categories.order("p_order asc").each do |scat|%>
+							<%if scat.all_goods.size > 0%>
+	                        	<li><span></span><%=link_to scat.cat_name,cat_path(scat,:gtype=>params[:gtype])%></li>
+	                        	<%if scat.categories.present?%>
+									<ul>
+									<%scat.categories.each do |tcat|%>
+										<%if tcat.all_goods.size>0%>
+										<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=link_to tcat.cat_name,cat_path(tcat,:gtype=>params[:gtype])%></li>
+										<%end%>
+									<%end%>
+									</ul>
 								<%end%>
-							<%end%>
-							</ul>
-						<%end%>
-					</li>
-				<%end%>
-			<%end%>
-		</ul>
-	<%end%>
-
+	                        <%end%>
+                        <%end%>
+                    </ul>
+                </li>
+                <%end%>
+            </ul>
+		</div>
+	</div>
 </div>

@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   require 'rest-client'
 
   skip_before_filter :authorize_user!
-  layout 'patch'
+  layout 'standard'
 
   def new
 
@@ -32,8 +32,6 @@ class SessionsController < ApplicationController
     end
     @supplier = Ecstore::Supplier.find(supplier_id)
 
-    #redirect_uri = "http://vshop.trade-v.com/auth/weixin/callback?supplier_id=#{@supplier.id}"
-    #redirect_uri= URI::escape(redirect_uri)
     redirect_uri="http%3a%2f%2fwww.baohengbio.com%2fauth%2fweixin%2f#{supplier_id}%2fcallback"
 
     @oauth2_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=#{@supplier.weixin_appid}&redirect_uri=#{redirect_uri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect"
@@ -86,11 +84,11 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-      sign_out
-       refer_url = request.env["HTTP_REFERER"]
-       refer_url = "/" unless refer_url
-
-       redirect_to refer_url
+    sign_out
+    
+    refer_url = request.env["HTTP_REFERER"]
+    refer_url = "/" unless refer_url
+    redirect_to refer_url
 
   end
 

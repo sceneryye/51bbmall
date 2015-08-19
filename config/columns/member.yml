@@ -99,7 +99,3 @@
   - 性别
   - sex_name
   - "true"
-30-discount_code-特惠码: 
-  - 特惠码
-  - user.discount_code
-  - "true"

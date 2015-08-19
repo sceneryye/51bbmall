@@ -9,30 +9,32 @@
                         </div>
                         <div class="vertical-menu-content">
                             <ul class="vertical-menu-list">
-                                <li class="vertical-menu1"><a class="parent" href="#">佐餐美酒</a>
+                                <li class="vertical-menu1"><a class="parent" href="/gallery/22?type=1">佐餐美酒</a>
                                     <div class="vertical-dropdown-menu" style="width: 901px;">
                                         <div class="vertical-groups col-sm-12">
                                             <div class="row">
                                                 <div class="col-sm-3">
                                                     <div class="block-content-vertical-menu">
-                                                        <h3 class="head">PRODUCTS SPECIAL</h3>
+                                                        <h3 class="head">沃特牌啤酒</h3>
                                                         <div class="inner">
-                                                            <p>Pellentesque in ipsum id orci porta dapibus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
+                                                            <p> 沃特牌啤酒是按照自己独特的秘密 配方酿造的，所有原材料来自德国，并且保证不受任何不良环境的 影响。酿造啤酒用的水是唯一最纯净的哈尔茨山泉水。地处中欧的著名的 哈尔茨山泉水不含任何有害矿物质，对于酿造啤酒来说，是最高品 质的水。</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-9">
                                                     <div class="row mega-products">
+                                                         <%goods=Ecstore::Good.where("marketable ='true' and cat_id =489").order("p_order ASC, goods_id DESC").limit(3)%>
+                                                        <%goods.each do |good|%>   
                                                         <div class="col-sm-4 mega-product">
                                                             <div class="product-avatar">
-                                                                <a href="#"><img src="/img/p10.jpg" alt="product1"></a>
+                                                                <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="<%=good.name%>"></a>
                                                             </div>
                                                             <div class="product-name">
-                                                                <a href="#">Cotton Lycra Leggings</a>
+                                                                <a href="/products/<%=good.bn%>"><%=good.name%></a>
                                                             </div>
                                                             <div class="price-box">
-                                                                <span class="product-price">$139.98</span>
-                                                                <span class="product-price-old">$169.00</span>
+                                                                <span class="product-price">￥<%=good.price%></span>
+                                                                <span class="product-price-old">￥<%=good.mktprice%></span>
                                                             </div>
                                                             <div class="product-star">
                                                                 <i class="fa fa-star"></i>
@@ -42,44 +44,7 @@
                                                                 <i class="fa fa-star-half-o"></i>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-4 mega-product">
-                                                            <div class="product-avatar">
-                                                                <a href="#"><img src="/img/p11.jpg" alt="product1"></a>
-                                                            </div>
-                                                            <div class="product-name">
-                                                                <a href="#">Cotton Lycra Leggings</a>
-                                                            </div>
-                                                            <div class="price-box">
-                                                                <span class="product-price">$139.98</span>
-                                                                <span class="product-price-old">$169.00</span>
-                                                            </div>
-                                                            <div class="product-star">
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star-half-o"></i>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4 mega-product">
-                                                            <div class="product-avatar">
-                                                                <a href="#"><img src="/img/p12.jpg" alt="product1"></a>
-                                                            </div>
-                                                            <div class="product-name">
-                                                                <a href="#">Cotton Lycra Leggings</a>
-                                                            </div>
-                                                            <div class="price-box">
-                                                                <span class="product-price">$139.98</span>
-                                                                <span class="product-price-old">$169.00</span>
-                                                            </div>
-                                                            <div class="product-star">
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star-half-o"></i>
-                                                            </div>
-                                                        </div>
+                                                        <%end%>
                                                     </div>
                                                 </div>
                                             </div>
@@ -87,7 +52,7 @@
                                     </div>
                                 </li>
                                 <li class="vertical-menu2">
-                                    <a class="parent" href="#">德国香肠</a>
+                                    <a class="parent" href="/gallery/558?type=1">德国香肠</a>
                                     <div class="vertical-dropdown-menu" style="width: 901px;">
                                         <div class="vertical-groups">
                                             <div class="row">

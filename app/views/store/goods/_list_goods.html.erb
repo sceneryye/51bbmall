@@ -1,5 +1,5 @@
-<div class="sorter">
-	<span>排序: </span>
+<div class="sortPagiBar">
+		<span>排序: </span>
 	<%
 		query_hash = {}
 		# query_hash[:color] = params[:color] if params[:color]
@@ -25,78 +25,157 @@
 	<%=link_to "销量&darr;".html_safe,"?order=buy_count-desc&#{query}",:title=>"价格从高往低"%>
 	<%=link_to "人气&darr;".html_safe,"?order=view_count-asc&#{query}",:title=>"人气从高往低"%>
 
-	<div class="pagination top">
-		<%=will_paginate @goods,:container=>false if @goods%>
+	<ul class="display-product-option">
+        <li class="view-as-grid selected">
+            <span>grid</span>
+        </li>
+        <li class="view-as-list">
+            <span>list</span>
+        </li>
+    </ul>
+	<div class="sortPagiBar-inner">
+	<%=will_paginate @goods,:container=>false if @goods%>
+		<nav>
+          <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">Next »</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="show-product-item">
+        	<select class="">
+            	<option value="1">Show 6</option>
+            	<option value="1">Show 12</option>
+            </select>
+        </div>
+        
+        <div class="sort-product">
+        	<select>
+            	<option value="1">Postion</option>
+            	<option value="1">Product name</option>
+            </select>
+            <div class="icon"><i class="fa fa-sort-alpha-asc"></i></div>
+        </div>
 	</div>
 </div>
-
-<ul class="list clearfix" id="goods">
+<div class="category-products">
+	<ul class="products row">
 	<%@goods.each do |good|%>
-		<%if good.price!=0 || cookies[:MLV] == "10" %>
-	<li>
-		<div class="good-pic good-<%=good.goods_id%>">
-			<%=link_to good_path(good.bn), :target=>"_blank" do %>
-				<%=image_tag good.list_default_pic,:alt=>good.name,:class=>"default"%>
-				<%#=image_tag good.list_hover_pic,:alt=>good.name,:class=>"hover"%>
-			<%end%>
-		</div>
-		<div class="good-info">
-			<div class="brand">
-				<%if controller_name == "search" && good.brand%>
-					<%
-					      dup_brand = good.brand.brand_name.dup
-						@splits.each do |part|
-							regex = Regexp.new(part,Regexp::IGNORECASE)
-							dup_brand.gsub! regex do |match|
-								"<span class='highlight'>#{match}</span>"
-							end
-						end
-					%>
-					<%=dup_brand.html_safe%>
-				<%else%>
-					<%=good.brand.brand_name if good.brand%>
-				<%end%>
-
+		<li class="product col-xs-12 col-sm-6 col-md-4">
+			<div class="product-container">
+				<div class="inner">
+					<div class="product-left">
+						<div class="product-thumb">
+							<%=link_to good_path(good.bn), :target=>"_blank",:class=>"product-img" do %>
+								<%=image_tag good.list_default_pic,:alt=>good.name%>
+							<%end%>
+							<a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+						</div>
+					</div>
+					<div class="product-right">
+						<div class="product-name">
+							<%if controller_name == "search" && good.brand%>
+								<%
+								      dup_brand = good.brand.brand_name.dup
+									@splits.each do |part|
+										regex = Regexp.new(part,Regexp::IGNORECASE)
+										dup_brand.gsub! regex do |match|
+											"<span class='highlight'>#{match}</span>"
+										end
+									end
+								%>
+								<%=dup_brand.html_safe%>
+							<%else%>
+								<%=good.brand.brand_name if good.brand%>
+							<%end%>
+							&nbsp;
+							<%if controller_name == "search"%>
+								<%=link_to good_path(good.bn),:target=>"_blank" do%>
+									<%
+									      dup_name = good.name
+										@splits.each do |part|
+											regex = Regexp.new(part,Regexp::IGNORECASE)
+											dup_name.gsub! regex do |match|
+												"<span class='highlight'>#{match}</span>"
+											end
+										end
+									%>
+									<%=dup_name.html_safe%>
+								<%end%>
+							<%else%>
+								<%=link_to good.name,good_path(good.bn),:target=>"_blank"%>
+							<%end%>
+						</div>
+						<div class="price-box">
+							<span class="product-price">￥<%=good.price%></span>
+                            <span class="product-price-old">￥<%=good.mktprice%></span>
+						</div>
+						<div class="product-star">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                        </div>
+                        <div class="product-button">
+                        	<a class="btn-add-wishlist" title="Add to Wishlist" href="<%=good_path(good.bn)%>">收藏</a>
+                        	<a class="btn-add-comparre" title="Add to Compare" href="<%=good_path(good.bn)%>">比较</a>
+                        	<a class="button-radius btn-add-cart" title="Add to Cart" href="<%=good_path(good.bn)%>">购买<span class="icon"></span></a>
+                        </div>
+					</div>
+				</div>
 			</div>
-			<div class="name">
-				<%if controller_name == "search"%>
-					<%=link_to good_path(good.bn),:target=>"_blank" do%>
-						<%
-						      dup_name = good.name
-							@splits.each do |part|
-								regex = Regexp.new(part,Regexp::IGNORECASE)
-								dup_name.gsub! regex do |match|
-									"<span class='highlight'>#{match}</span>"
-								end
-							end
-						%>
-						<%=dup_name.html_safe%>
-					<%end%>
-				<%else%>
-					<%=link_to good.name,good_path(good.bn),:target=>"_blank"%>
-				<%end%>
-			</div>
-			<div class="prices">
-				<span>
-
-					会员价:
-					<%if signed_in?%>
-					&yen;<%=good.price%>
-					<%else%>
-					<a href="javascript:void(0);" class="login">会员专享</a>
-					<%end%>
-
-				</span>
-				<span class="mtkprice">市场价: &yen;<%=good.mktprice%></span>
-			</div>
-		</div>
-	</li>
-
-	<%end%>
+		</li>
 	<%end if @goods%>
-</ul>
-<div class="clearfix"></div>
 
-<div class="pagination">
-	<%=will_paginate @goods,:container=>false if @goods%>
+	</ul>
+</div>
+<div class="sortPagiBar">
+	
+	<ul class="display-product-option">
+        <li class="view-as-grid selected">
+            <span>grid</span>
+        </li>
+        <li class="view-as-list">
+            <span>list</span>
+        </li>
+    </ul>
+	<div class="sortPagiBar-inner">
+		<%=will_paginate @goods,:container=>false if @goods%>
+		<nav>
+          <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">Next »</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="show-product-item">
+        	<select class="">
+            	<option value="1">Show 6</option>
+            	<option value="1">Show 12</option>
+            </select>
+        </div>
+        
+        <div class="sort-product">
+        	<select>
+            	<option value="1">Postion</option>
+            	<option value="1">Product name</option>
+            </select>
+            <div class="icon"><i class="fa fa-sort-alpha-asc"></i></div>
+        </div>
+	</div>	
 </div>

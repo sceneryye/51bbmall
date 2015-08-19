@@ -1,7 +1,7 @@
 #encoding:utf-8
 class Store::OrdersController < ApplicationController
   before_filter :authorize_user!
-  layout 'order'
+  layout 'standard'
 
   
   def share_order
