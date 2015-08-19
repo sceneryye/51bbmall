@@ -2,6 +2,8 @@
 require 'digest/md5'
 require 'rc4'
 require 'rest-client'
+require 'erb'
+include ERB::Util
 
 
 
@@ -10,15 +12,13 @@ class Auth::BbmallController < ApplicationController
 
 
   skip_before_filter :authorize_user!
+  layout 'apitest'
 
   def user_reg 
-    #phone = params[:phone]
-    phone = '15800694393' 
-    key = '2c31b08f6a79f06f'
     rc4_key = '1bb762f7ce24ceee'
-    ts = Time.now.to_i
+    
     info_hash={}        
-    info_hash[:phone] = params[:login_name]
+    info_hash[:phone] = params[:ecstore_account][:login_name]
     info_hash = params_info(info_hash) 
 
 
@@ -28,11 +28,13 @@ class Auth::BbmallController < ApplicationController
     
     res_data_hash = ActiveSupport::JSON.decode(res_data)
 
-    if res_data_hash['code']=='0'
-      enc=RC4.new(rc4_key)
-      password = enc.encrypt(res_data_hash['password'])
-      uid = res_data_hash['data']['uid']
+    if res_data_hash['code'] == 0
       pw_enc = res_data_hash['data']['password']
+      uid = res_data_hash['data']['uid']
+      password = de_code(pw_enc)
+      msg_send = "#{password}: #{uid}"
+      #return render :text => msg_send
+      
       expires_in = 7200
 
       auth_ext = Ecstore::AuthExt.where(:provider=>"51bbmall",
@@ -40,14 +42,14 @@ class Auth::BbmallController < ApplicationController
         :expires_at=>expires_in + Time.now.to_i,
         :expires_in=>expires_in)
 
-        login_name = phone
+        login_name = info_hash[:phone]
         check_user = Ecstore::Account.find_by_login_name(login_name)
 
         return redirect_to '/' if check_user
 
         now = Time.now
         @account = Ecstore::Account.new do |ac|
-          ac.login_name = login_name
+          ac.login_name = info_hash[:phone]
           ac.login_password = '123456'
           ac.account_type ="member"
           ac.createtime = now.to_i
@@ -58,103 +60,197 @@ class Auth::BbmallController < ApplicationController
           if @account.save!(:validate => false)
             @user = Ecstore::User.new do |u|
               u.member_id = @account.account_id
-              u.mobile = phone
-              u.source = "email139"
+              u.mobile = info_hash[:phone]
+              u.source = "51bbmall"
               u.member_lv_id = 1
               u.cur = "CNY"
               u.reg_ip = request.remote_ip  
               u.regtime = now.to_i
+              u.email = "#{info_hash[:phone]}@qq.com"
+              
             end
             @user.save!(:validate=>false)
             sign_in(@account,'1')
           end
         end
-        msg_sent = "欢迎注册！您的密码为#{password}, 用户id为#{res_data_hash['uid']}, 请尽快更改密码。"
-          sms_sent(phone, msg_sent) # sent password to user
+        msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
+        #msg_send = "#{pw_enc}: #{uid}"
+        #return render :text => msg_send
+        send_sms(info_hash[:phone], msg_send) # send password to user
+        redirect_to '/'
+      else
+        message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
+        flash.now[:alert] = "#{message}"
+        return render :text=>message
+      end 
+    end
+
+
+    def user_login
+      auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
+      session[:from] = "external_auth"
+
+      if auth_ext&&!auth_ext.expired?&&auth_ext.provider == '51bbmall'
+        if auth_ext.account.nil?
+          cookies.delete :_auth_ext   
         else
-          message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
-          flash.now[:alert] = "#{message}"
-          #return render :text=>message
-        end 
+          sign_in(auth_ext.account)
+          #return render :text => '您已登陆！'
+        end   
+      end        
+
+
+      login_url = 'http://103.16.125.100:9018/user_login'
+      
+      info_hash={}        
+      info_hash[:account] = params[:ecstore_account][:login_name]
+      #return render :text => "password = #{password}"
+      password = params[:ecstore_account][:password]
+      #password = params[:ecstore_account][:password]
+
+      info_hash[:password] = Digest::MD5.hexdigest(password)
+      info_hash = params_info(info_hash)
+      #return render :text => "#{password}: #{params[:ecstore_account][:password]}"              
+
+      res_data = RestClient.get login_url, {:params => info_hash}          
+      res_data_hash = ActiveSupport::JSON.decode(res_data)         
+
+      if res_data_hash[:code] == 0
+        sign_in(info_hash[:account])
+        flash[:success] = '登录成功！'
+        render :text => '登陆成功!'
+      else
+        message = res_data_hash['code'].to_s + ":#{res_data_hash['msg']}"
+        flash.now[:danger] = "#{message}"
+        return render :text => message
       end
+    end
 
 
-      def user_login
-        auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
-        session[:from] = "external_auth"
+    def send_sms(phone, message)        
+      send_sms_url = 'http://103.16.125.100:9018/send_sms' 
+      info_hash = {}       
+      info_hash[:phone] = phone
+      info_hash = params_info(info_hash)        
+      info_hash[:content] = message        
 
-        if auth_ext&&!auth_ext.expired?&&auth_ext.provider == '51bbmall'
-          if auth_ext.account.nil?
-            cookies.delete :_auth_ext   
-          else
-            sign_in(auth_ext.account)
-            return redirect_to "/mobile/#{shop_id}/shop"
-          end   
-        end
+      res_data = RestClient.get send_sms_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
 
-        
-        
-        rc4_key = '1bb762f7ce24ceee'        
-        login_url = 'http://103.16.125.100:9018/user_login'
-
-        info_hash={}        
-        info_hash[:account] = params[:account]
-        info_hash[:password] = Digest::Md5.hexdigest(params[:password])
-        info_hash = params_info(info_hash)              
-        
-        res_data = RestClient.post url, info_hash          
-        res_data_hash = ActiveSupport::JSON.decode(res_data)         
-
-        if res_data_hash[:code] == 0
-          sign_in(info_hash[:account])
-          return redirect_to '/'
-        else
-          message = res_data_hash['code'] + ":#{res_data_hash['msg']}"
-          return render :text=>message
-        end
+      if res_data_hash['code'] == 0
+        flash[:success] = '信息发送成功！'
+      else
+        message_error = "发送失败，错误：#{res_data_hash['msg']}"
       end
+    end
 
 
-      def sent_sms(phone, message)        
-        sent_sms_url = 'http://103.16.125.100:9018/send_sms' 
-        info_hash = {}       
+    def user_info
+      user_info_url = 'http://103.16.125.100:9018/user_info'
+      info_hash = {}
+      info_hash[:account] = params[:ecstore_account][:login_name]
+      info_hash = params_info(info_hash)
+
+      res_data = RestClient.get user_info_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        render :text => res_data_hash['data']
+      else
+        message_error = "错误：#{res_data_hash['msg']}"
+      end
+    end
+
+    def change_pwd
+      change_pwd_url = 'http://103.16.125.100:9018/change_pwd'
+      info_hash = {}
+      info_hash[:uid] = params[:ecstore_account][:login_name].auth_ext.uid
+      info_hash = params_info(info_hash)
+      info_hash[:old_pwd] = params[:ecstore_account][:old_pwd]
+      info_hash[:new_pwd] = params[:ecstore_account][:new_pwd]
+      res_data = RestClient.get user_info_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        render :text => res_data_hash['msg']
+      else
+        render :text => message_error = "错误：#{res_data_hash['msg']}"
+      end
+    end
+
+    def change_phone
+      change_pwd_url = 'http://103.16.125.100:9018/change_phone'
+      info_hash = {}
+      uid = info_hash[:uid] = params[:ecstore_account][:login_name].auth_ext.uid
+      phone = info_hash[:phone] = params[:ecstore_account][:login_name]
+      info_hash = params_info(info_hash)
+      info_hash[:password] = Digest::MD5.hexdigest params[:ecstore_account][:password]
+      info_hash[:type] = 1
+      res_data = RestClient.get user_info_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        #redirect_to 提交验证码页面
+        info_hash = {}
+        info_hash[:uid] = uid
         info_hash[:phone] = phone
-        info_hash = params_info(info_hash)        
-        info_hash[:content] = message        
-
-        res_data = RestClient get sms_sent_url, {:params => info_hash}
+        info_hash = params_info(info_hash)
+        info_hash[:sms_code] = params[:sms_code]
+        info_hash[:type] = 2
+        res_data = RestClient.get user_info_url, {:params => info_hash}
         res_data_hash = ActiveSupport::JSON.decode res_data
 
-        if res_data_hash['code'] == '0'
-          flash[:success] = '信息发送成功！'
+        if res_data_hash['code'] == 0
+          render :text => res_data_hash['msg']
         else
-          message = "发送失败，错误代码：#{res_data_hash['msg']}"
+          render :text => message_error = "错误：#{res_data_hash['msg']}"
         end
+      else
+        render :text => message_error = "错误：#{res_data_hash['msg']}"
       end
+    end
 
 
-      def cancel
+
+
+    
+
+
+
+    private
+
+    def params_info(options={})
+      brand_id = 'bb'
+      client_id = 'bbzg'
+      phone = params[:phone]
+      key = '1ed97bd965a8f052'
+      rc4_key = '1bb762f7ce24ceee'
+      ts = Time.now.to_i
+
+      info_hash={}    
+      info_hash[:brand_id] = brand_id
+      info_hash[:client_id] = client_id
+      info_hash.merge! options
+      info_hash[:ts] = ts.to_s
+
+      unsign = info_hash.map {|key,val| "#{val}"}.join('') + key
+      info_hash[:sign]  = Digest::MD5.hexdigest(unsign)
+      info_hash
+    end
+
+    def hex2asc(str)
+      arr = []
+      (0..str.length - 2).step(2) do |x|
+        arr << str.slice(x, 2).hex.chr
       end
+      arr.join
+    end
 
 
-      private
-
-      def params_info(options={})
-        brand_id = 'itd'
-        client_id = 'itd'
-        phone = params[:phone]
-        key = '2c31b08f6a79f06f'
-        rc4_key = '1bb762f7ce24ceee'
-        ts = Time.now.to_i
-
-        info_hash={}    
-        info_hash[:brand_id] = brand_id
-        info_hash[:client_id] = client_id
-        info_hash.merge! options
-        info_hash[:ts] = ts.to_s
-        
-        unsign = info_hash.map {|key,val| "#{val}"}.join('') + key
-        info_hash[:sign]  = Digest::MD5.hexdigest(unsign)
-        info_hash
-      end
-end
+    def de_code(password)
+      de_password = hex2asc(password)      
+      rc4_key = '1bb762f7ce24ceee'
+      dec=RC4.new(rc4_key)
+      password = dec.decrypt(de_password)
+    end
+  end

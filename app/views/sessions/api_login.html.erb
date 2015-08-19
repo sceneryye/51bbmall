@@ -1,0 +1,8 @@
+<h2 style="text-align:center;">登  录</h2>
+<%= form_for @account, :url => user_login_auth_bbmall_index_path, :method => :post do |f| %>
+<%= f.label :login_name, '用户名(手机)' %>
+<%= f.text_field :login_name %>
+<%= f.label :password, '密码' %>
+<%= f.password_field :password %>
+<%= f.submit '提交' %>
+<% end %>

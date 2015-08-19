@@ -10,7 +10,7 @@ class Ecstore::User < Ecstore::Base
   self.accessible_all_columns
   belongs_to :account,:foreign_key=>"member_id"
 
-  belongs_to :discount_code,foreign_key=>"discount_code"
+  belongs_to :discount_code, :foreign_key=>"discount_code"
 
   has_one :discount_code, :foreign_key=>"member_id"
 

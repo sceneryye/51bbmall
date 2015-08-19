@@ -94,5 +94,9 @@ class SessionsController < ApplicationController
 
   end
 
+  def api_login
+    @account = Ecstore::Account.new
+  end
+
 
 end

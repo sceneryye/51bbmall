@@ -1,8 +1,9 @@
 class Auth::AccountsController < ApplicationController
   skip_before_filter :authorize_user!
+  layout 'simple'
 
   def new
-       return redirect_to(after_user_sign_in_path)  if signed_in? 
+       #return redirect_to(after_user_sign_in_path)  if signed_in? 
   	@account =  Ecstore::Account.new
       # render "auth/accounts/new", :locals=>{ :provider=>"weibo" }
   end
@@ -35,6 +36,10 @@ class Auth::AccountsController < ApplicationController
   		render "auth/accounts/new", :locals=>{ :provider=>auth_ext.provider }
   	end
   	
+  end
+
+  def api_reg
+    @account = Ecstore::Account.new
   end
 
 end

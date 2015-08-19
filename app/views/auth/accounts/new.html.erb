@@ -1,2 +1,15 @@
-<%= javascript_include_tag "auth/accounts" %>
-<%=render "auth/accounts/#{provider}_form"%>
+<%#= javascript_include_tag "auth/accounts" %>
+<%#=render "auth/accounts/#{provider}_form"%>
+
+<div class="auth_reg" sytle="color: red;background-color: green">
+<% flash.each do |message_type, message| %>
+<div class="alert alert-<%= message_type %>"><%= message %></div>
+<% end %>
+
+<h2 sytle="text-aline:center;color:red">注  册</h2>
+<%= form_for @account, :url => user_reg_auth_bbmall_index_path do |f| %>
+<%= f.label :login_name, "手机" %>
+<%= f.text_field :login_name %>
+<%= f.submit "提 交" %>
+<% end %>
+</div>

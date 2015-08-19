@@ -39,11 +39,16 @@ namespace :auth do
     get 'user_reg', :on => :collection
     post 'user_reg', :on => :collection
     get 'user_login', :on => :collection
+    post 'user_login', :on => :collection
   end
 end
 
-resources :sessions
 
+
+
+resources :sessions do
+  get 'api_login', :on => :collection
+end
 get 'register'=>'users#new'
 resources :users do
   get 'forgot_password', :on=>:collection
@@ -83,6 +88,8 @@ resources :vshop do
  end
 
  get 'auto_login'=>"sessions#auto_login"
+ get 'api_login' => 'sessions#api_login'
+ get 'api_user_login' => 'api#user_login'
  # get 'login'=>"sessions#new"
  get 'login'=>"sessions#login"
  get 'mlogin'=>"sessions#new_mobile"
