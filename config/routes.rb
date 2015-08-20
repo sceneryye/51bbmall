@@ -49,6 +49,7 @@ end
 resources :sessions do
   get 'api_login', :on => :collection
 end
+get 'api_user_info' => 'auth/bbmall#user_info'
 get 'register'=>'users#new'
 resources :users do
   get 'forgot_password', :on=>:collection

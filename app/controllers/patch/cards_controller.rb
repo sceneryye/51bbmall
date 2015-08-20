@@ -7,7 +7,7 @@ class Patch::CardsController < ApplicationController
 
 	before_filter do
 		clear_breadcrumbs
-		add_breadcrumb("我的贸威",:member_path)
+		add_breadcrumb("我的邦邦芒",:member_path)
 	end
 
 

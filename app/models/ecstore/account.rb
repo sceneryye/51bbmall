@@ -40,7 +40,7 @@ class Ecstore::Account < Ecstore::Base
 
     validates :license, :presence=>{:presence=>true,:message=>"您还没有阅读注册协议"}, :if=>Proc.new{ |c| c.new_record? }
 
-	validate :check_login_name_duplicated,:check_email_duplicated,:check_mobile_duplicated,:check_discount_code_availability
+	validate :check_login_name_duplicated,:check_email_duplicated,:check_mobile_duplicated #:check_discount_code_availability
 
 	def check_login_name_duplicated
 		return if self.login_name.blank? || self.errors[:login_name].present?
@@ -51,12 +51,12 @@ class Ecstore::Account < Ecstore::Base
 		end
 	end
 
-	def check_discount_code_availability
-		c = Ecstore::DiscountCode.where("code='#{self.discount_code}' and status='true")
-		if self.discount_code.present? && c.empty?
-			errors.add(:discount_code, "特惠码无效！")
-		end
-	end
+	#def check_discount_code_availability
+	#	c = Ecstore::DiscountCode.where("code='#{self.discount_code}' and status='true")
+	#	if self.discount_code.present? && c.empty?
+	#		errors.add(:discount_code, "特惠码无效！")
+	#	end
+	#end
 
 	def check_mobile_duplicated
 	    if self.mobile.present? and u = Ecstore::User.find_by_mobile(self.mobile) and  new_record?

@@ -15,17 +15,17 @@ class Auth::BbmallController < ApplicationController
   layout 'apitest'
 
   def user_reg 
-    rc4_key = '1bb762f7ce24ceee'
-    
+    rc4_key = '1bb762f7ce24ceee'    
     info_hash={}        
     info_hash[:phone] = params[:ecstore_account][:login_name]
     info_hash = params_info(info_hash) 
 
+    login_name = info_hash[:phone]
+    check_user = Ecstore::Account.find_by_login_name(login_name)
+    return render :text => '该用户已存在，请登录或用别的手机号码注册' if check_user
 
-    url = 'http://103.16.125.100:9018/user_reg' #生产地址
-    
-    res_data = RestClient.get url, {:params =>info_hash}    
-    
+    url = 'http://103.16.125.100:9018/user_reg' #生产地址    
+    res_data = RestClient.get url, {:params =>info_hash}     
     res_data_hash = ActiveSupport::JSON.decode(res_data)
 
     if res_data_hash['code'] == 0
@@ -36,48 +36,17 @@ class Auth::BbmallController < ApplicationController
       #return render :text => msg_send
       
       expires_in = 7200
-
       auth_ext = Ecstore::AuthExt.where(:provider=>"51bbmall",
         :uid=>uid).first_or_initialize(
         :expires_at=>expires_in + Time.now.to_i,
-        :expires_in=>expires_in)
+        :expires_in=>expires_in)        
 
-        login_name = info_hash[:phone]
-        check_user = Ecstore::Account.find_by_login_name(login_name)
-
-        return redirect_to '/' if check_user
-
-        now = Time.now
-        @account = Ecstore::Account.new do |ac|
-          ac.login_name = info_hash[:phone]
-          ac.login_password = '123456'
-          ac.account_type ="member"
-          ac.createtime = now.to_i
-          ac.auth_ext = auth_ext
+        if res_data_hash['data']['first'] == '1'
+          msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
+          send_sms(info_hash[:phone], msg_send) # send password to user
+          redirect_to api_login_path
+        else render :text => '该手机号码已被注册'
         end
-
-        Ecstore::Account.transaction do
-          if @account.save!(:validate => false)
-            @user = Ecstore::User.new do |u|
-              u.member_id = @account.account_id
-              u.mobile = info_hash[:phone]
-              u.source = "51bbmall"
-              u.member_lv_id = 1
-              u.cur = "CNY"
-              u.reg_ip = request.remote_ip  
-              u.regtime = now.to_i
-              u.email = "#{info_hash[:phone]}@qq.com"
-              
-            end
-            @user.save!(:validate=>false)
-            sign_in(@account,'1')
-          end
-        end
-        msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
-        #msg_send = "#{pw_enc}: #{uid}"
-        #return render :text => msg_send
-        send_sms(info_hash[:phone], msg_send) # send password to user
-        redirect_to '/'
       else
         message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
         flash.now[:alert] = "#{message}"
@@ -100,25 +69,47 @@ class Auth::BbmallController < ApplicationController
       end        
 
 
-      login_url = 'http://103.16.125.100:9018/user_login'
-      
+      login_url = 'http://103.16.125.100:9018/user_login'      
       info_hash={}        
       info_hash[:account] = params[:ecstore_account][:login_name]
-      #return render :text => "password = #{password}"
       password = params[:ecstore_account][:password]
-      #password = params[:ecstore_account][:password]
-
       info_hash[:password] = Digest::MD5.hexdigest(password)
       info_hash = params_info(info_hash)
-      #return render :text => "#{password}: #{params[:ecstore_account][:password]}"              
 
       res_data = RestClient.get login_url, {:params => info_hash}          
       res_data_hash = ActiveSupport::JSON.decode(res_data)         
 
-      if res_data_hash[:code] == 0
-        sign_in(info_hash[:account])
+      if res_data_hash['code'] == 0
+        if Ecstore::Account.find_by_login_name(info_hash[:account]).nil?
+          now = Time.now
+          @account = Ecstore::Account.new do |ac|
+            ac.login_name = info_hash[:account]
+            ac.login_password = '123456'
+            ac.account_type ="member"
+            ac.createtime = now.to_i
+            ac.auth_ext = auth_ext
+          end
+
+          Ecstore::Account.transaction do
+            if @account.save!(:validate => false)
+              @user = Ecstore::User.new do |u|
+                u.member_id = @account.account_id
+                u.mobile = @account.login_name
+                u.source = "51bbmall"
+                u.member_lv_id = 1
+                u.cur = "CNY"
+                u.reg_ip = request.remote_ip  
+                u.regtime = now.to_i
+                u.email = "#{@account.login_name}@qq.com"
+              end
+              @user.save!(:validate=>false)
+            end
+          end
+        end
+        account = Ecstore::Account.find_by_login_name(info_hash[:account])
+        sign_in(account, '1')
         flash[:success] = '登录成功！'
-        render :text => '登陆成功!'
+        redirect_to '/'
       else
         message = res_data_hash['code'].to_s + ":#{res_data_hash['msg']}"
         flash.now[:danger] = "#{message}"
@@ -148,16 +139,19 @@ class Auth::BbmallController < ApplicationController
     def user_info
       user_info_url = 'http://103.16.125.100:9018/user_info'
       info_hash = {}
-      info_hash[:account] = params[:ecstore_account][:login_name]
+      #info_hash[:account] = params[:ecstore_account][:login_name]
+      info_hash[:account] = '13501725689'
       info_hash = params_info(info_hash)
 
       res_data = RestClient.get user_info_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
+      info_hash[:phone] = info_hash[:account]
 
       if res_data_hash['code'] == 0
+        res_data_hash['data']['password'] = de_code(res_data_hash['data']['password'])
         render :text => res_data_hash['data']
       else
-        message_error = "错误：#{res_data_hash['msg']}"
+        return render :text => message_error = "错误：#{res_data_hash['msg']}"
       end
     end
 
