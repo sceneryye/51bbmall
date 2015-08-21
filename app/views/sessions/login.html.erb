@@ -15,11 +15,11 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="box-border">
-                        <%=form_for :session,:url=>"/login",:class=>"contact-form",:html=>{:role=>"form",:remote=>true,data: {type: "script"}} do |f|%>
+                        <%=form_for Ecstore::Account.new,:url=> user_login_auth_bbmall_index_path,:class=>"contact-form",:html=>{:role=>"form",data: {type: "script"}} do |f|%>
                             <h4>登录</h4>
                             <p>
                                 <label>手机号</label>
-                                <%=f.text_field :username,:placeholder=>"已认证的手机号",:class=>"form-control",:required=>"required"%>
+                                <%=f.text_field :login_name,:placeholder=>"已认证的手机号",:class=>"form-control",:required=>"required"%>
                             </p>
                             <p>
                                 <label>密码</label>
@@ -41,10 +41,10 @@
                     <div class="box-border">
                         <h4>注册</h4>
                         <small>请输入您的手机号码注册新账户</small>
-                    <%=form_for :user,:url=>users_path,:html=>{ :role=>"form",:id=>"register_form",:remote=>true,data: {type: "script"}} do |f|%> 
+                    <%=form_for Ecstore::Account.new,:url=> user_reg_auth_bbmall_index_path,:html=>{ :role=>"form",:id=>"register_form",data: {type: "script"}} do |f|%> 
                         <p>
                             <label>手机号</label>
-                            <%=f.text_field :mobile,:value=>"",:class=>"form-control",:placeholder=>"手机",:required=>"required"%>
+                            <%=f.text_field :login_name,:value=>"",:class=>"form-control",:placeholder=>"手机",:required=>"required"%>
                         </p>
                         <p>
                               <input type="checkbox" checked="checked" value="agree" name="user[license]" id="license" class="x-input required" autocomplete="off">
@@ -53,7 +53,7 @@
                                 <div class="help-block" rel="user_license"></div>
                         </p>
                         <p>
-                            <button class="button" type="submit"><i class="fa fa-user"></i> 下一步</button>
+                            <button class="button" type="submit"><i class="fa fa-user"></i>注册</button>
                         </p>
                     <%end%>
                     </div>

@@ -77,8 +77,9 @@ class Auth::BbmallController < ApplicationController
       info_hash = params_info(info_hash)
 
       res_data = RestClient.get login_url, {:params => info_hash}          
-      res_data_hash = ActiveSupport::JSON.decode(res_data)         
+      res_data_hash = ActiveSupport::JSON.decode(res_data) 
 
+      expires_in = 7200
       if res_data_hash['code'] == 0
         if Ecstore::Account.find_by_login_name(info_hash[:account]).nil?
           now = Time.now
@@ -88,6 +89,7 @@ class Auth::BbmallController < ApplicationController
             ac.account_type ="member"
             ac.createtime = now.to_i
             ac.auth_ext = auth_ext
+            ac.uid = res_data_hash['data']['uid']
           end
 
           Ecstore::Account.transaction do
@@ -101,8 +103,8 @@ class Auth::BbmallController < ApplicationController
                 u.reg_ip = request.remote_ip  
                 u.regtime = now.to_i
                 u.email = "#{@account.login_name}@qq.com"
-              end
-              @user.save!(:validate=>false)
+              end              
+              @user.save!(:validate=>false)              
             end
           end
         end
@@ -158,52 +160,133 @@ class Auth::BbmallController < ApplicationController
     def change_pwd
       change_pwd_url = 'http://103.16.125.100:9018/change_pwd'
       info_hash = {}
-      info_hash[:uid] = params[:ecstore_account][:login_name].auth_ext.uid
+      info_hash[:uid] = current_user.uid
       info_hash = params_info(info_hash)
-      info_hash[:old_pwd] = params[:ecstore_account][:old_pwd]
-      info_hash[:new_pwd] = params[:ecstore_account][:new_pwd]
-      res_data = RestClient.get user_info_url, {:params => info_hash}
+      info_hash[:old_pwd] = en_code params[:ecstore_account][:old_pwd]
+      info_hash[:new_pwd] = en_code params[:ecstore_account][:new_pwd]
+      res_data = RestClient.get change_pwd_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
 
       if res_data_hash['code'] == 0
-        render :text => res_data_hash['msg']
+        render :text => '密码修改成功！'
       else
-        render :text => message_error = "错误：#{res_data_hash['msg']}"
+        render :text => message_error = "错误#{res_data_hash['code']}：#{res_data_hash['msg']}"
       end
     end
 
     def change_phone
-      change_pwd_url = 'http://103.16.125.100:9018/change_phone'
+      change_phone_url = 'http://103.16.125.100:9018/change_phone'
       info_hash = {}
-      uid = info_hash[:uid] = params[:ecstore_account][:login_name].auth_ext.uid
-      phone = info_hash[:phone] = params[:ecstore_account][:login_name]
+      uid = info_hash[:uid] = current_user.uid
+      session[:phone] = phone = info_hash[:phone] = params[:ecstore_account][:login_name]
       info_hash = params_info(info_hash)
       info_hash[:password] = Digest::MD5.hexdigest params[:ecstore_account][:password]
       info_hash[:type] = 1
-      res_data = RestClient.get user_info_url, {:params => info_hash}
+      res_data = RestClient.get change_phone_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
 
       if res_data_hash['code'] == 0
-        #redirect_to 提交验证码页面
-        info_hash = {}
-        info_hash[:uid] = uid
-        info_hash[:phone] = phone
-        info_hash = params_info(info_hash)
-        info_hash[:sms_code] = params[:sms_code]
-        info_hash[:type] = 2
-        res_data = RestClient.get user_info_url, {:params => info_hash}
-        res_data_hash = ActiveSupport::JSON.decode res_data
-
-        if res_data_hash['code'] == 0
-          render :text => res_data_hash['msg']
-        else
-          render :text => message_error = "错误：#{res_data_hash['msg']}"
-        end
+        redirect_to api_validate_code_path
       else
         render :text => message_error = "错误：#{res_data_hash['msg']}"
       end
     end
 
+    def validate_code
+      change_phone_url = 'http://103.16.125.100:9018/change_phone'
+      info_hash = {}
+      uid = info_hash[:uid] = current_user.uid      
+      info_hash[:phone] = session[:phone]
+
+      session.delete(:phone)
+      info_hash = params_info(info_hash)
+      info_hash[:sms_code] = params[:ecstore_account][:account_type]
+      info_hash[:type] = 2
+      return render :text => info_hash
+      res_data = RestClient.get change_phone_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        current_user.update_attribute!(:login_name, info_hash[:phone])
+        current_user.user.update_attribute!(:mobile, info_hash[:phone])
+        render :text => "重新绑定手机成功！您现在的绑定手机为：#{current_user.login_name}" 
+      else
+        render :text => message_error = "错误：#{res_data_hash['msg']}"
+      end
+    end
+
+    def user_wallet
+      user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
+      info_hash = {}
+      uid = info_hash[:uid] = current_user.uid      
+      info_hash = params_info(info_hash)      
+      res_data = RestClient.get change_phone_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        render :text => res_data_hash
+      else
+        render :text => message_error = "错误：#{res_data_hash['msg']}"
+      end
+    end
+
+
+    def user_charge
+      user_charge_url = 'http://103.16.125.100:9018/user_charge'
+      info_hash = {}
+      uid = info_hash[:uid] = current_user.uid
+      info_hash[:money] = params[:money]      
+      info_hash = params_info(info_hash)
+      info_hash[:order_no] = current_user.client_id[-1] + current_user.brand_id[-1] + rand(10).to_s.rjust(2, '0') + 
+      Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid 
+      info_hash[:acct_type] = params[:acct_type]
+      info_hash[:valid_month] = params[:valid_month]     
+      info_hash[:remark] = params[:remark]     
+      res_data = RestClient.get user_charge_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        render :text => res_data_hash
+      else
+        render :text => message_error = "错误：#{res_data_hash['msg']}"
+      end
+    end
+
+
+    def user_deduct
+      user_deduct_url = 'http://103.16.125.100:9018/user_deduct'
+      info_hash = {}
+      uid = info_hash[:uid] = current_user.uid
+      info_hash[:money] = params[:money]      
+      info_hash = params_info(info_hash)
+      info_hash[:acct_type] = params[:acct_type]
+      res_data = RestClient.get user_deduct_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        render :text => res_data_hash
+      else
+        render :text => message_error = "错误：#{res_data_hash['msg']}"
+      end
+    end
+
+
+def card_pay
+      card_pay_url = 'http://103.16.125.100:9018/card_pay'
+      info_hash = {}
+      uid = info_hash[:uid] = current_user.uid
+      info_hash[:card_password] = params[:card_password]      
+      info_hash = params_info(info_hash)
+      info_hash[:card_no] = params[:card_no]
+      res_data = RestClient.get card_pay_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        render :text => res_data_hash
+      else
+        render :text => message_error = "错误：#{res_data_hash['msg']}"
+      end
+    end
 
 
 
@@ -246,5 +329,11 @@ class Auth::BbmallController < ApplicationController
       rc4_key = '1bb762f7ce24ceee'
       dec=RC4.new(rc4_key)
       password = dec.decrypt(de_password)
+    end
+
+    def en_code(password)
+      rc4_key = '1bb762f7ce24ceee'
+      enc=RC4.new(rc4_key)
+      password = enc.encrypt(password).unpack('H*')[0]
     end
   end

@@ -1,0 +1,10 @@
+<% if current_user.valid? %>
+<h4 style="text-align:center;">修改绑定手机</h4>
+<%= form_for Ecstore::Account.new, :url => validate_code_auth_bbmall_index_path do |f| %>
+<%= f.label :sms_code, "验证码：" %>
+<%= f.text_field :account_type %>
+<%= f.submit "提交" %>
+<% end %>
+<% else %>
+<h4 style="text-align:center;">请您先<%= link_to '登录', login_path %>!</h4>
+<% end %>

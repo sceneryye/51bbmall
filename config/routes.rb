@@ -36,10 +36,14 @@ namespace :auth do
     get 'callback',:on=>:collection
   end
   resources :bbmall do
-    get 'user_reg', :on => :collection
     post 'user_reg', :on => :collection
-    get 'user_login', :on => :collection
     post 'user_login', :on => :collection
+    post 'change_pwd', :on => :collection
+    post 'change_phone', :on => :collection
+    post 'user_wallet', :on => :collection
+    post 'user_charge', :on => :collection
+    post 'user_deduct', :on => :collection
+    post 'card_pay', :on => :collection
   end
 end
 
@@ -91,6 +95,9 @@ resources :vshop do
  get 'auto_login'=>"sessions#auto_login"
  get 'api_login' => 'sessions#api_login'
  get 'api_user_login' => 'api#user_login'
+ get 'api_change_pwd' => 'api#change_pwd'
+ get 'api_change_phone' => 'api#change_phone'
+ get 'api_validate_code' => 'api#validate_code'
  # get 'login'=>"sessions#new"
  get 'login'=>"sessions#login"
  get 'mlogin'=>"sessions#new_mobile"

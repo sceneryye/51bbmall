@@ -7,6 +7,10 @@ module SessionsHelper
 		end
 	end
 
+	def current_user
+		@current_user ||= Ecstore::Account.find_by_login_name(cookies[:loginName])
+	end
+
 	def current_account=(account)
 		@account = account
 	end
