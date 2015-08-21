@@ -4,8 +4,8 @@ class Store::CountriesController < ApplicationController
   	# before_filter :require_top_cats
   	
   	def show
-        country_name = Ecstore::Country.find_by_country_id(params[:id]).country_name
-        conditions = {:place=>country_name}
+        @country_name = Ecstore::Country.find_by_country_id(params[:id]).country_name
+        conditions = {:place=>@country_name}
         if params[:gtype] == "1"
              conditions["sell"] = 'true' 
         elsif params[:gtype] == "2"
