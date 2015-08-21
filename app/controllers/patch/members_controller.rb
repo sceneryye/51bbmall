@@ -4,19 +4,19 @@ require 'axlsx'
 class Patch::MembersController < ApplicationController
 	
 	before_filter :authorize_user!
-	# layout 'standard'
-	layout "patch"
+	layout 'standard'
+	#layout "patch"
 
 	before_filter do
 		clear_breadcrumbs
-		add_breadcrumb("我的佐康",:member_path)
+		add_breadcrumb("我的邦邦芒",:member_path)
 	end
 
 
 	def show
 		@orders = @user.orders.limit(5)
 		@unpay_count = @user.orders.where(:pay_status=>'0',:status=>'active').size
-		add_breadcrumb("我的佐康")
+		add_breadcrumb("我的邦邦芒")
 	end
 
 	def orders
