@@ -8,7 +8,7 @@
         </a> -->
         <a class="brand" href="#">
           <%if request.domain=="trade"%>
-          TRADE-V
+          邦邦芒
           <%else%>
           卓展数据
           <%end%>
@@ -257,11 +257,7 @@
               </ul>
             </li>
             <%end%>
-            <%if current_admin.has_right_of("discount_codes","index")%>
-                  <li class="<%='active' if controller_name=='discount_codes'%>">
-                    <%=link_to "特惠码",admin_discount_codes_path%>
-                  </li>
-            <%end%>
+            
 
           </ul>
 

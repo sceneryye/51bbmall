@@ -24,69 +24,69 @@ class ApplicationController < ActionController::Base
      session[:locale] = params[:locale] if params[:locale]
      I18n.locale = session[:locale] || I18n.default_locale
      locale_path = "#{LOCALES_DIRECTORY}#{I18n.locale}.yml"
-    unless I18n.load_path.include? locale_path
+     unless I18n.load_path.include? locale_path
       I18n.load_path << locale_path
       I18n.backend.send(:init_translations)
     end
-    end
-  rescue Exception => err
-    logger.error err
-    flash.now[:notice] = "#{I18n.locale} error"
-    I18n.load_path -= [locale_path]
-    I18n.locale = session[:locale] = I18n.default_locale
   end
+rescue Exception => err
+  logger.error err
+  flash.now[:notice] = "#{I18n.locale} error"
+  I18n.load_path -= [locale_path]
+  I18n.locale = session[:locale] = I18n.default_locale
+end
 
- 
 
 
-  private 
 
-    def adjust_format_for_mobile
-        request.format = :mobile if params[:agent] == "mobile"
-    end
+private 
 
-    def find_session_id
-       cookies[:m_id] = request.session_options[:id] unless cookies[:m_id].present?
-       @m_id = cookies[:m_id]
-    end
+def adjust_format_for_mobile
+  request.format = :mobile if params[:agent] == "mobile"
+end
 
-    def find_cart!
-            if signed_in?
-              @line_items = Ecstore::Cart.where(:member_id=>current_account.account_id)
+def find_session_id
+ cookies[:m_id] = request.session_options[:id] unless cookies[:m_id].present?
+ @m_id = cookies[:m_id]
+end
 
-            else
-              member_ident = @m_id
-              @line_items = Ecstore::Cart.where(:member_ident=>member_ident)
-            end
-            @cart_total_quantity = @line_items.inject(0){ |t,l| t+=l.quantity }.to_i || 0
-            if cookies[:MLV] == "10"
-              @cart_total =@line_items.select{|x| x.product.present? }.collect{ |x| (x.product.bulk*x.quantity) }.inject(:+) || 0
-            else
-              @cart_total = @line_items.select{|x| x.product.present? }.collect{ |x| (x.product.price*x.quantity) }.inject(:+) || 0
-            end
+def find_cart!
+  if signed_in?
+    @line_items = Ecstore::Cart.where(:member_id=>current_account.account_id)
+
+  else
+    member_ident = @m_id
+    @line_items = Ecstore::Cart.where(:member_ident=>member_ident)
+  end
+  @cart_total_quantity = @line_items.inject(0){ |t,l| t+=l.quantity }.to_i || 0
+  if cookies[:MLV] == "10"
+    @cart_total =@line_items.select{|x| x.product.present? }.collect{ |x| (x.product.bulk*x.quantity) }.inject(:+) || 0
+  else
+    @cart_total = @line_items.select{|x| x.product.present? }.collect{ |x| (x.product.price*x.quantity) }.inject(:+) || 0
+  end
            #@pmtable = @line_items.select { |line_item| line_item.good.is_suit? }.size == 0
 
-    end
+         end
 
-    def find_user
+         def find_user
       # if Rails.env == "development"
       #   return  @user = Ecstore::User.find_by_member_id(217)
       # end
 
       unless signed_in?
-         nologin_times = cookies[:nologin_times] || 0
-         cookies[:nologin_times] = nologin_times.to_i + 1
-      end
+       nologin_times = cookies[:nologin_times] || 0
+       cookies[:nologin_times] = nologin_times.to_i + 1
+     end
 
 
-      return  true if (params[:token].present? || params[:agent] == "mobile") && !signed_in?
-      if signed_in?
-        @user = current_account.user
-      else
+     return  true if (params[:token].present? || params[:agent] == "mobile") && !signed_in?
+     if signed_in?
+      @user = current_account.user
+    else
           # return (render :js=>"window.location.href='#{site_path}'") if request.xhr?
       	   # redirect_to (site_path)
-      end
-    end
+         end
+       end
 
     # find categories
     def require_top_cats
@@ -100,25 +100,46 @@ class ApplicationController < ActionController::Base
       path  = request.env["PATH_INFO"]
 
       metas = Ecstore::MetaSeo.path_metas.where(:path=>path).select do |meta|
-          if meta.params.blank?
-              true
-          else
-              meta.params.select do |key, val|
-                 reg = Regexp.new("^#{val}$")
-                 params[key] =~ reg
-              end.size == meta.params.size
-          end
-      end
+        if meta.params.blank?
+          true
+        else
+          meta.params.select do |key, val|
+           reg = Regexp.new("^#{val}$")
+           params[key] =~ reg
+         end.size == meta.params.size
+       end
+     end
 
-      @meta_seo  = metas.first
+     @meta_seo  = metas.first
 
-    end
-  def check_token
+   end
+   def check_token
     if session[:authenticity_token] == params[:authenticity_token]
       session[:authenticity_token] = nil
       session.update
       return true
     end
     false
+  end
+
+
+
+  def params_info(options={})
+    brand_id = 'bb'
+    client_id = 'bbzg'
+    phone = params[:phone]
+    key = '1ed97bd965a8f052'
+    rc4_key = '1bb762f7ce24ceee'
+    ts = Time.now.to_i
+
+    info_hash={}    
+    info_hash[:brand_id] = brand_id
+    info_hash[:client_id] = client_id
+    info_hash.merge! options
+    info_hash[:ts] = ts.to_s
+
+    unsign = info_hash.map {|key,val| "#{val}"}.join('') + key
+    info_hash[:sign]  = Digest::MD5.hexdigest(unsign)
+    info_hash
   end
 end

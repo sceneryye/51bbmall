@@ -12,7 +12,7 @@ class Magazine::TopicsController < Magazine::BaseController
         @cat = Imodec::Category.find_by_id(params[:category_id])
         @topics = Imodec::Topic.where(:category_id=>params[:category_id])
     else
-        @topics = Imodec::Topic.joins(:category).where("categories.name <> ?", "摩登报道")
+        @topics = Imodec::Topic.joins(:category).where("categories.name <> ?", "邦邦芒报道")
     end
 
     @topics = @topics.published.paginate(:page => params[:page], :per_page => 20).order("created_at DESC") 
@@ -30,7 +30,7 @@ class Magazine::TopicsController < Magazine::BaseController
     if params[:category_id].present?
         @topics = Imodec::Topic.where(:category_id=>params[:category_id])
     else
-        @topics = Imodec::Topic.joins(:category).where("categories.name <> ?","摩登报道")
+        @topics = Imodec::Topic.joins(:category).where("categories.name <> ?","邦邦芒报道")
     end
     
     @topics = @topics.published.paginate(:page => params[:page], :per_page => 20).order("created_at DESC")

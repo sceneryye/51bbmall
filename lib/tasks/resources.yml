@@ -32,7 +32,7 @@ tag_exts:
   edit.update: "编辑标签"
 
 events:
-  desc: "摩登活动"
+  desc: "邦邦芒活动"
   index: "活动列表"
   applicants: "查看报名者"
   edit.update: "编辑"

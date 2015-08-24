@@ -1,5 +1,5 @@
 
-<%=content_for :keywords do "邦邦芒,摩登资讯" end%>
+<%=content_for :keywords do "邦邦芒,邦邦芒资讯" end%>
 <%=content_for :description do "全球设计精品第e站，都市时尚女性个性首选." end%>
 
 <% if request.url.include?("subscription_success") %>
@@ -16,7 +16,7 @@
   </div>
 </div>
 
-<%if @cat&&@cat.name == "摩登报道"%>
+<%if @cat&&@cat.name == "邦邦芒报道"%>
 	<%=render "reports"%>
 <%else%>
 	<div id="container">

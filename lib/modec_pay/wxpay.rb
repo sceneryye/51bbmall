@@ -26,7 +26,7 @@ module ModecPay
      # self.fields['sub_mch_id'] = @@sub_mch_id
     #  self.fields['device_info']= @@device_info
 
-     # self.fields['attach'] = 'trade-v' #附加数据原样返回
+     # self.fields['attach'] = '邦邦芒' #附加数据原样返回
 
      # self.fields['time_start'] = '' #订单生成时间 yyyyMMddHHmmss string(14)，否
      # self.fields['time_expire'] = '' #交易结束时间时间 yyyyMMddHHmmss string（14），否
