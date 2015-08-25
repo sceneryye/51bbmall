@@ -835,3 +835,7 @@ label{
   line-height: 34px;
   display: block;
 }
+
+input #license:after {
+  content: '';
+}
