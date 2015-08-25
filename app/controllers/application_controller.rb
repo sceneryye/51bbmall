@@ -142,4 +142,19 @@ def find_cart!
     info_hash[:sign]  = Digest::MD5.hexdigest(unsign)
     info_hash
   end
+
+  def user_wallet
+    user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
+    info_hash = {}
+    uid = info_hash[:uid] = current_user.uid      
+    info_hash = params_info(info_hash)      
+    res_data = RestClient.get user_wallet_url, {:params => info_hash}
+    res_data_hash = ActiveSupport::JSON.decode res_data
+
+    if res_data_hash['code'] == 0
+      return res_data_hash['data']['balance']
+    else
+      render :text => message_error = "错误：#{res_data_hash['msg']}"
+    end
+  end
 end

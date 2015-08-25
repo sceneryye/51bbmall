@@ -18,21 +18,14 @@
 					<%=link_to "邮箱未认证",email_validation_path%>
 				<%end%>
 			</span>
-			<span class="mobile">
-				手机认证：
-				<%if @user.sms_validated?%>
-					<span class="validated">手机已认证</span>
-				<%else%>
-					<%=link_to "手机未认证",mobile_validation_path%>
-				<%end%>
-			</span>
+			
 			
 		</p>
 		<p>
 			<span class="notify">
 				<%=link_to  "待付款订单(#{@unpay_count})",orders_member_path(:pay_status=>'0',:status=>'active')%>
 			</span>
-			<span>预存款: <span class="currency">&yen; <%=@user.advance%></span></span>
+			<span>预存款: <span class="currency">&yen; <%= @advance / 100 %></span></span>
 		</p>
 	</div>
 </div>

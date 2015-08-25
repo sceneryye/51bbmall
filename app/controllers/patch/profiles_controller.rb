@@ -3,7 +3,7 @@ class Patch::ProfilesController < ApplicationController
   # skip_before_filter :authorize_user!
   before_filter :find_user
 
-  layout "simple"
+  layout "member"
 
   before_filter do
     clear_breadcrumbs

@@ -225,7 +225,7 @@ class Auth::BbmallController < ApplicationController
       res_data_hash = ActiveSupport::JSON.decode res_data
 
       if res_data_hash['code'] == 0
-        render :text => res_data_hash
+        return res_data_hash['data']['balance']
       else
         render :text => message_error = "错误：#{res_data_hash['msg']}"
       end
@@ -255,19 +255,23 @@ class Auth::BbmallController < ApplicationController
 
 
     def user_deduct
+      balance = user_wallet
       user_deduct_url = 'http://103.16.125.100:9018/user_deduct'
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid
-      info_hash[:money] = params[:money]      
-      info_hash = params_info(info_hash)
-      info_hash[:acct_type] = params[:acct_type]
-      res_data = RestClient.get user_deduct_url, {:params => info_hash}
-      res_data_hash = ActiveSupport::JSON.decode res_data
-
-      if res_data_hash['code'] == 0
-        render :text => res_data_hash
+      info_hash[:money] = params[:money] 
+      if info_hash[:money] <= balance     
+        info_hash = params_info(info_hash)
+        info_hash[:acct_type] = params[:acct_type]
+        res_data = RestClient.get user_deduct_url, {:params => info_hash}
+        res_data_hash = ActiveSupport::JSON.decode res_data
+        if res_data_hash['code'] == 0
+          render :text => res_data_hash
+        else
+          render :text => message_error = "错误：#{res_data_hash['msg']}"
+        end
       else
-        render :text => message_error = "错误：#{res_data_hash['msg']}"
+        render :text => "您的余额不足，当前余额为:#{balance}"
       end
     end
 
@@ -309,7 +313,7 @@ class Auth::BbmallController < ApplicationController
         info_hash = {}
         info_hash[:phone] = cookies[:login_name]
         info_hash = params_info info_hash
-        url = 'http://103.16.125.100:9018/user_reg' #生产地址    
+        url = 'http://103.16.125.100:9018/user_info' #生产地址    
         res_data = RestClient.get url, {:params =>info_hash}     
         res_data_hash = ActiveSupport::JSON.decode(res_data)
         cookies.delete(:login_name)
@@ -318,7 +322,7 @@ class Auth::BbmallController < ApplicationController
         if res_data_hash['code'] == 0
           pw_enc = res_data_hash['data']['password']
           password = de_code(pw_enc)
-          msg_send =  url_encode("您的新密码是：") + password + url_encode("，请妥善保存或立即修改密码。")
+          msg_send =  url_encode("您的密码是：") + password + url_encode("，请妥善保存或立即修改密码。")
           send_sms(info_hash[:phone], msg_send) # send password to user
           session.delete(:send_sms_msg)
           redirect_to api_login_path
