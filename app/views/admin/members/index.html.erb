@@ -5,7 +5,7 @@
 <div class="page-header">
   <h2>所有会员</h2>
   <div class="btn-group">
-    <%= f.submit '导出会员', :class => "btn btn-primary" %>
+    <!--<%#= f.submit '导出会员', :class => "btn btn-primary" %>-->
   </div>
   
   <!--<ul class="clearfix unstyled">
@@ -57,6 +57,7 @@
 
       <% @members.each do |member| %>
       <tr>
+        <% if member.account.manager.nil? %>
         <td>
           <%= check_box_tag "ids[]",member.member_id,false,:class =>'operate_ids'%>
         </td>
@@ -65,10 +66,12 @@
             <td><%#= getColumnValue(column.last[1],member) %></td>
         <%end%>
         <% end %>-->
+        
         <td><%= member.account.uid %></td>
         <td><%= member.account.login_name %></td>
         <td><%= member.order_num %></td>
-        <td><%= Time.parse('1970-01-01 00:00:00') + member.account.createtime %></td>
+        <td><%= (Time.parse('1970-01-01 00:00:00') + member.account.createtime).strftime('%F') %></td>
+        
         <%if (current_admin.login_name=="admin")%>
         <td><%=link_to "查看",info_admin_member_path(member)%></td>
         <td><%=link_to "编辑",edit_admin_member_path(member)%></td>
@@ -78,6 +81,7 @@
         <td style="display:none"><%=link_to "编辑",edit_admin_member_path(member)%></td>
         <td style="display:none">删除</td>
         <%end%>
+        <% end %>
       </tr>
       <% end %>
     </table>
