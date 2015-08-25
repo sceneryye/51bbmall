@@ -186,7 +186,7 @@ class Store::PaymentsController < ApplicationController
 					# ===Alipay
 					pay.fields["discount"] = "0.00"
 					pay.fields["payment_type"] = "1"
-					pay.fields["subject"] = "摩登客订单(#{order_id})"
+					pay.fields["subject"] = "邦邦芒订单(#{order_id})"
 					pay.fields["trade_no"] = "2013091823959388"
 					pay.fields["buyer_email"] = "596849181@qq.com"
 					pay.fields["gmt_create"] = "2013-08-14 19:08:03"

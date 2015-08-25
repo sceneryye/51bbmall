@@ -67,10 +67,10 @@
           <br/>
       <%end%>
 			
-		<%if @user.advance>0 && @user.advance < @cart_total%>
+		<%if @advance>0 && @advance < @cart_total%>
 	 	<label class="checkbox">
-			<%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@user.advance, :id=>"advance" }, @user.advance, 0%> <b>预存款先支付</b>
-			余额(<span>￥<%=@user.advance%></span>)
+			<%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
+			余额(<span>￥<%= @advance / 100 %></span>)
 		</label>
 		<%end%>
       <label class="radio" style="display:none">

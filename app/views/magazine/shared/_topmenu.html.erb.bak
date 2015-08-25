@@ -77,7 +77,7 @@
             </ul>
           </li>
           <li class="news <%= 'active' if controller_name == 'topics' %>">
-            <a href="http://blog.i-modec.com/topics">摩登资讯 <span>NEWS</span></a>
+            <a href="http://blog.i-modec.com/topics">邦邦芒资讯 <span>NEWS</span></a>
           </li>
           <li class="last"></li>
         </ul>

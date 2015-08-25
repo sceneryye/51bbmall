@@ -44,6 +44,7 @@ class Auth::BbmallController < ApplicationController
         if res_data_hash['data']['first'] == '1'
           msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
           send_sms(info_hash[:phone], msg_send) # send password to user
+          session.delete(send_sms_msg)
           redirect_to api_login_path
         else render :text => '该手机号码已被注册'
         end
@@ -99,7 +100,7 @@ class Auth::BbmallController < ApplicationController
                 u.mobile = @account.login_name
                 u.source = "51bbmall"
                 u.member_lv_id = 1
-                u.cur = "CNY"
+                u.cur = "CNY" 
                 u.reg_ip = request.remote_ip  
                 u.regtime = now.to_i
                 u.email = "#{@account.login_name}@qq.com"
@@ -128,7 +129,7 @@ class Auth::BbmallController < ApplicationController
       info_hash[:content] = message        
 
       res_data = RestClient.get send_sms_url, {:params => info_hash}
-      res_data_hash = ActiveSupport::JSON.decode res_data
+      session[:send_sms_msg] = res_data_hash = ActiveSupport::JSON.decode res_data
 
       if res_data_hash['code'] == 0
         flash[:success] = '信息发送成功！'
@@ -220,7 +221,7 @@ class Auth::BbmallController < ApplicationController
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid      
       info_hash = params_info(info_hash)      
-      res_data = RestClient.get change_phone_url, {:params => info_hash}
+      res_data = RestClient.get user_wallet_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
 
       if res_data_hash['code'] == 0
@@ -271,7 +272,7 @@ class Auth::BbmallController < ApplicationController
     end
 
 
-def card_pay
+    def card_pay
       card_pay_url = 'http://103.16.125.100:9018/card_pay'
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid
@@ -289,31 +290,52 @@ def card_pay
     end
 
 
+    def forget_pwd_step1              
+      cookies[:login_name] = params[:login_name]      
+      cookies[:code] = rand(100_000).to_s.rjust(6, '0')
+      msg_send = url_encode('您的验证码是：') + cookies[:code] + url_encode('，如非您本人操作，请忽略该短信。')
+      send_sms(cookies[:login_name], msg_send)
+      if session[:send_sms_msg]['code'] == 0
+        redirect_to api_forget_pwd_step2_path
+      else 
+        render :text => session[:send_sms_msg]['msg']
+      end
+      session.delete(:send_sms_msg)
+    end
 
-    
 
+    def forget_pwd_step2
+      if params[:validate_code] == cookies[:code]
+        info_hash = {}
+        info_hash[:phone] = cookies[:login_name]
+        info_hash = params_info info_hash
+        url = 'http://103.16.125.100:9018/user_reg' #生产地址    
+        res_data = RestClient.get url, {:params =>info_hash}     
+        res_data_hash = ActiveSupport::JSON.decode(res_data)
+        cookies.delete(:login_name)
+        cookies.delete(:code)
 
+        if res_data_hash['code'] == 0
+          pw_enc = res_data_hash['data']['password']
+          password = de_code(pw_enc)
+          msg_send =  url_encode("您的新密码是：") + password + url_encode("，请妥善保存或立即修改密码。")
+          send_sms(info_hash[:phone], msg_send) # send password to user
+          session.delete(:send_sms_msg)
+          redirect_to api_login_path
+        else
+          message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
+          flash.now[:alert] = "#{message}"
+          return render :text=>message
+        end 
+
+      else 
+        render :text => '验证码不正确！'
+      end
+    end
 
     private
 
-    def params_info(options={})
-      brand_id = 'bb'
-      client_id = 'bbzg'
-      phone = params[:phone]
-      key = '1ed97bd965a8f052'
-      rc4_key = '1bb762f7ce24ceee'
-      ts = Time.now.to_i
 
-      info_hash={}    
-      info_hash[:brand_id] = brand_id
-      info_hash[:client_id] = client_id
-      info_hash.merge! options
-      info_hash[:ts] = ts.to_s
-
-      unsign = info_hash.map {|key,val| "#{val}"}.join('') + key
-      info_hash[:sign]  = Digest::MD5.hexdigest(unsign)
-      info_hash
-    end
 
     def hex2asc(str)
       arr = []
@@ -336,4 +358,9 @@ def card_pay
       enc=RC4.new(rc4_key)
       password = enc.encrypt(password).unpack('H*')[0]
     end
+
+
+
+
+
   end

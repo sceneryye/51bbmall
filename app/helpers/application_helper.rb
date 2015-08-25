@@ -1,5 +1,6 @@
 #encoding:utf-8
 module ApplicationHelper
+  
 
 	def getColumnValue(conf,obj)
 			attrs = conf.split(".")

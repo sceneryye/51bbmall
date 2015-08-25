@@ -20,7 +20,7 @@ class Store::OrdersController < ApplicationController
 
     if @inventory.blank?
     #全部出库，删除记录
-    else
+  else
       #部分出库，修改数量
       quantity =  @inventory.quantity - @inventory.quantity
       Ecstore::Inventory.where(:member_id=>current_account,:product_id=>params[:id]).update_all(:quantity=>quantity)
@@ -141,9 +141,9 @@ class Store::OrdersController < ApplicationController
   def create
     addr = Ecstore::MemberAddr.find_by_addr_id(params[:member_addr])
     ["name","area","addr","zip","tel","mobile"].each do |key,val|
-        params[:order].merge!("ship_#{key}"=>addr.attributes[key])
+      params[:order].merge!("ship_#{key}"=>addr.attributes[key])
     end
-   
+
     return_url=params[:return_url]
     platform=params["platform"];
 
@@ -185,13 +185,13 @@ class Store::OrdersController < ApplicationController
         order_item.type_id = good.type_id
         order_item.nums = line_item.quantity.to_i
         order_item.item_type = "product"
-         if params[:cart_total_final].nil?
+        if params[:cart_total_final].nil?
          order_item.amount = order_item.price * order_item.nums
-         else
-           order_item.amount =  params[:cart_total_final]
-         end
+       else
+         order_item.amount =  params[:cart_total_final]
+       end
 
-        product_attr = {}
+       product_attr = {}
         # product.spec_desc["spec_value"].each  do |spec_id,spec_value|
         # 	spec = Ecstore::Spec.find_by_spec_id(spec_id)
         # 	product_attr.merge!(spec_id=>{"label"=>spec.spec_name,"value"=>spec_value})
@@ -280,7 +280,7 @@ class Store::OrdersController < ApplicationController
         order_log.log_text = "订单创建成功！"
       end.save
       if return_url.nil?        
-          redirect_to order_path(@order)
+        redirect_to order_path(@order)
       else
         redirect_to return_url
       end
@@ -319,6 +319,19 @@ class Store::OrdersController < ApplicationController
       @coupons = @user.usable_coupons
     end
 
+    user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
+    info_hash = {}
+    uid = info_hash[:uid] = current_user.uid if current_user   
+    info_hash = params_info(info_hash)      
+    res_data = RestClient.get user_wallet_url, {:params => info_hash}
+    res_data_hash = ActiveSupport::JSON.decode res_data
+
+    if res_data_hash['code'] == 0
+      @advance = res_data_hash['data']['balance']
+    else
+      render :text => message_error = "错误：#{res_data_hash['msg']}"
+    end
+
   end
 
   def new_mobile_addr
@@ -333,50 +346,50 @@ class Store::OrdersController < ApplicationController
     @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
     if params[:return_url]
       @return_url=params[:return_url]
-     end
+    end
     render :layout=>@supplier.layout
 
   end
 
   def addr_detail
     @addr = Ecstore::MemberAddr.find(params[:id])
-   supplier_id=params[:supplier_id]
+    supplier_id=params[:supplier_id]
     @supplier = Ecstore::Supplier.find(supplier_id)
     @method = :put
 
     render :layout=>@supplier.layout
   end
 
- def edit_addr
+  def edit_addr
    @addr = Ecstore::MemberAddr.find(params[:id])
    if @addr.update_attributes(params[:addr])
-      respond_to do |format|
-       format.js
-       format.html { redirect_to "/orders/new_mobile?platform=mobile" }
-     end
-   else
+    respond_to do |format|
+     format.js
+     format.html { redirect_to "/orders/new_mobile?platform=mobile" }
+   end
+ else
      render 'error.js' #, status: :unprocessable_entity
    end
  end
 
 
-  def new_mobile
+ def new_mobile
 
-    supplier_id= @user.account.supplier_id
+  supplier_id= @user.account.supplier_id
 
-    if supplier_id.nil?
-      supplier_id=78
-    end
+  if supplier_id.nil?
+    supplier_id=78
+  end
 
-   sql = "SELECT SUM(price*quantity) AS total,mdk.sdb_b2c_cart_objects.supplier_id,SUM(freight)/count(*) AS freight FROM mdk.sdb_b2c_cart_objects
-INNER JOIN mdk.sdb_b2c_goods ON SUBSTRING_INDEX(SUBSTRING_INDEX(mdk.sdb_b2c_cart_objects.obj_ident,'_',2),'_',-1) = mdk.sdb_b2c_goods.goods_id
-WHERE mdk.sdb_b2c_cart_objects.member_id=#{@user.member_id}
-GROUP BY mdk.sdb_b2c_cart_objects.supplier_id"
-    @cart_total_by_supplier = ActiveRecord::Base.connection.execute(sql)
-    @cart_freight = 0
-    @favorable_terms = 0
+  sql = "SELECT SUM(price*quantity) AS total,mdk.sdb_b2c_cart_objects.supplier_id,SUM(freight)/count(*) AS freight FROM mdk.sdb_b2c_cart_objects
+  INNER JOIN mdk.sdb_b2c_goods ON SUBSTRING_INDEX(SUBSTRING_INDEX(mdk.sdb_b2c_cart_objects.obj_ident,'_',2),'_',-1) = mdk.sdb_b2c_goods.goods_id
+  WHERE mdk.sdb_b2c_cart_objects.member_id=#{@user.member_id}
+  GROUP BY mdk.sdb_b2c_cart_objects.supplier_id"
+  @cart_total_by_supplier = ActiveRecord::Base.connection.execute(sql)
+  @cart_freight = 0
+  @favorable_terms = 0
 
-    @cart_total_by_supplier.each(:as => :hash) do |row|
+  @cart_total_by_supplier.each(:as => :hash) do |row|
       if (row["total"]>=60 && row["supplier_id"]==97) || (row["total"]>=380 &&row["supplier_id"]==77) #|| @cart_total==0.01 #测试商品
         @favorable_terms -=row["freight"]
       end
@@ -508,7 +521,7 @@ GROUP BY mdk.sdb_b2c_cart_objects.supplier_id"
     supplier_id=params[:supplier_id]
 
     @order =Ecstore::Order.find_by_order_id(params[:id])
-     @delivery=Ecstore::Delivery.find_by_order_id(params[:id])
+    @delivery=Ecstore::Delivery.find_by_order_id(params[:id])
 
     @supplier  =  Ecstore::Supplier.find(supplier_id)
     render :layout=>@supplier.layout

@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     supplier_id = 1
     @supplier = Ecstore::Supplier.find(supplier_id)
 
-    #redirect_uri = "http://vshop.trade-v.com/auth/weixin/callback?supplier_id=#{@supplier.id}"
+    #redirect_uri = "http://vshop.bbmall.com/auth/weixin/callback?supplier_id=#{@supplier.id}"
     #redirect_uri= URI::escape(redirect_uri)
     redirect_uri="http%3a%2f%2f123.57.35.69
 /%2fauth%2fweixin%2f#{supplier_id}%2fcallback"

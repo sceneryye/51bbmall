@@ -56,7 +56,7 @@ class Admin::UsersController < Admin::BaseController
 
 		sms_code = rand(1000000).to_s(16)
 		tel = params[:tel]
-		text = "您的VIP卡验证码是：#{sms_code}，如此条验证码非您本人申请，请立即致电客服021-22306630核实[TRADE-V]"
+		text = "您的VIP卡验证码是：#{sms_code}，如此条验证码非您本人申请，请立即致电客服021-22306630核实[邦邦芒]"
 
 		
 		@sms_log ||= Logger.new('log/sms.log')
@@ -103,7 +103,7 @@ class Admin::UsersController < Admin::BaseController
 		validate_type = params[:member_card].delete :validate_type
 
 		# if !@buyer.sms_validated?
-		# 	@buyer_card.errors.add(:buyer_tel,"请先在我的摩登客/个人信息管理/账户中心 认证手机号码")
+		# 	@buyer_card.errors.add(:buyer_tel,"请先在我的邦邦芒/个人信息管理/账户中心 认证手机号码")
 		# 	return render("buy_card")
 		# end
 

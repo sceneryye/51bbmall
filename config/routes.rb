@@ -44,6 +44,8 @@ namespace :auth do
     post 'user_charge', :on => :collection
     post 'user_deduct', :on => :collection
     post 'card_pay', :on => :collection
+    post 'forget_pwd_step1', :on => :collection
+    post 'forget_pwd_step2', :on => :collection
   end
 end
 
@@ -98,6 +100,8 @@ resources :vshop do
  get 'api_change_pwd' => 'api#change_pwd'
  get 'api_change_phone' => 'api#change_phone'
  get 'api_validate_code' => 'api#validate_code'
+ get 'api_forget_pwd_step1' => 'api#forget_pwd_step1'
+ get 'api_forget_pwd_step2' => 'api#forget_pwd_step2'
  # get 'login'=>"sessions#new"
  get 'login'=>"sessions#login"
  get 'mlogin'=>"sessions#new_mobile"

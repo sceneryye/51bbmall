@@ -213,7 +213,7 @@ class Admin::OrdersController < Admin::BaseController
 			payment.pay_ver = '1.0'
 			payment.paycost = 0
 
-			payment.account = 'trade-V 跨境贸易直通车'
+			payment.account = '邦邦芒 跨境贸易直通车'
 			payment.member_id = payment.op_id = @user.member_id
 			payment.pay_account = @user.login_name
 			payment.ip = request.remote_ip
@@ -279,7 +279,7 @@ class Admin::OrdersController < Admin::BaseController
 		if @delivery.save
 			begin
 				tel  =@delivery.ship_mobile
-				text = "您的订单#{@order.order_id}已发货,使用#{@delivery.logi_name},单号为#{@delivery.logi_no}.请注意查收! [TRADE-V]"
+				text = "您的订单#{@order.order_id}已发货,使用#{@delivery.logi_name},单号为#{@delivery.logi_no}.请注意查收! [邦邦芒]"
 				Sms.send(tel,text)
 			rescue Exception => e
 			end
