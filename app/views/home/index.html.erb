@@ -468,13 +468,15 @@
    %>
                                 <%@top_review.each do |good|%>
                                 <%i+=1%>
-                        <li class="product <%='active' if i==1%>">
-                            <A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#">
-                                <SPAN class="order"><%=i%></SPAN>Cotton Lycra Leggings
-                            </A>                                        
+                        <li class="product <%='active' if i%5==1%>">
+                            <%=link_to good_path(good.bn), :target=>"_blank",:class=>"product-name" do %>
+                                <span class="order"><%=i%></span>
+                                <%=good.name%>
+                            <%end%>                           
                             <div class="product-info">
-                                <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                             <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
+                                <div class="price-box">
+                                    <SPAN class="product-price">￥<%=good.price%></SPAN>
+                                    <SPAN class="product-price-old">￥<%=good.mktprice%></SPAN>                                          </div>
                                 <div class="product-star">
                                     <I class="fa fa-star"></I>                               
                                     <I class="fa fa-star"></I>                                           
@@ -483,178 +485,43 @@
                                     <I class="fa fa-star-half-o"></I>
                                 </div>
                                 <div class="product-img">
-                                    <A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG alt="Product" src="Edo%20-%20Home%20style%203_files/p3.jpg"></A>                   
+                                    <%=link_to good_path(good.bn), :target=>"_blank" do %>
+                                        <%=image_tag good.list_default_pic,:alt=>good.name%>
+                                    <%end%>                   
                                 </div>
                             </div>
                         </li>
-                        <%end if @top_review%>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">2</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p4.jpg"></A>                   
-                                              </div></div></li>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">3</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p5.jpg"></A>                   
-                                              </div></div></li>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">4</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p6.jpg"></A>                   
-                                              </div></div></li>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">5</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p7.jpg"></A>                   
-                                              </div></div></li></ul>
+                        <%if i%5==0%>
+                        </ul>
                     <ul class="list-product">
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">6</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p8.jpg"></A>                   
-                                              </div></div></li>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">7</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p9.jpg"></A>                   
-                                              </div></div></li>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">8</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p10(1).jpg"></A>               
-                                                  </div></div></li>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">9</SPAN>Cotton Lycra Leggings</A>                                        
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p10(1).jpg"></A>               
-                                                  </div></div></li>
-                      <li class="product"><A class="product-name" href="http://kutethemes.com/demo/edo/html/index3.html#"><SPAN 
-                      class="order">10</SPAN>Cotton Lycra Leggings</A>                                       
-                      <div class="product-info">
-                      <div class="price-box"><SPAN class="product-price">$139.98</SPAN>
-                                                                     <SPAN class="product-price-old">$169.00</SPAN>                                          </div>
-                      <div class="product-star"><I class="fa fa-star"></I>                               
-                                      <I class="fa fa-star"></I>                                           
-                            <I class="fa fa-star"></I>                                               <I 
-                      class="fa fa-star"></I>                                                <I class="fa fa-star-half-o"></I>
-                                                                 </div>
-                      <div class="product-img"><A href="http://kutethemes.com/demo/edo/html/index3.html#"><IMG 
-                      alt="Product" src="Edo%20-%20Home%20style%203_files/p12(1).jpg"></A>               
-                                                  </div></div></li></ul></div></div></div><!-- ./Top review -->
+                    <%end%>
+                        <%end if @top_review%>
+                      </ul></div></div></div><!-- ./Top review -->
 
-
-                    <!-- tags -->
+                     <!-- tags -->                   
                     <div class="block block-tags">
                         <div class="block-head">
-                            <h4 class="widget-title">Tags</h4>
+                            <h4 class="widget-title">热门标签</h4></div>
+                            <div class="block-inner kt-owl-carousel" data-nav="true" data-loop="true" data-items="1" data-autoplay="true">
+                                <div class="tagcloud">
+                                    <A 
+                                    href="http://kutethemes.com/demo/edo/html/index3.html#">Fashion</A>
+                                    <A href="http://kutethemes.com/demo/edo/html/index3.html#">Electronics</A>
+                                    <A 
+                                    href="http://kutethemes.com/demo/edo/html/index3.html#">Lenovo</A>
+                                    <A href="http://kutethemes.com/demo/edo/html/index3.html#">Sport</A>
+                                    <A 
+                                    href="http://kutethemes.com/demo/edo/html/index3.html#">Sangsung</A>
+                                </div>
+                            <div class="tagcloud">
+                            <A 
+                            href="http://kutethemes.com/demo/edo/html/index3.html#">actual</A><A href="http://kutethemes.com/demo/edo/html/index3.html#">adorable</A><A 
+                            href="http://kutethemes.com/demo/edo/html/index3.html#">change</A><A href="http://kutethemes.com/demo/edo/html/index3.html#">consider</A><A 
+                            href="http://kutethemes.com/demo/edo/html/index3.html#">phenomeno</A>
+                            </div>
                         </div>
-                        <div class="block-inner kt-owl-carousel owl-carousel owl-theme owl-loaded" data-loop="true" data-nav="true" data-autoplay="true" data-items="1">
-                            
-                            
-                        <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-687px, 0px, 0px); transition: 0.25s; width: 1374px;"><div class="owl-item cloned" style="width: 229px; margin-right: 0px;"><div class="tagcloud">
-                                <a href="#">Fashion</a>
-                                <a href="#">Electronics</a>
-                                <a href="#">Lenovo</a>
-                                <a href="#">Sport</a>
-                                <a href="#">Sangsung</a>
-                            </div></div><div class="owl-item cloned" style="width: 229px; margin-right: 0px;"><div class="tagcloud">
-                                <a href="#">actual</a>
-                                <a href="#">adorable</a>
-                                <a href="#">change</a>
-                                <a href="#">consider</a>
-                                <a href="#">phenomeno</a>
-                            </div></div><div class="owl-item" style="width: 229px; margin-right: 0px;"><div class="tagcloud">
-                                <a href="#">Fashion</a>
-                                <a href="#">Electronics</a>
-                                <a href="#">Lenovo</a>
-                                <a href="#">Sport</a>
-                                <a href="#">Sangsung</a>
-                            </div></div><div class="owl-item active last-item" style="width: 229px; margin-right: 0px;"><div class="tagcloud">
-                                <a href="#">actual</a>
-                                <a href="#">adorable</a>
-                                <a href="#">change</a>
-                                <a href="#">consider</a>
-                                <a href="#">phenomeno</a>
-                            </div></div><div class="owl-item cloned" style="width: 229px; margin-right: 0px;"><div class="tagcloud">
-                                <a href="#">Fashion</a>
-                                <a href="#">Electronics</a>
-                                <a href="#">Lenovo</a>
-                                <a href="#">Sport</a>
-                                <a href="#">Sangsung</a>
-                            </div></div><div class="owl-item cloned" style="width: 229px; margin-right: 0px;"><div class="tagcloud">
-                                <a href="#">actual</a>
-                                <a href="#">adorable</a>
-                                <a href="#">change</a>
-                                <a href="#">consider</a>
-                                <a href="#">phenomeno</a>
-                            </div></div></div></div><div class="owl-controls"><div class="owl-nav"><div class="owl-prev" style="">prev</div><div class="owl-next" style="">next</div></div><div class="owl-dots" style=""><div class="owl-dot"><span></span></div><div class="owl-dot active"><span></span></div></div></div></div>
                     </div>
-                    <!-- ./tags -->
+                    <!-- ./tags -->                    
                 </div>
                 <div class="col-sm-8 col-md-9">
                                     <!-- new-arrivals -->
