@@ -88,8 +88,10 @@ class Store::GoodsController < ApplicationController
     results.each(:as => :hash) do |row|
       goods_ids= row["goods_ids"]
     end
-    sql = " bn in (#{goods_ids})"
-    @top_sellers = Ecstore::Good.where(sql)
+    if goods_ids.size>0
+      sql = " bn in (#{goods_ids})"
+      @top_sellers = Ecstore::Good.where(sql)
+    end
 
 
     @wechat_user=params[:wechatuser]
