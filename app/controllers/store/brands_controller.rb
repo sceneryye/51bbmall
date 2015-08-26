@@ -9,7 +9,6 @@ class Store::BrandsController < ApplicationController
   end
 
   def show
-
   	@brand = Ecstore::Brand.find(params[:id])
        
   	@brand_page = @brand.brand_page

@@ -2,26 +2,36 @@
 <%=content_for :keywords do "" end%>
 <%=content_for :description do "" end%>
 
-<%=content_for :head do%>
-	<%=stylesheet_link_tag "store/search"%>
-<%end%>
+
 
 <div class="container">
-    <div class="row">
-      <div class="block block-breadcrumbs">
-        <ul>
-          <li class="home">
-            <a href="/"><i class="fa fa-home"></i></a>
-            <span></span>
-          </li>
-          <li>搜索：<%=params[:q]%></li>
-        </ul>
-      </div>
-
-		<%if @goods.size > 0%>
-			<%=render "store/goods/list_goods"%>
-		<%else%>
-			<p>抱歉，没有搜索到与 “<span class="keywords"><%=params[:q]%></span>” 相关商品。</p>
-		<%end%>
-	</div>
+  <div class="row">
+    <div class="block block-breadcrumbs">
+      <ul>
+        <li class="home">
+          <a href="/"><i class="fa fa-home"></i></a>
+          <span></span>
+        </li>    
+        <li class="active">
+          搜索：<%=params[:q]%>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 col-md-3">
+        <%=render "/store/shared/special"%>
+        <%=render "/store/shared/big_save"%>
+        <%=render "/store/shared/top_review"%>
+        <%=render "/store/shared/hot_tags", :resource=>@home%>                         
+    </div>
+    <div class="col-sm-8 col-md-9">
+  		<%if @goods.size > 0%>
+  			<%=render "store/goods/list_goods"%>
+  		<%else%>
+        <br><br><br><br>
+  			<h4>抱歉，没有搜索到与 “<span class="keywords"><%=params[:q]%></span>” 相关商品。</h4>
+  		<%end%>
+  	</div>
+  </div>
 </div>

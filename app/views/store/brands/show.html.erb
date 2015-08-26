@@ -1,12 +1,23 @@
 <%=render "shared/metable", :resource=>@brand%>
 
-<%=content_for :head do%>
-<%= stylesheet_link_tag "store/brands" %>
-<%= javascript_include_tag "store/brands" %>
+<%if @brand.status != 'disabled' &&  @goods.size > 0%>
+<div class="container">
+	<div class="row">
+		<%=render "store/shared/brand_position"%>
+		<div class="row">
+			<div class="col-xs-12 col-sm-4 col-md-3">
+			<%=render "store/goods/brand_tree_menu"%>
+			</div>
+			<div class="col-xs-12 col-sm-8 col-md-9">
+				<%=render "store/goods/list_goods"%>
+			</div>
+		</div>
+	</div>
+</div>
 <%end%>
 
-<%=render "store/shared/brand_position"%>
 
-<%=render "old_brand_content"%>
+
+
 
 
