@@ -314,12 +314,13 @@
                     <!-- Home slide -->
                     <div class="block-slider">
                         <ul class="home-slider kt-bxslider">
-                            <li><img src="/img/home03-slide1.jpg" alt="Slider"></li>
-                            <li><img src="/img/home03-slide2.jpg" alt="Slider"></li>
-                            <li><img src="/img/home03-slide3.jpg" alt="Slider"></li>
-                            <li><img src="/img/home03-slide4.jpg" alt="Slider"></li>
-                            <li><img src="/img/home03-slide5.jpg" alt="Slider"></li>
-                            <li><img src="/img/home03-slide6.jpg" alt="Slider"></li>
+                            <%@home.sliders.each_with_index do |key,index|%>
+                            <li>
+                                <%=link_to key['link_url'],:target=>"_blank" do%>
+                                    <%=image_tag key['pic_url'] %>
+                                <%end%>      
+                            </li>                             
+                            <%end%>
                         </ul>
                     </div>
                     <!-- ./Home slide -->
@@ -504,20 +505,13 @@
                             <h4 class="widget-title">热门标签</h4></div>
                             <div class="block-inner kt-owl-carousel" data-nav="true" data-loop="true" data-items="1" data-autoplay="true">
                                 <div class="tagcloud">
-                                    <A 
-                                    href="http://kutethemes.com/demo/edo/html/index3.html#">Fashion</A>
-                                    <A href="http://kutethemes.com/demo/edo/html/index3.html#">Electronics</A>
-                                    <A 
-                                    href="http://kutethemes.com/demo/edo/html/index3.html#">Lenovo</A>
-                                    <A href="http://kutethemes.com/demo/edo/html/index3.html#">Sport</A>
-                                    <A 
-                                    href="http://kutethemes.com/demo/edo/html/index3.html#">Sangsung</A>
-                                </div>
-                            <div class="tagcloud">
-                            <A 
-                            href="http://kutethemes.com/demo/edo/html/index3.html#">actual</A><A href="http://kutethemes.com/demo/edo/html/index3.html#">adorable</A><A 
-                            href="http://kutethemes.com/demo/edo/html/index3.html#">change</A><A href="http://kutethemes.com/demo/edo/html/index3.html#">consider</A><A 
-                            href="http://kutethemes.com/demo/edo/html/index3.html#">phenomeno</A>
+                                <%@home.keywords.each_with_index do |key,index|%>
+                                    <a href="<%=key['link_url']%>"><%=key["word"]%></a>
+                                    <%if index%5==4 && @home.keywords.size - 1 > index %>
+                                        </div>
+                                        <div class="tagcloud">
+                                    <%end%>
+                                <%end%>                                   
                             </div>
                         </div>
                     </div>
@@ -528,17 +522,35 @@
                     <div class="block3 block-new-arrivals">
                         <div class="block-head">
                             <h3 class="block-title">最新上架</h3>
-                            <ul class="nav-tab default">                                   
-                                <li class="active"><a data-toggle="tab" href="#tab-1">时令水果</a></li>
-                                <li><a data-toggle="tab" href="#tab-2">德国香肠 </a></li>
-                                <li><a data-toggle="tab" href="#tab-3">进口食品</a></li>
+                            <ul class="nav-tab default">   
+
+<%i=0%>
+<% @home_galleries=[130,126,129]%>
+<%@home_galleries.each do |tag_id|%>
+    <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>    
+        <%i+=1%>
+                              <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li> 
+<%end%>                       
                             </ul>
                         </div>
                         <div class="block-inner">
                             <div class="tab-container">
-                                <div id="tab-1" class="tab-panel active">
+
+ <%i=0%>
+<%@home_galleries.each do |tag_id|%>
+    <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>
+    
+    <%i+=1%>
+    <%if !@gallery.nil?%>        
+        <%@categories = Ecstore::Category.where("cat_id in (#{@gallery.categories})").order("p_order")%>
+    <%end%>
+
+
+                                <div class="tab-panel <%='active' if i==1%>" id="tab-<%=tag_id%>">
                                     <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
-                                    <%goods=Ecstore::Good.where("marketable ='true' and cat_id =637").order("p_order ASC, goods_id DESC").limit(4)%>
+                                    <%goods=Ecstore::Good.where("marketable ='true' and cat_id =#{@categories.first.cat_id}").order("p_order ASC, goods_id DESC").limit(4)%>
+                            
+                                    <%#goods=Ecstore::Good.where("marketable ='true' and cat_id =637").order("p_order ASC, goods_id DESC").limit(4)%>
                                     <%goods.each do |good|%> 
                                         <li class="product">
                                             <div class="product-container">
@@ -567,68 +579,7 @@
                                        <%end%>
                                     </ul>
                                 </div>
-                                <div id="tab-2" class="tab-panel">
-                                    <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
-                                        <%goods=Ecstore::Good.where("marketable ='true' and cat_id =561").order("p_order ASC, goods_id DESC").limit(4)%>
-                                    <%goods.each do |good|%> 
-                                        <li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="Product"></a>
-                                                        <a title="Quick View" href="/products/<%=good.bn%>" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/products/<%=good.bn%>"><%=good.name%></a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">￥<%=good.price%></span>
-                                                        <span class="product-price-old">￥<%=good.mktprice%></span>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/<%=good.bn%>">收藏</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/products/<%=good.bn%>">比较</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/<%=good.bn%>">购买<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                       <%end%>
-                                    </ul>
-                                </div>
-                                <div id="tab-3" class="tab-panel">
-                                    <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
-                                        <%goods=Ecstore::Good.where("marketable ='true' and cat_id =494").order("p_order ASC, goods_id DESC").limit(4)%>
-                                    <%goods.each do |good|%> 
-                                        <li class="product">
-                                            <div class="product-container">
-                                                <div class="product-left">
-                                                    <div class="product-thumb">
-                                                        <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="Product"></a>
-                                                        <a title="Quick View" href="/products/<%=good.bn%>" class="btn-quick-view">Quick View</a>
-                                                    </div>
-                                                </div>
-                                                <div class="product-right">
-                                                    <div class="product-name">
-                                                        <a href="/products/<%=good.bn%>"><%=good.name%></a>
-                                                    </div>
-                                                    <div class="price-box">
-                                                        <span class="product-price">￥<%=good.price%></span>
-                                                        <span class="product-price-old">￥<%=good.mktprice%></span>
-                                                    </div>
-                                                    <div class="product-button">
-                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/<%=good.bn%>">收藏</a>
-                                                        <a class="btn-add-comparre" title="Add to Compare" href="/products/<%=good.bn%>">比较</a>
-                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/<%=good.bn%>">购买<span class="icon"></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                       <%end%>
-                                    </ul>
-                                </div>
+                                <%end%>
                             </div>
                         </div>
                         <div class="block-footer">
@@ -688,707 +639,77 @@
                         <a class="banner banner4" href="#"><img src="/img/images04.png" alt="Banner"></a>
                     </div>
                     <!-- ./group banner -->
+                
                     <div class="block3 tab-cat-products">
+                    <%i=0%>
+                    <% @home_galleries=[125,127,128]%>
                         <div class="block-head">
-                            <ul class="nav-tab tab-category">             
-                                <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">Fashion</a></li>
-                                <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false">electronics</a></li>
-                                <li class="active"><a data-toggle="tab" href="#tab-6" aria-expanded="true">sports</a></li>
+                            <ul class="nav-tab tab-category">
+                            <%@home_galleries.each do |tag_id|%>
+    <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>    
+    <%i+=1%>
+                              <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li> 
+<%end%>                          
                             </ul>
                         </div>
                         <div class="block-inner">
-                            <div class="tab-container">
-                                <div id="tab-4" class="tab-panel">
-                                    <div class="sub-cat">
-                                        <ul>
-                                            <li><a href="#">Clothing</a></li>
-                                            <li><a href="#">Shoes</a></li>
-                                            <li><a href="#">Bags</a></li>
-                                            <li><a href="#">Accessories</a></li>
-                                            <li><a href="#">Men</a></li>
-                                            <li><a href="#">Women</a></li>
-                                            <li><a href="#">Girl</a></li>
-                                            <li><a href="#">Boys</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="cat-product">
-                                        <ul class="products kt-owl-carousel owl-carousel owl-theme owl-loaded" data-margin="22" data-loop="true" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:1},&quot;600&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:2},&quot;1200&quot;:{&quot;items&quot;:3}}">
-                                            
-                                            
-                                            
-                                        <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-638.001px, 0px, 0px); transition: 0s; width: 1914.003px;"><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p29.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p30.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p31.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item active" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p29.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item active" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p30.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item active last-item" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p31.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p29.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p30.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p31.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div></div></div><div class="owl-controls"><div class="owl-nav"><div class="owl-prev" style="">prev</div><div class="owl-next" style="">next</div></div><div class="owl-dots" style=""><div class="owl-dot active"><span></span></div></div></div></ul>
-                                    </div>
-                                </div>
-                                <div id="tab-5" class="tab-panel">
-                                    <div class="sub-cat">
-                                        <ul>
-                                            <li><a href="#">Clothing</a></li>
-                                            <li><a href="#">Shoes</a></li>
-                                            <li><a href="#">Bags</a></li>
-                                            <li><a href="#">Accessories</a></li>
-                                            <li><a href="#">Men</a></li>
-                                            <li><a href="#">Women</a></li>
-                                            <li><a href="#">Girl</a></li>
-                                            <li><a href="#">Boys</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="cat-product">
-                                        <ul class="products kt-owl-carousel owl-carousel owl-theme owl-loaded" data-margin="22" data-loop="true" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:1},&quot;600&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:2},&quot;1200&quot;:{&quot;items&quot;:3}}">
-                                            
-                                            
-                                            
-                                        <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-638.001px, 0px, 0px); transition: 0s; width: 1914.003px;"><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p32.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p33.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p34.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item active" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p32.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item active" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p33.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item active last-item" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p34.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p32.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p33.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p34.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div></div></div><div class="owl-controls"><div class="owl-nav"><div class="owl-prev" style="">prev</div><div class="owl-next" style="">next</div></div><div class="owl-dots" style=""><div class="owl-dot active"><span></span></div></div></div></ul>
-                                    </div>
-                                </div>
-                                <div id="tab-6" class="tab-panel active">
-                                    <div class="sub-cat">
-                                        <ul>
-                                            <li><a href="#">Clothing</a></li>
-                                            <li><a href="#">Shoes</a></li>
-                                            <li><a href="#">Bags</a></li>
-                                            <li><a href="#">Accessories</a></li>
-                                            <li><a href="#">Men</a></li>
-                                            <li><a href="#">Women</a></li>
-                                            <li><a href="#">Girl</a></li>
-                                            <li><a href="#">Boys</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="cat-product">
-                                        <ul class="products kt-owl-carousel owl-carousel owl-theme owl-loaded" data-margin="22" data-loop="true" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:1},&quot;600&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:2},&quot;1200&quot;:{&quot;items&quot;:3}}">
-                                            
-                                            
-                                            
-                                        <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-1063.335px, 0px, 0px); transition: 0s; width: 1914.003px;"><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p35.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p36.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p37.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p35.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p36.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item active" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p37.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned active" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p35.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned active last-item" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p36.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div><div class="owl-item cloned" style="width: 190.667px; margin-right: 22px;"><li class="product">
-                                                <div class="product-container">
-                                                    <div class="product-left">
-                                                        <div class="product-thumb">
-                                                            <a class="product-img" href="#"><img src="/img/p37.jpg" alt="Product"></a>
-                                                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-right">
-                                                        <div class="product-name">
-                                                            <a href="#">Cotton Lycra Leggings</a>
-                                                        </div>
-                                                        <div class="price-box">
-                                                            <span class="product-price">$139.98</span>
-                                                            <span class="product-price-old">$169.00</span>
-                                                        </div>
-                                                        <div class="product-button">
-                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="#">Add Wishlist</a>
-                                                            <a class="btn-add-comparre" title="Add to Compare" href="#">Add Compare</a>
-                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="#">Buy<span class="icon"></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li></div></div></div><div class="owl-controls"><div class="owl-nav"><div class="owl-prev" style="">prev</div><div class="owl-next" style="">next</div></div><div class="owl-dots" style=""><div class="owl-dot active"><span></span></div></div></div></ul>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tab-container">
+                        <%i=0%>
+<%@home_galleries.each do |tag_id|%>
+    <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>
+    
+    <%i+=1%>
+    <%if !@gallery.nil?%>        
+        <%@categories = Ecstore::Category.where("cat_id in (#{@gallery.categories})").order("p_order")%>
+    <%end%>
+                        <div class="tab-panel <%='active' if i==1%>" id="tab-<%=tag_id%>">
+
+                        <div class="sub-cat">
+                            <ul>                            
+                            <%@categories.each do |category|%>
+                              <li><%=link_to category.cat_name,cat_path(category)%></li>
+                            <%end%>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <div class="cat-product">
+                            <ul class="products kt-owl-carousel" data-responsive='{"0":{"items":1},"600":{"items":2},"768":{"items":2},"1200":{"items":3}}' data-nav="true" data-loop="true" data-margin="22">
+                            <%goods=Ecstore::Good.where("marketable ='true' and cat_id =#{@categories.first.cat_id}").order("p_order ASC, goods_id DESC").limit(4)%>
+                            <%goods.each do |good|%> 
+                                <li class="product">
+                                    <div class="product-container">
+                                        <div class="product-left">
+                                            <div class="product-thumb">
+                                                <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="Product"></a>
+                                                <a title="Quick View" href="/products/<%=good.bn%>" class="btn-quick-view">Quick View</a>
+                                            </div>
+                                        </div>
+                                        <div class="product-right">
+                                            <div class="product-name">
+                                                <a href="/products/<%=good.bn%>"><%=good.name%></a>
+                                            </div>
+                                            <div class="price-box">
+                                                <span class="product-price">￥<%=good.price%></span>
+                                                <span class="product-price-old">￥<%=good.mktprice%></span>
+                                            </div>
+                                            <div class="product-button">
+                                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/<%=good.bn%>">收藏</a>
+                                                <a class="btn-add-comparre" title="Add to Compare" href="/products/<%=good.bn%>">比较</a>
+                                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/<%=good.bn%>">购买<span class="icon"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                               <%end%>                         
+                            </ul>
+                        </div>
+                        </div>
+<%end%>
+                        </div></div></div></div></div></div>
+                      </div>
+
+                                           
+                                            
+                                       
     <div class="container">
         <div class="row">
             <!-- banner -->

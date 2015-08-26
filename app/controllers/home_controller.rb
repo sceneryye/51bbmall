@@ -6,9 +6,8 @@ class HomeController < ApplicationController
 
 	def index
 
-		@title = "佐康茶"
-		#@home = Ecstore::Home.where(:supplier_id=>nil).last
-		@goods = Ecstore::Good.where(:marketable=>'true').all
+		@title = "邦邦芒商城"
+		@home = Ecstore::Home.where(:supplier_id=>nil).last
 		if signed_in?
 		   redirect_to params[:return_url] if params[:return_url].present?
 		end
@@ -24,7 +23,7 @@ class HomeController < ApplicationController
 	end
 	
 	def subscription_success
-		@title = "佐康茶"
+		@title = "邦邦芒商城"
 	end
 
 end
