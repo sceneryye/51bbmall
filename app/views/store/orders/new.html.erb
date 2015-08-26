@@ -93,7 +93,7 @@
 
 		<%if @advance >= @cart_total%>
 		<label class="radio" >
-			<%=f.radio_button :payment, "deposit"%> <b>预存款(余额：￥<%= @advance %>)</b>
+			<%=f.radio_button :part_pay, @cart_total%> <b>预存款(余额：￥<%= @advance %>)</b>
 		</label>
 		<%end%>
 	</div>
@@ -226,7 +226,7 @@
 					<span class="text">预付金额：</span>
 					<span class="rmb-symbol">￥</span>
 					<span class="money part" id="part_amount">
-						<%=@advance < @cart_total && @advance>0 ? @advance : 0%>
+						<%= @advance > @cart_total || @advance == 0 ? @cart_total : @advance %>
 					</span>
 				</div>
 				<%end%>
@@ -241,7 +241,7 @@
 				<div class="item">
 					<span class="text">支付金额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money final" id="pay_amount"><%= @cart_total - @advance %></span>
+					<span class="money final" id="pay_amount"><%= @cart_total - @advance > 0 ? @cart_total - @advance : 0  %></span>
 				</div>
 
 			</div>
@@ -256,21 +256,17 @@
 	<%end%>
 </div>
 
-<!--<script type="text/javascript", src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript", src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
 $("#advance").click(function(){ 
-  var ischeck=$(this).attr("checked"); 
-  alert(ischeck);
+  var ischeck=$(this).prop("checked");   
   var part_amount = $('#part_amount').text();
   var final_amount = $('#final_amount').text();
-  if(ischeck==undefined){ 
-  	
+  if(ischeck==false){   	
     $('#part_amount').text(0);
     $('#pay_amount').text(final_amount);
-
   }
-  else{ 
-  	
+  else{   	
     if(part_amount > 0 && part_amount <= final_amount) {
       $('#part_amount').text(part_amount);
       $('#pay_amount').text(final_amount - part_amount);
@@ -285,4 +281,4 @@ $("#advance").click(function(){
     }
   } 
 }); 
-</script>-->
+</script>

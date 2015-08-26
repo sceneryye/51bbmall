@@ -9,14 +9,13 @@ class Store::PaymentsController < ApplicationController
 		rel_id = params[:order_id]
 		@order  = Ecstore::Order.find_by_order_id(rel_id)
 		installment = params[:payment].delete(:installment) || 1
+
 		part_pay = params[:payment].delete(:part_pay) || 0
+		params[:payment].delete(:part_pay)
 
 		pay_app_id = params[:payment][:pay_app_id]
 
-		if part_pay == 0 && @order.part_pay?
-			@user.update_column :advance, @order.part_pay
-			@user.update_column :advance_freeze, @user.advance_freeze - @order.part_pay
-		end
+		
 
 		#  update order payment
 		@order.update_attributes :payment=>pay_app_id,:last_modified=>Time.now.to_i,:installment=>installment,:part_pay=>part_pay if pay_app_id.to_s != @order.payment.to_s
@@ -51,11 +50,12 @@ class Store::PaymentsController < ApplicationController
 		if @payment.save
 			acct_type = 0
 			remark = @order.memo
+			#@payment = Ecstore::Payment.find(params.delete(:id))
+			#return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
 			if @order.part_pay >= @order.total_amount
-				money = @order.total_amount
+				money = @order.total_amount.to_i * 100
 				if user_deduct(money, acct_type, remark)
-					@payment = Ecstore::Payment.find(params.delete(:id))
-					return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
+
 
 					adapter  = params.delete(:adapter)
 					params.delete :controller
@@ -66,40 +66,31 @@ class Store::PaymentsController < ApplicationController
 					@order = @payment.pay_bill.order
 					@user = @payment.user
 
-					result = ModecPay.verify_return(adapter, params, { :bill99_redirect_url=>detail_order_url(@order),:ip=>request.remote_ip })
 
-					if result.is_a?(Hash) && result.present?
-						response = result.delete(:response)
-						if result.delete(:payment_id) == @payment.payment_id.to_s && !@payment.paid?
-							@payment.update_attributes(result)
-							@order.update_attributes(:pay_status=>'1')
-							Ecstore::OrderLog.new do |order_log|
-								order_log.rel_id = @order.order_id
-								order_log.op_id = @user.member_id
-								order_log.op_name = @user.login_name
-								order_log.alttime = @payment.t_payed
-								order_log.behavior = 'payments'
-								order_log.result = "SUCCESS"
-								order_log.log_text = "订单支付成功！"
-							end.save
-						end
-					else
-						response =  result
-					end
+					Ecstore::OrderLog.new do |order_log|
+						order_log.rel_id = @order.order_id
+						order_log.op_id = @user.member_id
+						order_log.op_name = @user.login_name
+						order_log.alttime = @payment.t_payed
+						order_log.behavior = 'payments'
+						order_log.result = "SUCCESS"
+						order_log.log_text = "订单支付成功！"
+					end.save
 
-		#redirect_to detail_order_path(@payment.pay_bill.order)
-		redirect_to  "/orders/norsh_show_order?id=#{@payment.pay_bill.order.order_id}"
-	else 
-		render :text => '支付失败'
-	end
-elsif @order.part_pay < @order.total_amount
-	money = @order.part_pay
-	if user_deduct(money, acct_type, remark)
-		@payment.update_attributes(:money => (@order.total_amount - @order.part_pay))
-      
+
+
+					redirect_to  orders_path
+				else 
+					render :text => '支付失败1'
+				end
+			elsif @order.part_pay < @order.total_amount
+				money = @order.part_pay * 100
+				if user_deduct(money, acct_type, remark)
+					@payment.update_attributes(:money => (@order.total_amount - @order.part_pay))
+
         redirect_to "/payments/pay?id=#{@payment.payment_id}"  #pay_payment_path(@payment.payment_id)
       else
-      	render :text => '支付失败'
+      	render :text => '支付失败2'
       end
     else 
     	render :text => '余额支付有误'
@@ -395,20 +386,20 @@ def pay
 			end
 
 			private
-			def user_deduct(money, acct_type, order_no, remark)
+			def user_deduct(money, acct_type, remark)
 				balance = user_wallet
 				user_deduct_url = 'http://103.16.125.100:9018/user_deduct'
 				info_hash = {}
 				info_hash[:uid] = current_user.uid
 				info_hash[:money] = money
-
 				info_hash = params_info(info_hash)
-				info_hash[:acct_type] = 0
+				info_hash[:acct_type] = acct_type
 				info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
 				Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid
 				info_hash[:remark] = url_encode remark
 				res_data = RestClient.get user_deduct_url, {:params => info_hash}
 				res_data_hash = ActiveSupport::JSON.decode res_data
+								
 				if res_data_hash['code'] == 0
 					return true
 				else
@@ -416,6 +407,6 @@ def pay
 				end
 				
 			end
-		end
 
-	end
+
+		end
