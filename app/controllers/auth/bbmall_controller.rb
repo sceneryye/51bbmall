@@ -239,7 +239,7 @@ class Auth::BbmallController < ApplicationController
       Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid 
       info_hash[:acct_type] = params[:acct_type].to_i
       info_hash[:valid_month] = params[:valid_month].to_i     
-      info_hash[:remark] = url_encode params[:remark]     
+      info_hash[:remark] = url_encode params[:remark]
       res_data = RestClient.get user_charge_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
 
@@ -260,6 +260,8 @@ class Auth::BbmallController < ApplicationController
       if info_hash[:money] <= balance.to_i     
         info_hash = params_info(info_hash)
         info_hash[:acct_type] = params[:acct_type].to_i
+        info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
+        Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid
         info_hash[:remark] = url_encode params[:remark]
         #return render :text => info_hash
         res_data = RestClient.get user_deduct_url, {:params => info_hash}

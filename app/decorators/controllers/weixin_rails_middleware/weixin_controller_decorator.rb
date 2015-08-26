@@ -87,7 +87,7 @@ WeixinRailsMiddleware::WeixinController.class_eval do
 
         articles = [generate_article(title, desc, pic_url, link_url),generate_article(title1, desc1, pic_url1, link_url1)]
       when 'subscribe'
-        title="您好，保亨生物科技欢迎您的光临！"
+        title="您好，邦邦芒欢迎您的光临！"
         desc =""
         pic_url="http://123.57.35.69
 /images/a0#{id}/homepage/post.jpg"
@@ -112,7 +112,7 @@ WeixinRailsMiddleware::WeixinController.class_eval do
 
    # message="您好！#{@weixin_public_account.name}欢迎您！"
 
-    message="您好！保亨生物--佐康茶欢迎您！"
+    message="您好！邦邦芒欢迎您！"
     reply_text_message(message)
   end
 
@@ -180,7 +180,7 @@ WeixinRailsMiddleware::WeixinController.class_eval do
       # 扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送
       #  return reply_text_message("扫描带参数二维码事件: 1. 用户未关注时，进行关注后的事件推送, keyword: #{@keyword}")
     end
-   # reply_text_message("感谢您关注保亨生物--佐康茶")
+   # reply_text_message("感谢您关注邦邦芒")
     @keyword = "subscribe"
     response_news_message()
   end

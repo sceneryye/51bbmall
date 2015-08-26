@@ -67,11 +67,11 @@
 		</label>
 		<br/>
 		<%end%>
-		
+
 		<%if @advance>0 && @advance < @cart_total%>
 		<label class="checkbox">
-			<%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
-			余额(<span>￥<%= @advance / 100 %></span>)
+			<%=f.check_box :part_pay, {:checked => true, :'data-amount'=>@advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
+			余额(<span>￥</span><span id="advance_value"><%= @advance %></span>)
 		</label>
 		<%end%>
 		<label class="radio" style="display:none">
@@ -93,7 +93,7 @@
 
 		<%if @advance >= @cart_total%>
 		<label class="radio" >
-			<%=f.radio_button :payment, "deposit"%> <b>预存款</b>
+			<%=f.radio_button :payment, "deposit"%> <b>预存款(余额：￥<%= @advance %>)</b>
 		</label>
 		<%end%>
 	</div>
@@ -154,7 +154,7 @@
 	<%end%>
 
 	<div class="section promotions">
-		
+
 		<div class="section checkout clearfix">
 			<h5>结算信息</h5>
 			<div class="left">
@@ -215,18 +215,18 @@
 				<div class="item">
 					<span class="text">订单总金额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money" id="final_amount"></span>
+					<span class="money" id="final_amount"><%= @cart_total %></span>
 				</div>
 
 			</div>
 			<div class="total" id="order_bill">
 				
-				<%unless @user.advance == 0%>
+				<%unless @advance == 0%>
 				<div class="item">
 					<span class="text">预付金额：</span>
 					<span class="rmb-symbol">￥</span>
 					<span class="money part" id="part_amount">
-						-<%=@user.advance < @cart_total && @user.advance>0 ? @user.advance : 0%>
+						<%=@advance < @cart_total && @advance>0 ? @advance : 0%>
 					</span>
 				</div>
 				<%end%>
@@ -241,7 +241,7 @@
 				<div class="item">
 					<span class="text">支付金额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money final" id="pay_amount"></span>
+					<span class="money final" id="pay_amount"><%= @cart_total - @advance %></span>
 				</div>
 
 			</div>
@@ -255,3 +255,34 @@
 	<p>您还没有选择商品。</p>
 	<%end%>
 </div>
+
+<!--<script type="text/javascript", src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+$("#advance").click(function(){ 
+  var ischeck=$(this).attr("checked"); 
+  alert(ischeck);
+  var part_amount = $('#part_amount').text();
+  var final_amount = $('#final_amount').text();
+  if(ischeck==undefined){ 
+  	
+    $('#part_amount').text(0);
+    $('#pay_amount').text(final_amount);
+
+  }
+  else{ 
+  	
+    if(part_amount > 0 && part_amount <= final_amount) {
+      $('#part_amount').text(part_amount);
+      $('#pay_amount').text(final_amount - part_amount);
+    }
+    else if(part_amount > final_amount) {
+      $('#part_amount').text(part_amount);
+      $('#pay_amount').text(0);
+    }
+    else {
+      $('#part_amount').text(0);
+      $('#pay_amount').text(final_amount);
+    }
+  } 
+}); 
+</script>-->

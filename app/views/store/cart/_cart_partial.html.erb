@@ -1,0 +1,43 @@
+
+    
+        <div class="block-wrap-cart">
+            <div class="iner-block-cart">
+                <a href="/cart">
+                    <span class="total">&yen;<%= @cart_total %></span>
+                </a>
+            </div>
+            <div class="block-mini-cart">
+                <div class="mini-cart-content">
+                    <h5 class="mini-cart-head"><%= @cart_total_quantity %> 件商品 </h5>
+                    <% if @cart_total_quantity > 0 %>
+                    <div class="mini-cart-list">
+                        <ul>
+                            <% @line_items.each do |l| %>
+                            <li class="product-info">
+                                <div class="p-left">
+                                    <a href="#" class="remove_link"></a>
+                                    <a href="#">
+                                        <img class="img-responsive" src=<%= l.good.medium_pic %> alt="Product">
+                                    </a>
+                                </div>
+                                <div class="p-right">
+                                    <p class="p-name"><%= l.product.name %></p>
+                                    <p class="product-price">&yen;<%= l.product.price %></p>
+                                    <p>数量: <%= l.quantity %></p>
+                                </div>
+                            </li>
+                            <% end %>                                                            
+                        </ul>
+                    </div>
+                    <div class="toal-cart">
+                        <span>总共</span>
+                        <span class="toal-price pull-right">&yen;<%= @cart_total %></span>
+                    </div>
+                    <div class="cart-buttons">
+                        <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    

@@ -4,7 +4,7 @@ class Store::PaymentsController < ApplicationController
 	layout 'order'
 
 	skip_before_filter :verify_authenticity_token,:only=>[:callback,:notify]
- 
+
 	def create
 		rel_id = params[:order_id]
 		@order  = Ecstore::Order.find_by_order_id(rel_id)
@@ -30,7 +30,7 @@ class Store::PaymentsController < ApplicationController
 			payment.pay_ver = '1.0'
 			payment.paycost = 0
 
-			payment.account = 'baohengboi | 保亨生物'
+			payment.account = '邦邦芒'
 			payment.member_id = payment.op_id = @user.member_id
 			payment.pay_account = @user.login_name
 			payment.ip = request.remote_ip
@@ -49,103 +49,153 @@ class Store::PaymentsController < ApplicationController
 
 		@payment.money = @payment.cur_money = @order.pay_amount
 		if @payment.save
-      # if @payment.pay_app_id=='wxpay'
-      #   redirect_to "/vshop/78/payments?payment_id=#{@payment.payment_id}&supplier_id=#{params[:supplier_id]}"
-      # else
-        redirect_to "/payments/pay?id=#{@payment.payment_id}"  #pay_payment_path(@payment.payment_id)
-      # end
+			acct_type = 0
+			remark = @order.memo
+			if @order.part_pay >= @order.total_amount
+				money = @order.total_amount
+				if user_deduct(money, acct_type, remark)
+					@payment = Ecstore::Payment.find(params.delete(:id))
+					return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
 
-		else
-			redirect_to order_url(@order)
-		end
-  end
+					adapter  = params.delete(:adapter)
+					params.delete :controller
+					params.delete :action
 
-  def debug
-    render :text=>"show"
-  end
+					@payment.payment_log.update_attributes({:return_ip=>request.remote_ip,:return_params=> params,:returned_at=>Time.now}) if @payment.payment_log
 
-	def show
-		@payment = Ecstore::Payment.find_by_payment_id(params[:id])
-	end
+					@order = @payment.pay_bill.order
+					@user = @payment.user
 
-	def pay
-		@payment = Ecstore::Payment.find(params[:id])
-      	if @payment && @payment.status == 'ready'
-	        adapter = @payment.pay_app_id
-	        order_id = @payment.pay_bill.rel_id
-	        @modec_pay = ModecPay.new adapter do |pay|
-		        pay.return_url = "#{site}/payments/#{adapter}/callback?payment_id=#{@payment.payment_id}"
-		        pay.notify_url = "#{site}/payments/#{adapter}/notify?payment_id=#{@payment.payment_id}"
-				pay.pay_id = @payment.payment_id
-				pay.pay_amount = @payment.cur_money.to_f
-				pay.pay_time = Time.now
-				pay.subject = "保亨生物订单(#{order_id})"
-				pay.installment = @payment.pay_bill.order.installment if @payment.pay_bill.order
-		        pay.openid = @user.account.login_name
-		        pay.spbill_create_ip = request.remote_ip
-		    end
+					result = ModecPay.verify_return(adapter, params, { :bill99_redirect_url=>detail_order_url(@order),:ip=>request.remote_ip })
 
-		    if adapter=='alipaywap'
-		        render :text=>@modec_pay.html_form_alipaywap
-		    elsif adapter=='wxpay'
-		        render :inline=>@modec_pay.html_form_wxpay
-		     # render :inline=>@modec_pay.html_form_wxpay,:layout=>"patch"
-		    else
-				 render :inline=>@modec_pay.html_form
-		    end
+					if result.is_a?(Hash) && result.present?
+						response = result.delete(:response)
+						if result.delete(:payment_id) == @payment.payment_id.to_s && !@payment.paid?
+							@payment.update_attributes(result)
+							@order.update_attributes(:pay_status=>'1')
+							Ecstore::OrderLog.new do |order_log|
+								order_log.rel_id = @order.order_id
+								order_log.op_id = @user.member_id
+								order_log.op_name = @user.login_name
+								order_log.alttime = @payment.t_payed
+								order_log.behavior = 'payments'
+								order_log.result = "SUCCESS"
+								order_log.log_text = "订单支付成功！"
+							end.save
+						end
+					else
+						response =  result
+					end
 
-			Ecstore::PaymentLog.new do |log|
-				log.payment_id = @payment.payment_id
-				log.order_id = order_id
-				log.pay_name = adapter
-				log.request_ip = request.remote_ip
-				log.request_params = @modec_pay.fields.to_json
-				log.requested_at = Time.now
-			end.save
-
-		else
-			flash[:msg] = '不能支付,请查看订单状态'
-		end
-	end
-
-	def callback
-		ModecPay.logger.info "[#{Time.now}][#{request.remote_ip}] #{request.request_method} \"#{request.fullpath}\""
-
-		@payment = Ecstore::Payment.find(params.delete(:id))
-		return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
-		
-		adapter  = params.delete(:adapter)
-		params.delete :controller
-		params.delete :action
-
-		@payment.payment_log.update_attributes({:return_ip=>request.remote_ip,:return_params=> params,:returned_at=>Time.now}) if @payment.payment_log
-
-		@order = @payment.pay_bill.order
-		@user = @payment.user
-
-		result = ModecPay.verify_return(adapter, params, { :bill99_redirect_url=>detail_order_url(@order),:ip=>request.remote_ip })
-
-		if result.is_a?(Hash) && result.present?
-			response = result.delete(:response)
-			if result.delete(:payment_id) == @payment.payment_id.to_s && !@payment.paid?
-				@payment.update_attributes(result)
-				@order.update_attributes(:pay_status=>'1')
-				Ecstore::OrderLog.new do |order_log|
-					order_log.rel_id = @order.order_id
-					order_log.op_id = @user.member_id
-					order_log.op_name = @user.login_name
-					order_log.alttime = @payment.t_payed
-					order_log.behavior = 'payments'
-					order_log.result = "SUCCESS"
-					order_log.log_text = "订单支付成功！"
-				end.save
-			end
-		else
-			response =  result
-		end
-		
 		#redirect_to detail_order_path(@payment.pay_bill.order)
-    redirect_to  "/orders/norsh_show_order?id=#{@payment.pay_bill.order.order_id}"
+		redirect_to  "/orders/norsh_show_order?id=#{@payment.pay_bill.order.order_id}"
+	else 
+		render :text => '支付失败'
+	end
+elsif @order.part_pay < @order.total_amount
+	money = @order.part_pay
+	if user_deduct(money, acct_type, remark)
+		@payment.update_attributes(:money => (@order.total_amount - @order.part_pay))
+      
+        redirect_to "/payments/pay?id=#{@payment.payment_id}"  #pay_payment_path(@payment.payment_id)
+      else
+      	render :text => '支付失败'
+      end
+    else 
+    	render :text => '余额支付有误'
+    end
+
+  else
+  	redirect_to order_url(@order)
+  end
+end
+
+def debug
+	render :text=>"show"
+end
+
+def show
+	@payment = Ecstore::Payment.find_by_payment_id(params[:id])
+end
+
+def pay
+	@payment = Ecstore::Payment.find(params[:id])
+	if @payment && @payment.status == 'ready'
+		adapter = @payment.pay_app_id
+		order_id = @payment.pay_bill.rel_id
+		@modec_pay = ModecPay.new adapter do |pay|
+			pay.return_url = "#{site}/payments/#{adapter}/callback?payment_id=#{@payment.payment_id}"
+			pay.notify_url = "#{site}/payments/#{adapter}/notify?payment_id=#{@payment.payment_id}"
+			pay.pay_id = @payment.payment_id
+			pay.pay_amount = @payment.cur_money.to_f
+			pay.pay_time = Time.now
+			pay.subject = "邦邦芒订单(#{order_id})"
+			pay.installment = @payment.pay_bill.order.installment if @payment.pay_bill.order
+			pay.openid = @user.account.login_name
+			pay.spbill_create_ip = request.remote_ip
+		end
+
+		if adapter=='alipaywap'
+			render :text=>@modec_pay.html_form_alipaywap
+		elsif adapter=='wxpay'
+			render :inline=>@modec_pay.html_form_wxpay
+		     # render :inline=>@modec_pay.html_form_wxpay,:layout=>"patch"
+		   else
+		   	render :inline=>@modec_pay.html_form
+		   end
+
+		   Ecstore::PaymentLog.new do |log|
+		   	log.payment_id = @payment.payment_id
+		   	log.order_id = order_id
+		   	log.pay_name = adapter
+		   	log.request_ip = request.remote_ip
+		   	log.request_params = @modec_pay.fields.to_json
+		   	log.requested_at = Time.now
+		   end.save
+
+		 else
+		 	flash[:msg] = '不能支付,请查看订单状态'
+		 end
+		end
+
+		def callback
+			ModecPay.logger.info "[#{Time.now}][#{request.remote_ip}] #{request.request_method} \"#{request.fullpath}\""
+
+			@payment = Ecstore::Payment.find(params.delete(:id))
+			return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
+
+			adapter  = params.delete(:adapter)
+			params.delete :controller
+			params.delete :action
+
+			@payment.payment_log.update_attributes({:return_ip=>request.remote_ip,:return_params=> params,:returned_at=>Time.now}) if @payment.payment_log
+
+			@order = @payment.pay_bill.order
+			@user = @payment.user
+
+			result = ModecPay.verify_return(adapter, params, { :bill99_redirect_url=>detail_order_url(@order),:ip=>request.remote_ip })
+
+			if result.is_a?(Hash) && result.present?
+				response = result.delete(:response)
+				if result.delete(:payment_id) == @payment.payment_id.to_s && !@payment.paid?
+					@payment.update_attributes(result)
+					@order.update_attributes(:pay_status=>'1')
+					Ecstore::OrderLog.new do |order_log|
+						order_log.rel_id = @order.order_id
+						order_log.op_id = @user.member_id
+						order_log.op_name = @user.login_name
+						order_log.alttime = @payment.t_payed
+						order_log.behavior = 'payments'
+						order_log.result = "SUCCESS"
+						order_log.log_text = "订单支付成功！"
+					end.save
+				end
+			else
+				response =  result
+			end
+
+		#redirect_to detail_order_path(@payment.pay_bill.order)
+		redirect_to  "/orders/norsh_show_order?id=#{@payment.pay_bill.order.order_id}"
 	end
 
 	def test_notify
@@ -163,7 +213,7 @@ class Store::PaymentsController < ApplicationController
 				pay.fields = {}
 
 				time = Time.now
-        if adapter == "ips"
+				if adapter == "ips"
           # ===Ips
           pay.fields["Mer_code"] = "000015"
           pay.fields["Billno"] = @payment.payment_id,
@@ -182,7 +232,7 @@ class Store::PaymentsController < ApplicationController
           pay.fields["ServerUrl"] = ""
           pay.fields["SignMD5"] = ""
         end
-				if adapter == "alipay"
+        if adapter == "alipay"
 					# ===Alipay
 					pay.fields["discount"] = "0.00"
 					pay.fields["payment_type"] = "1"
@@ -228,8 +278,8 @@ class Store::PaymentsController < ApplicationController
 						"ext2"=>"",
 						"payResult"=>"10",
 						"errCode"=>""}
-				end
-				if adapter == "bcom"
+					end
+					if adapter == "bcom"
 					# ===Bcom
 					# 301310053119675|13786093763144|929.00|CNY|20130908| |20130908|111153|ABFF516B|1|5.57|2| | |119.165.52.9|www.i-modec.com| |
 					pay.sorter =[]
@@ -248,12 +298,12 @@ class Store::PaymentsController < ApplicationController
 						'CARDTYPE'=>'2',
 						'BankMoNo'=>'',
 						'ErrDis'=>''
-					}.collect{ |key,val| val }.join("|")
-					sign = ModecPay::Bcom::Sign.new.generate_sign(src)
-					pay.fields['notifyMsg'] = "#{src}|#{sign}"
-				end
-				
-				if adapter == "icbc"
+						}.collect{ |key,val| val }.join("|")
+						sign = ModecPay::Bcom::Sign.new.generate_sign(src)
+						pay.fields['notifyMsg'] = "#{src}|#{sign}"
+					end
+
+					if adapter == "icbc"
 					# === Icbc
 					pay.sorter = []
 					b2c_res = {
@@ -272,76 +322,100 @@ class Store::PaymentsController < ApplicationController
 									'tranSerialNo'=>'2013092315051111'
 								}
 							}
-						},
-						'custom'=>{
-							'verifyJoinFlag'=>'0',
-							'JoinFlag'=>'0',
-							'UserNum'=>''
-						},
-						'bank'=>{
-							'TranBatchNo'=>'',
-							'notifyDate'=>(time+5.seconds).strftime('%Y%m%d%H%M%S'),
-							'tranStat'=>'1',
-							'comment'=>''
-						}
-					}
+							},
+							'custom'=>{
+								'verifyJoinFlag'=>'0',
+								'JoinFlag'=>'0',
+								'UserNum'=>''
+								},
+								'bank'=>{
+									'TranBatchNo'=>'',
+									'notifyDate'=>(time+5.seconds).strftime('%Y%m%d%H%M%S'),
+									'tranStat'=>'1',
+									'comment'=>''
+								}
+							}
 
-					xml = '<?xml version="1.0" encoding="GBK" standalone="no"?>'+b2c_res.to_xml(:root=>"B2CRes",:skip_instruct=>true,:indent=>0)
-					sign = ModecPay::Icbc::Sign.new
-					pay.fields['merVAR'] = ''
-					pay.fields['notifyData'] = sign.encodebase64(xml)
-					pay.fields['signMsg'] = sign.generate_sign2(xml)
+							xml = '<?xml version="1.0" encoding="GBK" standalone="no"?>'+b2c_res.to_xml(:root=>"B2CRes",:skip_instruct=>true,:indent=>0)
+							sign = ModecPay::Icbc::Sign.new
+							pay.fields['merVAR'] = ''
+							pay.fields['notifyData'] = sign.encodebase64(xml)
+							pay.fields['signMsg'] = sign.generate_sign2(xml)
+						end
+
+					end
+
+					render :inline=>@modec_pay.html_form
+				else
+					render :text=>"alreay paid"
+				end
+			end
+
+			def notify
+				ModecPay.logger.info "[#{Time.now}][#{request.remote_ip}] #{request.request_method} \"#{request.fullpath}\" params : #{ params.to_s }"
+
+				@payment = Ecstore::Payment.find(params.delete(:id))
+
+				return render :nothing=>true, :status=>:forbidden if @payment.paid?
+
+				adapter  = params.delete(:adapter)
+				params.delete :controller
+				params.delete :action
+
+				@order = @payment.pay_bill.order
+				@user = @payment.user
+
+				result = ModecPay.verify_notify(adapter,params,{ :bill99_redirect_url=>"#{site}/#{order_path(@order)}",:ip=>request.remote_ip })
+
+				@payment.payment_log.update_attributes({:notify_ip=>request.remote_ip,
+					:notify_params=> params.to_json,
+					:notified_at=>Time.now,
+					:result=>result.to_json}) if @payment.payment_log
+
+				if result.is_a?(Hash) && result.present?
+					response = result.delete(:response)
+					if result.delete(:payment_id) == @payment.payment_id.to_s && !@payment.paid?
+						@payment.update_attributes(result)
+						@order.update_attributes(:pay_status=>'1')
+						Ecstore::OrderLog.new do |order_log|
+							order_log.rel_id = @order.order_id
+							order_log.op_id = @user.member_id
+							order_log.op_name = @user.login_name
+							order_log.alttime = @payment.t_payed
+							order_log.behavior = 'payments'
+							order_log.result = "SUCCESS"
+							order_log.log_text = "订单支付成功！"
+						end.save
+					end
+				else
+					response =  result
+				end
+
+				render :text=>response
+			end
+
+			private
+			def user_deduct(money, acct_type, order_no, remark)
+				balance = user_wallet
+				user_deduct_url = 'http://103.16.125.100:9018/user_deduct'
+				info_hash = {}
+				info_hash[:uid] = current_user.uid
+				info_hash[:money] = money
+
+				info_hash = params_info(info_hash)
+				info_hash[:acct_type] = 0
+				info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
+				Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid
+				info_hash[:remark] = url_encode remark
+				res_data = RestClient.get user_deduct_url, {:params => info_hash}
+				res_data_hash = ActiveSupport::JSON.decode res_data
+				if res_data_hash['code'] == 0
+					return true
+				else
+					return false
 				end
 				
 			end
-
-			render :inline=>@modec_pay.html_form
-		else
-			render :text=>"alreay paid"
-		end
-	end
-
-	def notify
-		ModecPay.logger.info "[#{Time.now}][#{request.remote_ip}] #{request.request_method} \"#{request.fullpath}\" params : #{ params.to_s }"
-
-		@payment = Ecstore::Payment.find(params.delete(:id))
-
-		return render :nothing=>true, :status=>:forbidden if @payment.paid?
-
-		adapter  = params.delete(:adapter)
-		params.delete :controller
-		params.delete :action
-
-		@order = @payment.pay_bill.order
-		@user = @payment.user
-
-		result = ModecPay.verify_notify(adapter,params,{ :bill99_redirect_url=>"#{site}/#{order_path(@order)}",:ip=>request.remote_ip })
-
-		@payment.payment_log.update_attributes({:notify_ip=>request.remote_ip,
-			                                                                           :notify_params=> params.to_json,
-			                                                                           :notified_at=>Time.now,
-			                                                                           :result=>result.to_json}) if @payment.payment_log
-
-		if result.is_a?(Hash) && result.present?
-			response = result.delete(:response)
-			if result.delete(:payment_id) == @payment.payment_id.to_s && !@payment.paid?
-				@payment.update_attributes(result)
-				@order.update_attributes(:pay_status=>'1')
-				Ecstore::OrderLog.new do |order_log|
-					order_log.rel_id = @order.order_id
-					order_log.op_id = @user.member_id
-					order_log.op_name = @user.login_name
-					order_log.alttime = @payment.t_payed
-					order_log.behavior = 'payments'
-					order_log.result = "SUCCESS"
-					order_log.log_text = "订单支付成功！"
-				end.save
-			end
-		else
-			response =  result
 		end
 
-		render :text=>response
 	end
-
-end

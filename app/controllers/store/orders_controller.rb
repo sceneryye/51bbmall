@@ -139,10 +139,13 @@ class Store::OrdersController < ApplicationController
 
 
   def create
-    addr = Ecstore::MemberAddr.find_by_addr_id(params[:member_addr])
-    ["name","area","addr","zip","tel","mobile"].each do |key,val|
-      params[:order].merge!("ship_#{key}"=>addr.attributes[key])
+    if addr = Ecstore::MemberAddr.find_by_addr_id(params[:member_addr])
+      ["name","area","addr","zip","tel","mobile"].each do |key,val|
+        params[:order].merge!("ship_#{key}"=>addr.attributes[key])
+      end
+    else
     end
+    
 
     return_url=params[:return_url]
     platform=params["platform"];
@@ -327,7 +330,7 @@ class Store::OrdersController < ApplicationController
     res_data_hash = ActiveSupport::JSON.decode res_data
 
     if res_data_hash['code'] == 0
-      @advance = res_data_hash['data']['balance']
+      @advance = res_data_hash['data']['balance'] / 100
     else
       render :text => message_error = "错误：#{res_data_hash['msg']}"
     end

@@ -74,15 +74,15 @@ module ApplicationHelper
       end
 
       def page_title
-        (content_for :title).present? ? (content_for :title) : '保亨生物 佐康茶'
+        (content_for :title).present? ? (content_for :title) : '邦邦芒'
       end
 
       def meta_keywords
-        (content_for :keywords).present? ? (content_for :keywords) : '佐康茶 糖尿病'
+        (content_for :keywords).present? ? (content_for :keywords) : '邦邦芒'
       end
 
       def meta_description
-        (content_for :description).present? ? (content_for :description) : '保亨生物 佐康茶'
+        (content_for :description).present? ? (content_for :description) : '邦邦芒'
       end
 
   def token_fieldes
