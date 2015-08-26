@@ -395,7 +395,12 @@
     </div>
 </header>
 <!-- ./header -->
-<%= yield%>
+<div>
+    <div class="col-md-2" style="float:left">
+      <%=render "patch/shared/menu"%>
+  </div>
+  <%= yield%>
+</div>
 <!-- footer -->
 <footer id="footer">
     <div class="footer-top" style="display:none">
@@ -474,10 +479,7 @@
         </div>
         <div class="footer-middle">
             <div class="container">
-            <%if @footer = Ecstore::Footer.last%>
-                <%= raw @footer.body%>
-            <%end%>
-                <!-- <div class="row">
+                <div class="row">
                     <div class="row">
                         <div class="col-md-3 col-sm-4 block-link-wapper">
                             <div class="block-link">
@@ -521,7 +523,7 @@
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
         <div class="footer-social">

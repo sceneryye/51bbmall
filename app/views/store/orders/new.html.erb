@@ -90,7 +90,7 @@
         <span class="extra-desc"></span>
       </label>
 
-		<%if @user.advance >= @cart_total%>
+		<%if @advance >= @cart_total%>
 	 	<label class="radio" >
 			<%=f.radio_button :payment, "deposit"%> <b>预存款</b>
 		</label>

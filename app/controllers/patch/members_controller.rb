@@ -4,8 +4,9 @@ require 'axlsx'
 class Patch::MembersController < ApplicationController
 	
 	before_filter :authorize_user!
-	layout 'standard'
+	#layout 'standard'
 	#layout "patch"
+  layout 'member'
 
 	before_filter do
 		clear_breadcrumbs
@@ -17,6 +18,7 @@ class Patch::MembersController < ApplicationController
 		@orders = @user.orders.limit(5)
 		@unpay_count = @user.orders.where(:pay_status=>'0',:status=>'active').size
 		add_breadcrumb("我的邦邦芒")
+    @advance = user_wallet
 	end
 
 	def orders
@@ -99,6 +101,7 @@ class Patch::MembersController < ApplicationController
 	def advance
 		@advances = @user.member_advances.paginate(:page=>params[:page],:per_page=>10)
 		add_breadcrumb("我的预存款")
+    @advance = user_wallet
 	end
 	
 	def favorites
