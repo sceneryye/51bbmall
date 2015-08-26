@@ -44,7 +44,7 @@ class Auth::BbmallController < ApplicationController
         if res_data_hash['data']['first'] == '1'
           msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
           send_sms(info_hash[:phone], msg_send) # send password to user
-          session.delete(send_sms_msg)
+          session.delete(:send_sms_msg)
           redirect_to api_login_path
         else render :text => '该手机号码已被注册'
         end
@@ -142,17 +142,14 @@ class Auth::BbmallController < ApplicationController
     def user_info
       user_info_url = 'http://103.16.125.100:9018/user_info'
       info_hash = {}
-      #info_hash[:account] = params[:ecstore_account][:login_name]
-      info_hash[:account] = '13501725689'
+      info_hash[:account] = current_user.login_name
       info_hash = params_info(info_hash)
 
       res_data = RestClient.get user_info_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
-      info_hash[:phone] = info_hash[:account]
 
       if res_data_hash['code'] == 0
         res_data_hash['data']['password'] = de_code(res_data_hash['data']['password'])
-        render :text => res_data_hash['data']
       else
         return render :text => message_error = "错误：#{res_data_hash['msg']}"
       end
@@ -236,13 +233,13 @@ class Auth::BbmallController < ApplicationController
       user_charge_url = 'http://103.16.125.100:9018/user_charge'
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid
-      info_hash[:money] = params[:money]      
+      info_hash[:money] = params[:money].to_i      
       info_hash = params_info(info_hash)
-      info_hash[:order_no] = current_user.client_id[-1] + current_user.brand_id[-1] + rand(10).to_s.rjust(2, '0') + 
+      info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
       Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid 
-      info_hash[:acct_type] = params[:acct_type]
-      info_hash[:valid_month] = params[:valid_month]     
-      info_hash[:remark] = params[:remark]     
+      info_hash[:acct_type] = params[:acct_type].to_i
+      info_hash[:valid_month] = params[:valid_month].to_i     
+      info_hash[:remark] = url_encode params[:remark]     
       res_data = RestClient.get user_charge_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
 
@@ -259,16 +256,18 @@ class Auth::BbmallController < ApplicationController
       user_deduct_url = 'http://103.16.125.100:9018/user_deduct'
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid
-      info_hash[:money] = params[:money] 
-      if info_hash[:money] <= balance     
+      info_hash[:money] = params[:money].to_i
+      if info_hash[:money] <= balance.to_i     
         info_hash = params_info(info_hash)
-        info_hash[:acct_type] = params[:acct_type]
+        info_hash[:acct_type] = params[:acct_type].to_i
+        info_hash[:remark] = url_encode params[:remark]
+        #return render :text => info_hash
         res_data = RestClient.get user_deduct_url, {:params => info_hash}
         res_data_hash = ActiveSupport::JSON.decode res_data
         if res_data_hash['code'] == 0
           render :text => res_data_hash
         else
-          render :text => message_error = "错误：#{res_data_hash['msg']}"
+          render :text => message_error = "#{res_data_hash['code']}：#{res_data_hash['msg']}"
         end
       else
         render :text => "您的余额不足，当前余额为:#{balance}"

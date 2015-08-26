@@ -103,6 +103,7 @@ resources :vshop do
  get 'api_forget_pwd_step1' => 'api#forget_pwd_step1'
  get 'api_forget_pwd_step2' => 'api#forget_pwd_step2'
  get 'api_user_deduct' => 'api#user_deduct'
+ get 'api_user_charge' => 'api#user_charge'
  # get 'login'=>"sessions#new"
  get 'login'=>"sessions#login"
  get 'mlogin'=>"sessions#new_mobile"
