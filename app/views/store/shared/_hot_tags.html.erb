@@ -1,0 +1,20 @@
+<!-- tags -->     
+<%if @home.nil?
+    @home = Ecstore::Home.last   
+end%>           
+<div class="block block-tags">
+    <div class="block-head">
+        <h4 class="widget-title">热门标签</h4></div>
+        <div class="block-inner kt-owl-carousel" data-nav="true" data-loop="true" data-items="1" data-autoplay="true">
+            <div class="tagcloud">
+            <%@home.keywords.each_with_index do |key,index|%>
+                <a href="<%=key['link_url']%>"><%=key["word"]%></a>
+                <%if index%5==4 && @home.keywords.size - 1 > index %>
+                    </div>
+                    <div class="tagcloud">
+                <%end%>
+            <%end%>                                   
+        </div>
+    </div>
+</div>
+<!-- ./tags -->                

@@ -1,0 +1,55 @@
+<!-- Top review -->
+<div class="block block-top-review">
+    <div class="block-head">
+        <h4 class="widget-title">人气商品</h4>
+    </div>
+    <div class="block-inner">
+        <div class="kt-owl-carousel" data-nav="true" data-loop="true" data-items="1">
+            <ul class="list-product">
+                <% goods_ids =""%>
+                <% sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Top Review'"%>
+                <% results = ActiveRecord::Base.connection.execute(sql)%>
+                <% results.each(:as => :hash) do |row|%>
+                <%   goods_ids= row["goods_ids"]%>
+                <% end%>
+                <% if goods_ids.size>0%>
+                <%   sql = " bn in (#{goods_ids})"%>
+                <%   @top_review = Ecstore::Good.where(sql)%>
+                <% end
+                i=0
+                %>
+                <%@top_review.each do |good|%>
+                <%i+=1%>
+                <li class="product <%='active' if i%5==1%>">
+                    <%=link_to good_path(good.bn), :target=>"_blank",:class=>"product-name" do %>
+                        <span class="order"><%=i%></span>
+                        <%=good.name%>
+                    <%end%>                           
+                    <div class="product-info">
+                        <div class="price-box">
+                            <SPAN class="product-price">￥<%=good.price%></SPAN>
+                            <SPAN class="product-price-old">￥<%=good.mktprice%></SPAN>                                          </div>
+                        <div class="product-star">
+                            <I class="fa fa-star"></I>                               
+                            <I class="fa fa-star"></I>                                           
+                            <I class="fa fa-star"></I> 
+                            <I class="fa fa-star"></I>
+                            <I class="fa fa-star-half-o"></I>
+                        </div>
+                        <div class="product-img">
+                            <%=link_to good_path(good.bn), :target=>"_blank" do %>
+                                <%=image_tag good.list_default_pic,:alt=>good.name%>
+                            <%end%>                   
+                        </div>
+                    </div>
+                </li>
+                <%if i%5==0%>
+                    </ul>
+                    <ul class="list-product">
+                <%end%>
+                <%end if @top_review%>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- ./Top review -->

@@ -1,32 +1,39 @@
-<div class="tree-menu" id="cats_tree">
-	<% 
-		conditions = {}
-		conditions = { :brand_id=> @brand.brand_id  } if @brand 
-	%>
-	<%@top_cats.each_with_index do |top_cat,index|%>
-		<%if top_cat.all_goods(conditions).size>0%>
-		<div class="title-level1">
-			<%=link_to top_cat.cat_name, brand_path(:cat_id=>top_cat.cat_id)%>
-		</div>
-		<ul class="items-level1 ">
-			<%top_cat.categories.order("p_order asc").each do |scat|%>
-				<%if scat.all_goods(conditions).size > 0%>
-					<li class="item-level1">
-						<div class="title-level2"><%=link_to scat.cat_name,brand_path(:cat_id=>scat.cat_id)%></div>
-						<%if scat.categories.present?%>
-							<ul class="items-level2">
-							<%scat.categories.each do |tcat|%>
-								<%if tcat.all_goods(conditions).size>0%>
-								<li class="item-level2"><%=link_to tcat.cat_name,brand_path(:cat_id=>tcat.cat_id)%></li>
-								<%end%>
-							<%end%>
-							</ul>
-						<%end%>
-					</li>
-				<%end%>
-			<%end%>
-		</ul>
-		<%end%>
-	<%end%>
+<% 
+	conditions = {}
+	conditions = { :brand_id=> @brand.brand_id  } if @brand 
+%>
 
+<div class="block block-sidebar">
+	<div class="block-head">	
+		<h5 class="widget-title">品牌商品分类</h5>
+	</div>
+	<div class="block-inner">
+		<div class="block-list-category">
+			<ul class="tree-menu">
+				<%@top_cats.each_with_index do |top_cat,index|%>
+					<%if top_cat.all_goods(conditions).size>0%>	
+                <li class="active">
+                	<%=link_to top_cat.cat_name, brand_path(:cat_id=>top_cat.cat_id)%>
+                    <ul>
+                    	<%top_cat.categories.order("p_order asc").each do |scat|%>
+							<%if scat.all_goods(conditions).size > 0%>
+	                        	<li><span></span><%=link_to scat.cat_name,brand_path(:cat_id=>scat.cat_id)%></li>
+	                        	<%if scat.categories.present?%>
+									<ul>
+									<%scat.categories.each do |tcat|%>
+										<%if tcat.all_goods(conditions).size>0%>
+										<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=link_to tcat.cat_name,brand_path(:cat_id=>tcat.cat_id)%></li>
+										<%end%>
+									<%end%>
+									</ul>
+								<%end%>
+	                        <%end%>
+                        <%end%>
+                    </ul>
+                </li>
+                <%end%>
+                <%end%>
+            </ul>
+		</div>
+	</div>
 </div>

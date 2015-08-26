@@ -1,0 +1,38 @@
+<!-- carousel-slide -->
+<div class="block carousel-slide">
+    <div class="block-head">
+        <h4 class="widget-title">限时特价</h4>
+    </div>
+    <div class="block-inner">
+        <ul class="list-slide kt-owl-carousel owl-carousel owl-theme owl-loaded" data-loop="true" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:1},&quot;600&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:1}}">
+          <% goods_ids =""%>
+           <% sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Big Save'"%>
+           <% results = ActiveRecord::Base.connection.execute(sql)%>
+           <% results.each(:as => :hash) do |row|%>
+           <%   goods_ids= row["goods_ids"]%>
+           <% end%>
+           <% if goods_ids.size>0%>
+           <%   sql = " bn in (#{goods_ids})"%>
+           <%   @big_save = Ecstore::Good.where(sql)%>
+           <% end%>
+            <%@big_save.each do |good|%>
+                <li>
+                    <div class="image">
+                        <%=link_to good_path(good.bn), :target=>"_blank" do %>
+                            <%=image_tag good.list_default_pic,:alt=>good.name%>
+                        <%end%>
+                    </div>
+                  <div class="title">
+                    <%=link_to good.name,good_path(good.bn),:target=>"_blank"%>
+                  </div>
+                  <div class="button-action">
+                    <a class="button-radius btn-add-cart" title="Add to Cart" href="<%=good_path(good.bn)%>">
+                        立即购买<span class="icon"></span>
+                    </a>                                 
+                  </div>
+                </li>
+            <%end if @special%>                   
+         </ul>
+    </div>
+</div>
+<!-- ./carousel-slide -->

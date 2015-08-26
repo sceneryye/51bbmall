@@ -8,31 +8,50 @@
 	<%=raw Ecstore::Config.get(:brand_cover) %>
 <%end%>
 
-<%render "store/shared/brand_position"%>
-<div class="container">
+ <!-- popular cat -->
+ <div class="container">
+  <div class="row">
+    <%=render "store/shared/brand_position"%>
+        <div class="row">
+            <div class="block-popular-cat2">
+                <h3 class="title"> </h3>
+                <%i=0
+                @brands.each do |brand|
+                	i+=1
+                	if i%5==1                
+	                 if i!=1 && i<@brands.size%>
+		                </ul>
+		                        </div>
+		                    </div>
+		                </div>
+		            <%end%>
+	                <div class="block block-popular-cat2-item box<%=i/5+1%>">
+	                    <div class="block-inner">
+	                        <div class="cat-name"><%=i/5+1%></div>
+	                        <div class="box-subcat">
+	                            <ul class="list-subcat kt-owl-carousel" data-margin="0" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"1000":{"items":5}}'>
+	                <%end%>            
+								<li>
+									<div>
+									<%=link_to brand_path(brand),:class=>"name #{brand.status}" do%>
+										<div class="cat-name"><%=brand.brand_name%></div>
+										
+										<%=image_tag '/assets/store/hot2.gif' if brand.status=='special'%>
+										<%=image_tag '/assets/store/new.png' if brand.status=='new'%>
+										<%=image_tag "/img/brands/b#{brand.brand_id}.jpg"%>
+									<%end%>
+									</div>
+									<%if brand.status == 'coming'%>
+									<div><%=image_tag '/assets/store/comingsoon2.gif'%></div>
+									<%end%>
 
-	<ul class="brands clearfix">
-		<div class="title">品牌索引</div>
-
-		<%@brands.each do |brand|%>
-			<li>
-				<div>
-				<%=link_to brand_path(brand),:class=>"name #{brand.status}" do%>
-					<%=brand.brand_name%>
-					<%=image_tag '/assets/store/hot2.gif' if brand.status=='special'%>
-					<%=image_tag '/assets/store/new.png' if brand.status=='new'%>
+								</li>
 				<%end%>
-				</div>
-				<div>
-					<%=link_to truncate2(brand.brand_desc.html_safe,:length=>15),brand_path(brand),:class=>"desc",:title=>brand.brand_desc.html_safe%>
-				</div>
-				<%if brand.status == 'coming'%>
-				<div><%=image_tag '/assets/store/comingsoon2.gif'%></div>
-				<%end%>
-
-			</li>
-		<%end%>
-	</ul>
-</div>
-<%=javascript_include_tag "bootstrap-transition","bootstrap-carousel"%>
-
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <!-- ./popular cat -->
