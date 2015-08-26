@@ -112,6 +112,7 @@ $(document).ready(function(){
   $("#specs_container").on("click",".spec-value",function(){
     $("#cart_msg").empty();
 
+    
     if($(this).hasClass("image") && $("#specs_container .spec-value[data-images]").length > 1){
        var images = $(this).data("images").split(/\s+/);
        var jcarouselList = $(this).closest(".product_container").find("ul.jcarousel-list li.jcarousel-item");
@@ -138,10 +139,12 @@ $(document).ready(function(){
     $(this).closest('.spec-item').find(":hidden").val($(this).data("value"));
     $(this).closest('.spec-values').find(".spec-value").removeClass("selected");
     $(this).addClass("selected");
+    console.log($(this).closest('.spec-item').find(":hidden").val());
+
     var spec_values = []
     var $specs = $("#specs_container");
     $specs.find("input[name='product[specs][]']").each(function(){
-       var tmp = $(this).val();
+       var tmp = $(this).val();       
        if(tmp.length>0){
           spec_values.push(tmp);
        }

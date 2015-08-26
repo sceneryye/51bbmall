@@ -47,46 +47,9 @@
                             <div class="desc"><%=raw @good.desc%><br> 
                                 规格:<%=raw @good.spec_info%>
                             </div>
-                            <div class="variations-box">
+                            <div class="desc">品牌：<%=@good.brand.brand_name if @good.brand%></div>
                             <%=render :partial=>"store/goods/product/new_spec",:locals=>{ :good=>@good }%>
-                                <table class="variations-table">
-                                    <tbody><tr>
-                                        <td class="table-label">Color</td>
-                                        <td class="table-value">
-                                            <ul class="list-check-box color">
-                                                <li><a class="selected" href="/img/Edo - Product detail.html"><span style="background:#4d6dbd;">Blue</span></a></li>
-                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#fb5d5d;">Blue</span></a></li>
-                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#2fbcda;">Blue</span></a></li>
-                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#ffe00c;">Blue</span></a></li>
-                                                <li><a href="/img/Edo - Product detail.html"><span style="background:#72b226;">Blue</span></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-label">Size</td>
-                                        <td class="table-value">
-                                            <ul class="list-check-box">
-                                                <li><a href="/img/Edo - Product detail.html">XL</a></li>
-                                                <li><a href="/img/Edo - Product detail.html">X</a></li>
-                                                <li><a href="/img/Edo - Product detail.html">S</a></li>
-                                                <li><a href="/img/Edo - Product detail.html">XS</a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-label">数量</td>
-                                        <td class="table-value">
-                                            <div class="box-qty">
-                                                <a href="#" class="quantity-minus">-</a>
-                                                <input type="text" class="quantity" value="1">
-                                                <a href="#" class="quantity-plus">+</a>
-                                            </div>
-                                            <a href="#" class="button-radius btn-add-cart add-cart-product">加入购物车<span class="icon"></span></a>
-                                           
-                                        </td>
-                                    </tr>
-                                </tbody></table>
-                            </div>
+                            
                             <div class="box-control-button">
                                 <a class="link-wishlist" href="#">收藏</a>
                                 <a class="link-compare" href="#">比较商品</a>
