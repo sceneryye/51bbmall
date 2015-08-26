@@ -40,7 +40,7 @@ class Admin::BrandAdmsController < Admin::BaseController
   end
 
   def destroy
-    @brand  = Ecstore::Footer.find(params[:id])
+    @brand  = Ecstore::Brand.find(params[:id])
     @brand.destroy
     redirect_to admin_brand_adms_url
   end
