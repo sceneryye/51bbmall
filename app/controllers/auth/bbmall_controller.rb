@@ -324,10 +324,10 @@ class Auth::BbmallController < ApplicationController
           pw_enc = res_data_hash['data']['password']
           password = de_code(pw_enc)
           msg_send =  url_encode("您的密码是：") + password + url_encode("，请妥善保存或立即修改密码。")
-          send_sms(info_hash[:phone], msg_send) # send password to user
+          send_sms(info_hash[:account], msg_send) # send password to user
           session.delete(:send_sms_msg)
           if res_data_hash['code'] == 0
-            redirect_to api_login_path
+            redirect_to login_path
           else
             render :text => res_data_hash['msg']
           end
