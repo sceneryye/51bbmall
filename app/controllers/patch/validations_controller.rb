@@ -2,7 +2,7 @@
 require 'sms'
 require 'securerandom'
 class Patch::ValidationsController < ApplicationController
-	layout 'simple'
+	layout 'member'
 
 
 

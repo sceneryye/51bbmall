@@ -82,18 +82,7 @@ class Store::GoodsController < ApplicationController
  end
 
   def show
-    goods_ids =""
-    sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Top Sellers'"
-    results = ActiveRecord::Base.connection.execute(sql)
-    results.each(:as => :hash) do |row|
-      goods_ids= row["goods_ids"]
-    end
-    if goods_ids.size>0
-      sql = " bn in (#{goods_ids})"
-      @top_sellers = Ecstore::Good.where(sql)
-    end
-
-
+    
     @wechat_user=params[:wechatuser]
 
     @good = Ecstore::Good.includes(:specs,:spec_values,:cat).where(:bn=>params[:id]).first
