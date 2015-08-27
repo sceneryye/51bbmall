@@ -67,7 +67,7 @@
                                     <span>￥<%=(line_item.product.price*line_item.quantity)%></span>
                                 </td>
                                 <td class="action">
-                                    <%=link_to "删 除",cart_path(line_item.obj_ident),:method=>:delete%>
+                                    <%=link_to "删 除",cart_path(line_item.obj_ident),:class=>"delete btn btn-danger",:remote=>true,:method=>:delete%>
                                 </td>
                             </tr>
                             <%end%>
@@ -91,4 +91,5 @@
 
 <script type="text/javascript">
       $(window.document).find(".cart-number").text("(<%=@cart_total_quantity%>)");
+      $("#line_<%=line_item.obj_ident%>").remove();
 </script>
