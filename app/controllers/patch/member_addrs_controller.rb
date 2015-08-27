@@ -1,7 +1,7 @@
 #encoding:utf-8
 class Patch::MemberAddrsController < ApplicationController
   # layout 'standard'
-  layout "patch"
+  layout "member"
 
   before_filter do
     clear_breadcrumbs

@@ -1,2 +1,55 @@
 <%=render "shared/metable", :resource => @page %>
-<%=@page.body.html_safe%>
+<div class="container">
+	<div class="row">
+		<div class="block block-breadcrumbs">
+			<ul>
+				<li class="home">
+					<a href="/"><i class="fa fa-home"></i></a>
+					<span></span>
+				</li>
+				<li><a href="#">信息中心</a>
+					<span></span>
+				</li>
+				<li><%=@page.title%></li>
+			</ul>
+		</div>
+		<div class="row">
+			<div class="col-sm-4 col-md-3">
+				<div class="block block-widget">
+					<div class="block-head">
+						<h5 class="widget-title">信息中心</h5>
+					</div>
+					<div class="block-inner">
+						<h4>新手入门</h4>
+						<ul class="list-link" style="margin-left:10px">
+							<li><a href="/pages/help_agreement">用户注册协议</a></li>
+							<li><a href="/pages/help_problem">常见问题</a></li>
+						</ul>
+						<h4>支付配送方式</h4>
+						<ul class="list-link" style="margin-left:10px">
+							<li><a href="/pages/help_pay">网上支付</a></li>
+							<li><a href="/pages/help_sign">商品验货及签收</a></li>
+						</ul>
+						<h4>售后服务</h4>
+						<ul class="list-link" style="margin-left:10px">
+							<li><a href="/pages/help_policy">退换政策</a></li>
+							<li><a href="/pages/help_refundinfo">退款说明</a></li>
+						</ul>
+						<h4>自助服务</h4>
+						<ul class="list-link" style="margin-left:10px">
+							<li><a href="/pages/help_Contact">联系我们</a></li>
+							<li><a href="/pages/help_obout">关于我们</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="block-sidebar-img banner-hover">
+					<a href="#"><img src="/img/1.jpg" alt="Banner"></a>
+				</div>
+
+			</div>
+			<div class="col-sm-8 col-md-9">
+				<%=@page.body.html_safe%>
+			</div>
+		</div>
+	</div>
+</div>

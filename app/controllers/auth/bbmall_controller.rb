@@ -132,7 +132,7 @@ class Auth::BbmallController < ApplicationController
       session[:send_sms_msg] = res_data_hash = ActiveSupport::JSON.decode res_data
 
       if res_data_hash['code'] == 0
-        flash[:success] = '信息发送成功！'
+        return res_data_hash
       else
         message_error = "发送失败，错误：#{res_data_hash['msg']}"
       end
@@ -312,7 +312,7 @@ class Auth::BbmallController < ApplicationController
     def forget_pwd_step2
       if params[:validate_code] == cookies[:code]
         info_hash = {}
-        info_hash[:phone] = cookies[:login_name]
+        info_hash[:account] = cookies[:login_name]
         info_hash = params_info info_hash
         url = 'http://103.16.125.100:9018/user_info' #生产地址    
         res_data = RestClient.get url, {:params =>info_hash}     
@@ -326,7 +326,11 @@ class Auth::BbmallController < ApplicationController
           msg_send =  url_encode("您的密码是：") + password + url_encode("，请妥善保存或立即修改密码。")
           send_sms(info_hash[:phone], msg_send) # send password to user
           session.delete(:send_sms_msg)
-          redirect_to api_login_path
+          if res_data_hash['code'] == 0
+            redirect_to api_login_path
+          else
+            render :text => res_data_hash['msg']
+          end
         else
           message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
           flash.now[:alert] = "#{message}"

@@ -16,6 +16,7 @@
 <title>邦邦芒商城</title>
 <style type="text/css"></style></head>
 <body class="option3">
+<<<<<<< HEAD
     <!-- header -->
     <header id="header">
         <div class="container">
@@ -387,176 +388,11 @@
     </div>
 </header>
 <!-- ./header -->
+=======
+<%=render "/shared/header"%>
+>>>>>>> 90c67d22f4324f53cb31074bed5fa1fa4af89f27
 <%= yield%>
-<!-- footer -->
-<footer id="footer">
-    <div class="footer-top" style="display:none">
-        <div class="container">
-            <div class="row">
-                <div class="row">
-                    <div class="col-sm-12 col-md-4">
-                        <div class="block footer-block-box">
-                            <div class="block-head">
-                                <div class="block-title">
-                                    <div class="block-icon">
-                                        <img src="/img/location-icon.png" alt="store icon">
-                                    </div>
-                                    <div class="block-title-text text-sm">FIND A</div>
-                                    <div class="block-title-text text-lg">edo store</div>
-                                </div>
-                            </div>
-                            <div class="block-inner">
-                                <div class="block-info clearfix">
-                                    Enter your zip code, city or country to find the closest EDO Store near you!
-                                </div>
-                                <div class="block-input-box box-radius clearfix">
-                                    <input type="text" class="input-box-text" placeholder="Zip code, City, Country">
-                                    <button class="block-button">Go</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-4">
-                        <div class="block footer-block-box">
-                            <div class="block-head">
-                                <div class="block-title">
-                                    <div class="block-icon">
-                                        <img src="/img/email-icon.png" alt="store icon">
-                                    </div>
-                                    <div class="block-title-text text-sm">SUBSCRIBE TO</div>
-                                    <div class="block-title-text text-lg">edo shop EMAILS</div>
-                                </div>
-                            </div>
-                            <div class="block-inner">
-                                <div class="block-info clearfix">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry
-                                </div>
-                                <div class="block-input-box box-radius clearfix">
-                                    <input type="text" class="input-box-text" placeholder="Email address">
-                                    <button class="block-button">Go</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-4">
-                        <div class="block footer-block-box">
-                            <div class="block-head">
-                                <div class="block-title">
-                                    <div class="block-icon">
-                                        <img src="/img/partners-icon.png" alt="store icon">
-                                    </div>
-                                    <div class="block-title-text text-sm">our</div>
-                                    <div class="block-title-text text-lg">partners</div>
-                                </div>
-                            </div>
-                            <div class="block-inner">
-                                <div class="block-owl">
-                                    <ul class="kt-owl-carousel list-partners owl-carousel owl-theme owl-loaded" data-nav="true" data-autoplay="true" data-loop="true" data-items="1">
-
-
-
-                                        <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-1316px, 0px, 0px); transition: 0.25s; width: 2303px;"><div class="owl-item cloned" style="width: 329px; margin-right: 0px;"><li class="partner"><a href="#"><img src="/img/partner2.jpg" alt="partner"></a></li></div><div class="owl-item cloned" style="width: 329px; margin-right: 0px;"><li class="partner"><a href="#"><img src="/img/partner3.jpg" alt="partner"></a></li></div><div class="owl-item" style="width: 329px; margin-right: 0px;"><li class="partner"><a href="#"><img src="/img/partner1.jpg" alt="partner"></a></li></div><div class="owl-item" style="width: 329px; margin-right: 0px;"><li class="partner"><a href="#"><img src="/img/partner2.jpg" alt="partner"></a></li></div><div class="owl-item active last-item" style="width: 329px; margin-right: 0px;"><li class="partner"><a href="#"><img src="/img/partner3.jpg" alt="partner"></a></li></div><div class="owl-item cloned" style="width: 329px; margin-right: 0px;"><li class="partner"><a href="#"><img src="/img/partner1.jpg" alt="partner"></a></li></div><div class="owl-item cloned" style="width: 329px; margin-right: 0px;"><li class="partner"><a href="#"><img src="/img/partner2.jpg" alt="partner"></a></li></div></div></div><div class="owl-controls"><div class="owl-nav"><div class="owl-prev" style="">prev</div><div class="owl-next" style="">next</div></div><div class="owl-dots" style=""><div class="owl-dot"><span></span></div><div class="owl-dot"><span></span></div><div class="owl-dot active"><span></span></div></div></div></ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-middle">
-            <div class="container">
-                <%if @footer = Ecstore::Footer.last%>
-                <%= raw @footer.body%>
-                <%end%>
-                <!-- <div class="row">
-                    <div class="row">
-                        <div class="col-md-3 col-sm-4 block-link-wapper">
-                            <div class="block-link">
-                                <ul class="list-link">
-                                    <li class="head"><a href="#">新手入门</a></li>
-                                    <li><a href="#">用户注册协议</a></li>
-                                    <li><a href="#">常见问题</a></li>
-                                    <li><a href="#">旧版商城入口</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-4 block-link-wapper">
-                            <div class="block-link">
-                                <ul class="list-link">
-                                    <li class="head"><a href="#">支付配送方式</a></li>
-                                    <li><a href="#">网上支付</a></li>
-                                    <li><a href="#">商品验货及签收</a></li>
-                                    <li><a href="#">配送服务及收费标准</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-4 block-link-wapper">
-                            <div class="block-link">
-                                <ul>
-                                    <li class="head"><a href="#">售后服务</a></li>
-                                    <li><a href="#">退换货政策</a></li>
-                                    <li><a href="#">退换货地址</a></li>
-                                    <li><a href="#">退款说明</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-4 block-link-wapper">
-                            <div class="block-link">
-                                <ul class="list-link">
-                                    <li class="head"><a href="#">自助服务</a></li>
-                                    <li><a href="#">商家入驻</a></li>
-                                    <li><a href="#">投诉建议</a></li>
-                                    <li><a href="#">联系我们</a></li>
-                                    <li><a href="#">关于我们</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-            </div>
-        </div>
-        <div class="footer-social">
-            <div class="container">
-                <div class="row">
-                    <div class="block-social">
-                        <ul class="list-social">
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-vimeo-square"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pied-piper"></i></a></li>
-                            <li><a href="#"><i class="fa fa-skype"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="block-payment">
-                        <ul class="list-logo">
-                            <li><a href="#"><img src="/img/payment1.png" alt="Payment Logo"></a></li>
-                            <li><a href="#"><img src="/img/payment2.png" alt="Payment Logo"></a></li>
-                            <li><a href="#"><img src="/img/payment3.png" alt="Payment Logo"></a></li>
-                            <li><a href="#"><img src="/img/payment4.png" alt="Payment Logo"></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="block-coppyright">
-                        © 2014-2015 www.51bbmall.com , All Rights Reserved. &nbsp;&nbsp;沪ICP备14054684号
-                    </div>
-                    <div class="block-shop-phone">
-                        服务热线 <strong>400-872-3588</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- ./footer -->
-    <a href="#" class="scroll_top" title="回到顶部" style="display: none;">Scroll</a>
+<%=render "/shared/footer"%>
     <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>

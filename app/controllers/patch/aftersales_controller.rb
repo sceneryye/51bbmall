@@ -1,6 +1,6 @@
 #encoding:utf-8
 class Patch::AftersalesController < ApplicationController
-	layout 'patch'
+	layout 'member'
 	
 	before_filter do
 		clear_breadcrumbs
