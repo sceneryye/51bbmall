@@ -1,0 +1,257 @@
+<!-- Block vertical-menu -->
+<div class="block block-vertical-menu">
+    <div class="vertical-head">
+        <h5 class="vertical-title">商品分类</h5>
+    </div>
+    <div class="vertical-menu-content">
+        <ul class="vertical-menu-list">
+            <li class="vertical-menu1"><a class="parent" href="/gallery/22?type=1">佐餐美酒</a>
+                 <div class="vertical-dropdown-menu" style="width: 901px;">
+                    <div class="vertical-groups">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="block-content-vertical-menu border banner-hover">
+                                    <a href="/products/a01160012"><img src="/images/a0116/a01160012_m.jpg" alt="Banner"></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="block-content-vertical-menu banner-hover">
+                                    <a href="/products/a01160012"><img src="/images/brands/b160.jpg" alt="Banner"></a>
+                                </div>
+                                <div class="block-content-vertical-menu">
+                                    <div class="inner">
+                                        <p>紫罗兰莎当妮酒体精美、口感芬芳，富有平滑感。散发出成熟桃子和甜瓜的芳香，而且又夹带着丰富的奶油层次感，余味中透出新鲜的果酸味。适合与鸡肉及海鲜等搭配，此时饮用最佳。 </p>
+                                        <a href="/products/a01160012" class="button-radius">立即购买<span class="icon"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="block-content-vertical-menu border-left">
+                                    <h3 class="head">商品分类</h3>
+                                    <div class="inner">
+                                    <ul class="vertical-menu-link">
+                                        <li><a href="/gallery/489"><span class="text">啤酒</span></a></li>
+                                        <li><a href="/gallery/535"><span class="text">葡萄酒</span></a></li>
+                                        <li><a href="/gallery/564"><span class="text">干红</span></a></li>
+                                        <li><a href="/gallery/565"><span class="text">干白</span></a></li>
+                                        <li><a href="/gallery/566"><span class="text">起泡酒</span></a></li>
+                                        <li><a href="/gallery/616"><span class="text">威士忌</span></a></li>
+                                        <li><a href="/gallery/623"><span class="text">黄酒</span></a></li>
+                                        <li><a href="/gallery/624"><span class="text">封缸酒</span></a></li>
+                                        <li><a href="/gallery/562"><span class="text">白酒</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </li>
+            <li class="vertical-menu2">
+                <a class="parent" href="/gallery/558?type=1">德国香肠</a>
+                <div class="vertical-dropdown-menu" style="width: 901px;">
+                    <div class="vertical-groups col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="block-content-vertical-menu">
+                                    <h3 class="head">怀特兄弟</h3>
+                                    <div class="inner">
+                                        <p> 提起德国美食，不能不提起德国香肠。他们制作的香肠有1500种以上。德国的国菜就是在酸卷心菜上铺满各式香肠。</p>
+                                        <p>秉承怀特兄弟230余年产品品牌的严格工艺和配方，采用浙江青莲食品的黑毛猪肉，将德国香肠的性价比直接提升到秒杀尖叫的程度。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="row mega-products">
+                                     <%goods=Ecstore::Good.where("marketable ='true' and name like '%139美食节特惠%'").order("p_order ASC, goods_id DESC").limit(3)%>
+                                    <%goods.each do |good|%>   
+                                    <div class="col-sm-4 mega-product">
+                                        <div class="product-avatar">
+                                            <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="<%=good.name%>"></a>
+                                        </div>
+                                        <div class="product-name">
+                                            <a href="/products/<%=good.bn%>"><%=good.name%></a>
+                                        </div>
+                                        <div class="price-box">
+                                            <span class="product-price">￥<%=good.price%></span>
+                                            <span class="product-price-old">￥<%=good.mktprice%></span>
+                                        </div>
+                                        <div class="product-star">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                        </div>
+                                    </div>
+                                    <%end%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="vertical-menu3">
+                <a class="parent" href="#">养生珍品</a>
+                <div class="vertical-dropdown-menu" style="width: 901px;">
+                    <div class="vertical-groups">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="block-content-vertical-menu border">
+                                    <h3 class="head">商品分类</h3>
+                                    <div class="inner">
+                                    <div class="inner-img">
+                                        <a href="#"><img src="/img/4.jpg" alt="Banner"></a>
+                                    </div>
+                                    <ul class="vertical-menu-link">
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Skincare</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Metkup</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Mobile phone</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Tablet</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="block-content-vertical-menu border">
+                                    <h3 class="head">商品分类</h3>
+                                    <div class="inner">
+                                    <div class="inner-img">
+                                        <a href="#"><img src="/img/5.jpg" alt="Banner"></a>
+                                    </div>
+                                    <ul class="vertical-menu-link">
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Skincare</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Metkup</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Mobile phone</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Tablet</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="block-content-vertical-menu border">
+                                    <h3 class="head">商品分类</h3>
+                                    <div class="inner">
+                                    <div class="inner-img">
+                                        <a href="#"><img src="/img/6.jpg" alt="Banner"></a>
+                                    </div>
+                                    <ul class="vertical-menu-link">
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Skincare</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Metkup</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Mobile phone</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Tablet</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="block-content-vertical-menu border">
+                                    <h3 class="head">商品分类</h3>
+                                    <div class="inner">
+                                    <div class="inner-img">
+                                        <a href="#"><img src="/img/7.jpg" alt="Banner"></a>
+                                    </div>
+                                    <ul class="vertical-menu-link">
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Skincare</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Metkup</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Mobile phone</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="text">Tablet</span>
+                                                <span class="count">(9)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="vertical-menu4"><a href="#">生鲜果蔬</a></li>
+            <li class="vertical-menu5"><a href="#">进口食品</a></li>
+            <li class="vertical-menu6">
+                <a href="#">婴童天地</a>
+            </li>
+            <li class="vertical-menu7"><a href="#">茶叶 &amp; 冲泡饮品</a></li>
+            <li class="vertical-menu8"><a href="#">更多</a></li>
+        </ul>
+    </div>
+</div>
+<!-- ./Block vertical-menu -->
