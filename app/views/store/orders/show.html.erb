@@ -20,7 +20,7 @@
       <%=link_to "查看订单详细信息>>",detail_order_path(@order),:target=>"_blank"%>
     </div>
 
-    <div class="payment">
+    <!--<div class="payment">
       <span class="title"><%=payments[@order.payment][:name]%></span>
       <%if @order.status == 'active' && @order.pay_status == '0'%>
       <a href="#" class="change" id="change_payment">更改支付方式>> </a>
@@ -56,7 +56,7 @@
       </label>
       <label class="radio">
         <%=f.radio_button :pay_app_id, "wxpay", { :checked=>(@order.payment == 'wxpay') }%> <b>微信支付</b>
-      </label>
+      </label>-->
 
       <div class="actions">
         <div>支付成功后，可以在<%=link_to "订单详情",detail_order_path(@order),:target=>"_blank"%>处查看订单和追踪订单状态</div>
