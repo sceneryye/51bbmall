@@ -48,7 +48,7 @@
 	<div class="field">
 		<label>手机:</label>
 		<span><%=@user.mask_mobile%></span>
-		<%=link_to "修改手机>>",change_phone_profile_path(:tab=>'basic',:modify=>'mobile'),:class=>"modify"%>
+		<%=link_to "修改手机",change_phone_profile_path,:class=>"modify", :style=>"color:red"%>
 		
 
 	</div>
