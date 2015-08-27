@@ -20,7 +20,7 @@ class Store::PaymentsController < ApplicationController
 		#  update order payment
 		@order.update_attributes :payment=>pay_app_id,:last_modified=>Time.now.to_i,:installment=>installment,:part_pay=>part_pay if pay_app_id.to_s != @order.payment.to_s
 
-		params[:payment].merge! Ecstore::Payment::PAYMENTS[pay_app_id.to_sym]
+		#params[:payment].merge! Ecstore::Payment::PAYMENTS[pay_app_id.to_sym]
 
 		@payment = Ecstore::Payment.new params[:payment]  do |payment|
 			payment.payment_id = Ecstore::Payment.generate_payment_id
@@ -54,7 +54,8 @@ class Store::PaymentsController < ApplicationController
 			#return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
 			if @order.part_pay >= @order.total_amount
 				money = @order.total_amount.to_i * 100
-				if user_deduct(money, acct_type, remark)
+				if user_deduct(money, acct_type, remark) == false
+					return render :text => res
 
 
 					adapter  = params.delete(:adapter)
@@ -79,9 +80,6 @@ class Store::PaymentsController < ApplicationController
 						order_log.result = "SUCCESS"
 						order_log.log_text = "订单支付成功！"
 					end.save
-
-
-
 					redirect_to  orders_path
 				else 
 					render :text => '支付失败1'
@@ -406,7 +404,7 @@ def pay
 				if res_data_hash['code'] == 0
 					return true
 				else
-					return false
+					return render :text => res_data_hash
 				end
 				
 			end
