@@ -129,8 +129,11 @@ class Store::CartController < ApplicationController
   #  if params[:platform]=='mobile'
   #    return  render :text=>"删除成功"# redirect_to "/cart/mobile"
   #  else
-  		render "destroy"
+  		#render "destroy"
   #  end
+  @line_item = @line_items.find_by_id(params[:obj_ident])
+  @line_item.destroy
+  redirect_to cart_path
 	end
 
   def tairyo
