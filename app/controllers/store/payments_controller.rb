@@ -91,14 +91,14 @@ class Store::PaymentsController < ApplicationController
         #redirect_to "/payments/pay?id=#{@payment.payment_id}"  #pay_payment_path(@payment.payment_id)
       #else
       #	render :text => '支付失败2'
-      end
-    else 
-    	render :text => '余额支付有误'
-    end
-
-  else
-  	redirect_to order_url(@order)
+    #end
+  else 
+  	render :text => '余额支付有误'
   end
+
+else
+	redirect_to order_url(@order)
+end
 end
 
 def debug
