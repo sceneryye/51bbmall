@@ -9,6 +9,12 @@
         <%= @tag_ext.tag_name %>
       </div>
     </div>
+     <div class="control-group">
+      <%= f.label :categories, "包含商品分类", :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :categories%>
+      </div>
+    </div>
 
     <div class="control-group">
       <%= f.label :issue_no, "期号", :class => "control-label" %>

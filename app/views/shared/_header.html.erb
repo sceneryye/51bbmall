@@ -1,45 +1,45 @@
 <!-- header -->
 <header id="header">
-        <div class="container">
-            <!-- main header -->
-            <div class="row">
-                <div class="main-header">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-2 col-lg-2">
-                            <div class="logo">
-                                <a href="/"><img src="/img/logo.png" alt="Logo"></a>
-                            </div>
+    <div class="container">
+        <!-- main header -->
+        <div class="row">
+            <div class="main-header">
+                <div class="row">
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        <div class="logo">
+                            <a href="/"><img src="/img/logo.png" alt="Logo"></a>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-7">
-                            <div class="advanced-search box-radius">
-                                <form class="form-inline" action="/search">
-                                    <div class="form-group search-category">
-                                        <select id="category-select" class="search-category-select" style="display: none;">
-                                            <option value="1">所有分类</option>
-                                        </select>
-                                        <!--        <span class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0" id="category-select-button" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="category-select-menu" aria-haspopup="true" aria-activedescendant="ui-id-1" aria-labelledby="ui-id-1" aria-disabled="false" style="width: 141px;">
-                                        <span class="ui-icon ui-icon-triangle-1-s"></span>
-                                        <span class="ui-selectmenu-text">所有分类</span>
-                                        </span> -->
-                                    </div>
-                                    <div class="form-group search-input">
-                                        <input type="text" placeholder="请输入您要查询的商品" id="search_input" name="q">
-                                    </div>
-                                    <button type="submit" class="btn-search"><i class="fa fa-search"></i></button>
-                                </form>
-                            </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-7">
+                        <div class="advanced-search box-radius">
+                            <form class="form-inline" action="/search">
+                                <div class="form-group search-category">
+                                    <select id="category-select" class="search-category-select" style="display: none;">
+                                        <option value="1">所有分类</option>
+                                    </select>
+                                    <!--        <span class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0" id="category-select-button" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="category-select-menu" aria-haspopup="true" aria-activedescendant="ui-id-1" aria-labelledby="ui-id-1" aria-disabled="false" style="width: 141px;">
+                                    <span class="ui-icon ui-icon-triangle-1-s"></span>
+                                    <span class="ui-selectmenu-text">所有分类</span>
+                                    </span> -->
+                                </div>
+                                <div class="form-group search-input">
+                                    <input type="text" placeholder="请输入您要查询的商品" id="search_input" name="q">
+                                </div>
+                                <button type="submit" class="btn-search"><i class="fa fa-search"></i></button>
+                            </form>
                         </div>
-                        <div class="col-sm-7 col-md-4 col-lg-3">
-                            <div class="wrap-block-cl">
-                                <div class="inner-cl box-radius">
-                                    <div class="dropdown user-info">
-                                      <a data-toggle="dropdown" role="button"><i class="fa fa-user"></i></a>
-                                      <ul class="dropdown-menu">
+                    </div>
+                    <div class="col-sm-7 col-md-4 col-lg-3">
+                        <div class="wrap-block-cl">
+                            <div class="inner-cl box-radius">
+                                <div class="dropdown user-info">
+                                  <a data-toggle="dropdown" role="button"><i class="fa fa-user"></i></a>
+                                  <ul class="dropdown-menu">
                                         <li><a href="/member"><i class="fa fa-user"></i> 个人中心</a></li>
                                         <li><a href="/member/favorites"><i class="fa fa-heart-o"></i>收藏夹</a></li>
                                         <li><a href="/cart"><i class="fa fa-arrow-circle-right"></i> 结账</a></li>
                                         <li><a href="/member/orders"><i class="fa fa-list"></i> 订单</a></li>
-                                    </ul>
+                                  </ul>
                                 </div>
                                 <%if @user%>
                                 <div class="language">
@@ -47,60 +47,61 @@
                                 </div>
                                 <div class="currency" >
                                   <a href="/logout"><i class="fa fa-sign-in"></i> 退出</a>
-                              </div>
-                              <%else%>
-                              <div class="language">
-                                <a href="/login"><i class="fa fa-sign-in"></i> 登录/注册</a>
+                                </div>
+                                <%else%>
+                                <div class="language">
+                                    <a href="/login"><i class="fa fa-sign-in"></i> 登录/注册</a>
+                                </div>
+                                <%end%>
                             </div>
-                            <%end%>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-5 cart-mobile">
-                    <div class="block-wrap-cart">
-                        <div class="iner-block-cart box-radius">
-                            <a href="/cart">
-                                <span class="total">&yen;<%= @cart_total %></span>
-                            </a>
-                        </div>
-                        <div class="block-mini-cart">
-                            <div class="mini-cart-content">
-                                <h5 class="mini-cart-head"><%= @cart_total_quantity %> 件商品 </h5>
-                                <div class="mini-cart-list">
-                                    <% if @cart_total_quantity > 0 %>
+                    <div class="col-sm-5 cart-mobile">
+                        <div class="block-wrap-cart">
+                            <div class="iner-block-cart box-radius">
+                                <a href="/cart">
+                                    <span class="total">&yen;<%= @cart_total %></span>
+                                </a>
+                            </div>
+                            <div class="block-mini-cart">
+                                <div class="mini-cart-content">
+                                    <h5 class="mini-cart-head"><%= @cart_total_quantity %> 件商品 </h5>
                                     <div class="mini-cart-list">
-                                        <ul>
-                                            <% @line_items.each do |l| %>
-                                            <li class="product-info">
-                                                <div class="p-left">
-                                                    <a href="#" class="remove_link"></a>
-                                                    <a href="#">
-                                                        <img class="img-responsive" src=<%= l.good.medium_pic %> alt="Product">
-                                                    </a>
-                                                </div>
-                                                <div class="p-right">
-                                                    <p class="p-name"><%= l.product.name %></p>
-                                                    <p class="product-price">&yen;<%= l.product.price %></p>
-                                                    <p>数量: <%= l.quantity %></p>
-                                                </div>
-                                            </li>
-                                            <% end %>                                                            
-                                        </ul>
+                                        <% if @cart_total_quantity > 0 %>
+                                        <div class="mini-cart-list">
+                                            <ul>
+                                                <% @line_items.each do |l| %>
+                                                <li class="product-info">
+                                                    <div class="p-left">
+                                                        <a href="#" class="remove_link"></a>
+                                                        <a href="#">
+                                                            <img class="img-responsive" src=<%= l.good.medium_pic %> alt="Product">
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-right">
+                                                        <p class="p-name"><%= l.product.name %></p>
+                                                        <p class="product-price">&yen;<%= l.product.price %></p>
+                                                        <p>数量: <%= l.quantity %></p>
+                                                    </div>
+                                                </li>
+                                                <% end %>                                                            
+                                            </ul>
+                                        </div>
+                                        <div class="toal-cart">
+                                            <span>总共</span>
+                                            <span class="toal-price pull-right">&yen;<%= @cart_total %></span>
+                                        </div>
+                                        <div class="cart-buttons">
+                                            <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
+                                        </div>
+                                        <% end %>
                                     </div>
-                                    <div class="toal-cart">
-                                        <span>总共</span>
-                                        <span class="toal-price pull-right">&yen;<%= @cart_total %></span>
-                                    </div>
-                                    <div class="cart-buttons">
-                                        <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
-                                    </div>
-                                    <% end %>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>                
         </div>
         <!-- ./main header -->
     </div>
@@ -123,195 +124,92 @@
                                         <li class="active"><a href="/">首页</a></li>
                                         <li class="dropdown">
                                             <a href="/tuan" class="dropdown-toggle">
-                                                <img src="/img/icon_sale.png" alt="Category status">
-                                                限时特价</a>
-                                                <ul class="dropdown-menu mega_dropdown" role="menu" style="width: 850px;">
-                                                    <li class="block-container col-sm-3 border">
-                                                        <div class="img_container banner-hover">
-                                                            <a href="/products/a0000004">
-                                                                <img class="img-responsive" src="/images/a000/a0000004_a.jpg" alt="sport">
-                                                            </a>
-                                                        </div>
-                                                    </li>
-                                                    <li class="block-container col-sm-3">
-                                                        <ul class="block-megamenu-link">
-                                                         <!--<li class="link_container group_header"><a href="/gallery/637">时令水果</a>                                                            </li> /-->
-                                                            <li class="link_container"><a href="/search?q=黄桃">金奖黄桃</a></li>
-                                                            <li class="link_container"><a href="/brands/jiapei">佳沛金果</a></li>
-                                                            <li class="link_container"><a href="/products/a01300065">百香果 西番莲</a></li>
-                                                            <li class="link_container"><a href="/products/a0650001">机灵麦片</a></li>
-                                                            <li class="link_container"><a href="/products/a01300002">布鲁斯堡黑啤</a></li>
-                                                            <li class="link_container"><a href="/search?q=非凡农庄">非凡农庄</a></li>
-                                                            <li class="link_container"><a href="/products/a01300011">火焰云起泡酒</a></li>
-                                                            <li class="link_container"><a href="/products/a01320013">戈多有机巧克力</a></li>
-                                                            <li class="link_container"><a href="/products/a0920003">芭喜深蓝丝绒装夹心巧克力</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="block-container col-sm-3">
-                                                        <ul class="block-megamenu-text">
-                                                            <li class="link_container group_header">
-                                                                <a href="/search?q=139">特价活动</a>
-                                                            </li>
-                                                            <li class="text_container">
-                                                                <p>德国香肠免费试吃？免费领！吃货们，赶快行动吧！<br>
-                                                                    活动时间：2015年8月26日- 2015年12月26日
-                                                                </p>
-                                                                <a href="/search?q=139" class="button-radius">查看详情<span class="icon"></span></a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="block-container col-sm-3">
-                                                        <ul class="block-megamenu-img">
-                                                            <li class="img_container banner-hover">
-                                                                <a href="#">
-                                                                    <img class="img-responsive" src="/img/b13.png" alt="sport">
-                                                                </a>
-                                                            </li>
-                                                            <li class="img_container banner-hover">
-                                                                <a href="#">
-                                                                    <img class="img-responsive" src="/img/b14.png" alt="sport">
-                                                                </a>
-                                                            </li>
-                                                            <li class="img_container banner-hover">
-                                                                <a href="#">
-                                                                    <img class="img-responsive" src="/img/b15.png" alt="sport">
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown">
-                                                <a href="/gallery/561?type=1" class="dropdown-toggle">
-                                                    <img src="/img/icon_hot.png" alt="Category status">
-                                                    商品分类
-                                                </a>
-                                                <ul class="dropdown-menu mega_dropdown" role="menu" style="width: 900px;">
-                                                    <li class="block-container col-sm-3 border">
-                                                        <ul class="block-megamenu-link">
-                                                            <li class="link_container group_header">
-                                                                <a href="#">TOP FASHION</a>
-                                                            </li>
-                                                            <li class="link_container"><a href="#">Bath &amp; Body</a></li>
-                                                            <li class="link_container"><a href="#">Makeup</a></li>
-                                                            <li class="link_container"><a href="#">Creams &amp; Lotions</a></li>
-                                                            <li class="link_container"><a href="#">Sunscreens</a></li>
-                                                            <li class="link_container"><a href="#">Face Packs/Facial</a></li>
-                                                            <li class="link_container"><a href="#">Spa &amp; Body grances</a></li>
-                                                            <li class="link_container"><a href="#">Women's Hygiene</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="block-container col-sm-3 border">
-                                                        <ul class="block-megamenu-link">
-                                                            <li class="link_container group_header">
-                                                                <a href="#">TOP FASHION</a>
-                                                            </li>
-                                                            <li class="link_container"><a href="#">Bath &amp; Body</a></li>
-                                                            <li class="link_container"><a href="#">Makeup</a></li>
-                                                            <li class="link_container"><a href="#">Creams &amp; Lotions</a></li>
-                                                            <li class="link_container"><a href="#">Sunscreens</a></li>
-                                                            <li class="link_container"><a href="#">Face Packs/Facial</a></li>
-                                                            <li class="link_container"><a href="#">Spa &amp; Body grances</a></li>
-                                                            <li class="link_container"><a href="#">Women's Hygiene</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="block-container col-sm-3 border">
-                                                        <ul class="block-megamenu-link">
-                                                            <li class="link_container group_header">
-                                                                <a href="#">TOP FASHION</a>
-                                                            </li>
-                                                            <li class="link_container"><a href="#">Bath &amp; Body</a></li>
-                                                            <li class="link_container"><a href="#">Makeup</a></li>
-                                                            <li class="link_container"><a href="#">Creams &amp; Lotions</a></li>
-                                                            <li class="link_container"><a href="#">Sunscreens</a></li>
-                                                            <li class="link_container"><a href="#">Face Packs/Facial</a></li>
-                                                            <li class="link_container"><a href="#">Spa &amp; Body grances</a></li>
-                                                            <li class="link_container"><a href="#">Women's Hygiene</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="block-container col-sm-3">
-                                                        <ul class="block-megamenu-link">
-                                                            <li class="link_container group_header">
-                                                                <a href="#">TOP FASHION</a>
-                                                            </li>
-                                                            <li class="link_container"><a href="#">Bath &amp; Body</a></li>
-                                                            <li class="link_container"><a href="#">Makeup</a></li>
-                                                            <li class="link_container"><a href="#">Creams &amp; Lotions</a></li>
-                                                            <li class="link_container"><a href="#">Sunscreens</a></li>
-                                                            <li class="link_container"><a href="#">Face Packs/Facial</a></li>
-                                                            <li class="link_container"><a href="#">Spa &amp; Body grances</a></li>
-                                                            <li class="link_container"><a href="#">Women's Hygiene</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown">
-                                                <a href="/brands" class="dropdown-toggle">
-                                                    <img src="/img/icon_new.png" alt="Category status">
-                                                    品牌专区</a>
-                                                    <ul class="dropdown-menu mega_dropdown" role="menu" style="width: 900px; left: 135px;">
-                                                        <li class="block-container col-sm-3">
-                                                            <div class="img_container banner-hover">
-                                                                <a href="#">
-                                                                    <img class="img-responsive" src="/img/b16.png" alt="sport">
-                                                                </a>
-                                                            </div>
+                                            <img src="/img/icon_sale.png" alt="Category status">
+                                            限时特价</a>
+                                            <ul class="dropdown-menu mega_dropdown" role="menu" style="width: 850px;">
+                                                <li class="block-container col-sm-3 border">
+                                                    <div class="img_container banner-hover">
+                                                        <a href="/products/a0000004">
+                                                            <img class="img-responsive" src="/images/a000/a0000004_a.jpg" alt="sport">
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                                <li class="block-container col-sm-3">
+                                                    <ul class="block-megamenu-link">
+                                                     <!--<li class="link_container group_header"><a href="/gallery/637">时令水果</a>                                                            </li> /-->
+                                                        <li class="link_container"><a href="/search?q=黄桃">金奖黄桃</a></li>
+                                                        <li class="link_container"><a href="/brands/jiapei">佳沛金果</a></li>
+                                                        <li class="link_container"><a href="/products/a01300065">百香果 西番莲</a></li>
+                                                        <li class="link_container"><a href="/products/a0650001">机灵麦片</a></li>
+                                                        <li class="link_container"><a href="/products/a01300002">布鲁斯堡黑啤</a></li>
+                                                        <li class="link_container"><a href="/search?q=非凡农庄">非凡农庄</a></li>
+                                                        <li class="link_container"><a href="/products/a01300011">火焰云起泡酒</a></li>
+                                                        <li class="link_container"><a href="/products/a01320013">戈多有机巧克力</a></li>
+                                                        <li class="link_container"><a href="/products/a0920003">芭喜深蓝丝绒装夹心巧克力</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="block-container col-sm-3">
+                                                    <ul class="block-megamenu-text">
+                                                        <li class="link_container group_header">
+                                                            <a href="/search?q=139">特价活动</a>
                                                         </li>
-                                                        <li class="block-container col-sm-3 border">
-                                                            <ul class="block-megamenu-link">
-                                                                <li class="link_container group_header">
-                                                                    <a href="#">TOP FASHION</a>
-                                                                </li>
-                                                                <li class="link_container"><a href="#">Bath &amp; Body</a></li>
-                                                                <li class="link_container"><a href="#">Makeup</a></li>
-                                                                <li class="link_container"><a href="#">Creams &amp; Lotions</a></li>
-                                                                <li class="link_container"><a href="#">Sunscreens</a></li>
-                                                                <li class="link_container"><a href="#">Face Packs/Facial</a></li>
-                                                                <li class="link_container"><a href="#">Spa &amp; Body grances</a></li>
-                                                                <li class="link_container"><a href="#">Women's Hygiene</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="block-container col-sm-3">
-                                                            <div class="img_container banner-hover">
-                                                                <a href="#">
-                                                                    <img class="img-responsive" src="/img/b17.png" alt="sport">
-                                                                </a>
-                                                            </div>
-                                                        </li>
-                                                        <li class="block-container col-sm-3">
-                                                            <ul class="block-megamenu-link">
-                                                                <li class="link_container group_header">
-                                                                    <a href="#">TOP FASHION</a>
-                                                                </li>
-                                                                <li class="link_container"><a href="#">Bath &amp; Body</a></li>
-                                                                <li class="link_container"><a href="#">Makeup</a></li>
-                                                                <li class="link_container"><a href="#">Creams &amp; Lotions</a></li>
-                                                                <li class="link_container"><a href="#">Sunscreens</a></li>
-                                                                <li class="link_container"><a href="#">Face Packs/Facial</a></li>
-                                                                <li class="link_container"><a href="#">Spa &amp; Body grances</a></li>
-                                                                <li class="link_container"><a href="#">Women's Hygiene</a></li>
-                                                            </ul>
+                                                        <li class="text_container">
+                                                            <p>德国香肠免费试吃？免费领！吃货们，赶快行动吧！<br>
+                                                                活动时间：2015年8月26日- 2015年12月26日
+                                                            </p>
+                                                            <a href="/search?q=139" class="button-radius">查看详情<span class="icon"></span></a>
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <li class="dropdown">
-                                                    <a href="/country/124" class="dropdown-toggle">产地分类</a>
-                                                    <ul class="dropdown-menu mega_dropdown container-fluid">
-                                                        <li class="block-container">
-                                                            <ul class="block-megamenu-link">
-                                                                <li class="link_container"><a href="/country/124">中国大陆</a></li>
-                                                                <li class="link_container"><a href="#">意大利</a></li>
-                                                                <li class="link_container"><a href="#">德国</a></li>
-                                                                <li class="link_container"><a href="#">印度</a></li>
-                                                                <li class="link_container"><a href="#">荷兰</a></li>
-                                                            </ul>
+                                                <li class="block-container col-sm-3">
+                                                    <ul class="block-megamenu-img">
+                                                        <li class="img_container banner-hover">
+                                                            <a href="#">
+                                                                <img class="img-responsive" src="/img/b13.png" alt="sport">
+                                                            </a>
                                                         </li>
-                                                    </ul> 
+                                                        <li class="img_container banner-hover">
+                                                            <a href="#">
+                                                                <img class="img-responsive" src="/img/b14.png" alt="sport">
+                                                            </a>
+                                                        </li>
+                                                        <li class="img_container banner-hover">
+                                                            <a href="#">
+                                                                <img class="img-responsive" src="/img/b15.png" alt="sport">
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </li>
-                                           <!--  <li><a href="category-grid.html">Jewelry &amp; Watches</a></li>
-                                           <li><a href="blog.html">Blog</a></li> -->
-                                       </ul>
-                                       <ul class="nav navbar-nav navbar-right">
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="/gallery/561?type=1" class="dropdown-toggle">
+                                                <img src="/img/icon_hot.png" alt="Category status">
+                                                商品分类
+                                            </a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="/brands" class="dropdown-toggle">
+                                                <img src="/img/icon_new.png" alt="Category status">
+                                                品牌专区
+                                            </a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="/country/124" class="dropdown-toggle">产地分类</a>
+                                            <ul class="dropdown-menu mega_dropdown container-fluid">
+                                                <li class="block-container">
+                                                    <ul class="block-megamenu-link">
+                                                        <li class="link_container"><a href="/country/124">中国大陆</a></li>
+                                                        <li class="link_container"><a href="/country/100">意大利</a></li>
+                                                        <li class="link_container"><a href="/country/97">德国</a></li>
+                                                        <li class="link_container"><a href="/country/98">比利时</a></li>
+                                                        <li class="link_container"><a href="/country/109">西班牙</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul> 
+                                        </li>
+                                    </ul>
+                                    <ul class="nav navbar-nav navbar-right">
                                         <li>
                                             <div class="block-wrap-cart">
                                                 <div class="iner-block-cart">
