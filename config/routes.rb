@@ -513,6 +513,7 @@ scope :module => "blog" do
       member do
         get 'password'
         put 'modify_password'
+        get 'change_phone'
       end
     end
     resources :cards do

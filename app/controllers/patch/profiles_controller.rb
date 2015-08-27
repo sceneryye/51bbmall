@@ -82,6 +82,10 @@ end
      end
   end
 
+  def change_phone
+    
+  end
+
   private
     def  find_user
       # return @user = Ecstore::User.find_by_email("yxf4559@163.com")
