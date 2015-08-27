@@ -153,7 +153,9 @@ class Store::OrdersController < ApplicationController
       render :text => message_error = "错误：#{res_data_hash['msg']}"
     end
 
-    if @advance < @order.total_amount
+    
+
+    if @advance < @cart_total
       return render :text => '您的余额不足，请充值！'
     end
 
