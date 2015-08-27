@@ -55,7 +55,7 @@ class Store::PaymentsController < ApplicationController
 			if @order.part_pay >= @order.total_amount
 				money = @order.total_amount.to_i * 100
 				if user_deduct(money, acct_type, remark)
-
+					@order.update_attributes(:pay_status => '1')
 					adapter  = params.delete(:adapter)
 					params.delete :controller
 					params.delete :action
