@@ -52,7 +52,7 @@ class Store::PaymentsController < ApplicationController
 			remark = @order.memo == '' || @order.memo.nil? ? 'no information' : @order.memo
 			#@payment = Ecstore::Payment.find(params.delete(:id))
 			#return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
-			return render :text => "part_pay = #{@order.part_pay}, total_amount = #{@order.total_amount}"
+			return render :text => "part_pay = #{part_pay}, total_amount = #{@order.total_amount}"
 			if @order.part_pay >= @order.total_amount
 				money = @order.total_amount.to_i * 100
 				if user_deduct(money, acct_type, remark)

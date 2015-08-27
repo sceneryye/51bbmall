@@ -68,32 +68,32 @@
 		<br/>
 		<%end%>
 
-		<!--<%if @advance>0 && @advance < @cart_total%>
+		<!--<%#if @advance>0 && @advance < @cart_total%>
 		<label class="checkbox">
-			<%=f.check_box :part_pay, {:checked => true, :'data-amount'=>@advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
-			余额(<span>￥</span><span id="advance_value"><%= @advance %></span>)
+			<%##=f.check_box :part_pay, {:checked => true, :'data-amount'=>@advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
+			余额(<span>￥</span><span id="advance_value"><%#= @advance %></span>)
 		</label>
-		<%end%>-->
+		<%#end%>-->
 		<!--<label class="radio" style="display:none">
-			<%=f.radio_button :payment, "alipay"%> <b>支付宝</b>
+			<%#=f.radio_button :payment, "alipay"%> <b>支付宝</b>
 			<span class="extra-desc"><img src="/assets/store/alipay.png"/></span>
 		</label>
 		<label class="radio"  style="display:none">
-			<%=f.radio_button :payment, "alipaywap"%> <b>支付宝手机</b>         
+			<%#=f.radio_button :payment, "alipaywap"%> <b>支付宝手机</b>         
 			<span class="extra-desc"><img src="/assets/store/alipaywap.png"/></span>
 		</label>
 		<label class="radio">
-			<%=f.radio_button :payment, "wxpay", :checked=>true%> <b>微信支付</b>
+			<%#=f.radio_button :payment, "wxpay", :checked=>true%> <b>微信支付</b>
 			<span class="extra-desc"><img src="/assets/store/wxpay.png"/></span>
 		</label>
 		<label class="radio">
-			<%=f.radio_button :payment, "offline"%> <b>货到付款</b>
+			<%#=f.radio_button :payment, "offline"%> <b>货到付款</b>
 			<span class="extra-desc"></span>
 		</label>-->
 
 		<!--<%#if @advance >= @cart_total%>-->
 		<label class="radio" >
-			<%=f.radio_button :part_pay, @cart_total%> <b>预存款(余额：￥<%= @advance %>)</b>
+			<%=f.radio_button :part_pay, @advance%> <b>预存款(余额：￥<%= @advance %>)</b>
 		</label>
 		<!--<%#end%>-->
 	</div>
