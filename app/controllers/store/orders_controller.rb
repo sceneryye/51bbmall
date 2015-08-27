@@ -139,6 +139,24 @@ class Store::OrdersController < ApplicationController
 
 
   def create
+
+    user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
+    info_hash = {}
+    uid = info_hash[:uid] = current_user.uid if current_user   
+    info_hash = params_info(info_hash)      
+    res_data = RestClient.get user_wallet_url, {:params => info_hash}
+    res_data_hash = ActiveSupport::JSON.decode res_data
+
+    if res_data_hash['code'] == 0
+      @advance = res_data_hash['data']['balance'] / 100
+    else
+      render :text => message_error = "错误：#{res_data_hash['msg']}"
+    end
+
+    if @advance < @order.total_amount
+      return render :text => '您的余额不足，请充值！'
+    end
+
     if addr = Ecstore::MemberAddr.find_by_addr_id(params[:member_addr])
       ["name","area","addr","zip","tel","mobile"].each do |key,val|
         params[:order].merge!("ship_#{key}"=>addr.attributes[key])
