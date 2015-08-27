@@ -49,7 +49,7 @@ class Store::PaymentsController < ApplicationController
 		@payment.money = @payment.cur_money = @order.pay_amount
 		if @payment.save
 			acct_type = 0
-			remark = @order.memo
+			remark = '来自客户'
 			#@payment = Ecstore::Payment.find(params.delete(:id))
 			#return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
 			if @order.part_pay >= @order.total_amount
