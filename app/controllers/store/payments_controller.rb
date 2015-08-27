@@ -49,14 +49,12 @@ class Store::PaymentsController < ApplicationController
 		@payment.money = @payment.cur_money = @order.pay_amount
 		if @payment.save
 			acct_type = 0
-			remark = '来自客户'
+			remark = @order.memo == '' || @order.memo.nil? ? 'no information' : @order.memo
 			#@payment = Ecstore::Payment.find(params.delete(:id))
 			#return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
 			if @order.part_pay >= @order.total_amount
 				money = @order.total_amount.to_i * 100
-				if user_deduct(money, acct_type, remark) == false
-					return render :text => res
-
+				if user_deduct(money, acct_type, remark)
 
 					adapter  = params.delete(:adapter)
 					params.delete :controller
@@ -85,13 +83,14 @@ class Store::PaymentsController < ApplicationController
 					render :text => '支付失败1'
 				end
 			elsif @order.part_pay < @order.total_amount
-				money = @order.part_pay * 100
-				if user_deduct(money, acct_type, remark)
-					@payment.update_attributes(:money => (@order.total_amount - @order.part_pay))
+				return render :text => '余额不足，请充值！'
+				#money = @order.part_pay * 100
+				#if user_deduct(money, acct_type, remark)
+				#	@payment.update_attributes(:money => (@order.total_amount - @order.part_pay))
 
-        redirect_to "/payments/pay?id=#{@payment.payment_id}"  #pay_payment_path(@payment.payment_id)
-      else
-      	render :text => '支付失败2'
+        #redirect_to "/payments/pay?id=#{@payment.payment_id}"  #pay_payment_path(@payment.payment_id)
+      #else
+      #	render :text => '支付失败2'
       end
     else 
     	render :text => '余额支付有误'
@@ -400,11 +399,11 @@ def pay
 				info_hash[:remark] = url_encode remark
 				res_data = RestClient.get user_deduct_url, {:params => info_hash}
 				res_data_hash = ActiveSupport::JSON.decode res_data
-								
+
 				if res_data_hash['code'] == 0
 					return true
 				else
-					return render :text => res_data_hash
+					return false
 				end
 				
 			end

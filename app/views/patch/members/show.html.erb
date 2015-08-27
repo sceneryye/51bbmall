@@ -4,7 +4,7 @@
 	
 	<div class="basic">
 		<p class="welcome">
-			<b><%=@user.name%></b> ，欢迎您！
+			<b><%=@user.login_name%></b> ，欢迎您！
 			<span class="lv">
 				会员等级：<%=@user.member_lv.name%>
 			</span>&nbsp;         
@@ -38,8 +38,7 @@
 <table class="table table-striped" id="order_list">
 	<tr>
 		<th>订单号</th>
-		<th>订单商品</th>
-		
+		<th>订单商品</th>		
 		<th>下单时间</th>
 		<th>订单金额</th>
 		<th>订单状态</th>
