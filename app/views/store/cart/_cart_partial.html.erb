@@ -9,7 +9,7 @@
             <div class="block-mini-cart">
                 <div class="mini-cart-content">
                     <h5 class="mini-cart-head"><%= @cart_total_quantity %> 件商品 </h5>
-                    <% if @cart_total_quantity > 0 %>
+                    <% if @cart_total_quantity && @cart_total_quantity > 0 %>
                     <div class="mini-cart-list">
                         <ul>
                             <% @line_items.each do |l| %>

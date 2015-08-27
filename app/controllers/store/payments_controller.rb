@@ -65,6 +65,9 @@ class Store::PaymentsController < ApplicationController
 
 					@order = @payment.pay_bill.order
 					@user = @payment.user
+					order_num = current_user.member.order_num + 1
+					current_user.member.update_attributes(:order_num => order_num)
+					current_user.member.save
 
 
 					Ecstore::OrderLog.new do |order_log|

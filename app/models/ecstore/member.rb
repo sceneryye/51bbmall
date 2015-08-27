@@ -9,6 +9,7 @@ class Ecstore::Member < Ecstore::Base
 	belongs_to :tag,:foreign_key=>"member_id"
 	belongs_to :user,:foreign_key=>"member_id"
 	has_many :members_case,:foreign_key=>"member_id"
+	attr_accessible :order_num
 
 
 	def reg_time
