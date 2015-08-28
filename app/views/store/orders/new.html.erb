@@ -33,40 +33,43 @@
 		<%=render :partial=>"patch/member_addrs/form",:locals=>{ :display=>( @addrs.size == 0 ), :@addr=>Ecstore::MemberAddr.new }%>
 
 	</div>
+	
+	
+		<%=form_for :order,:url=>orders_path,:html=>{ :class=>"form-horizontal",:id=>"order_form" } do |f|%>
+		<%=hidden_field_tag "member_addr",@def_addr&&@def_addr.addr_id%>
 
-	<%=form_for :order,:url=>orders_path,:html=>{ :class=>"form-horizontal",:id=>"order_form" } do |f|%>
-	<%=hidden_field_tag "member_addr",@def_addr&&@def_addr.addr_id%>
+		<div class="section shipment">
+			<h5>配送方式</h5>
+			<label class="radio active ">
+				<%=f.radio_button :shipping_id, 0%><span class="addr-line">自提</span>
+			</label>
+			<label class="radio">
+				<%=f.radio_button :shipping_id, 1, :checked=>true%> 快递
+				<span class="extra-info">+ ￥0</span>
+			</label>
 
-	<div class="section shipment">
-		<h5>配送方式</h5>
-		<label class="radio active ">
-			<%=f.radio_button :shipping_id, 0%><span class="addr-line">自提</span>
-		</label>
-		<label class="radio">
-			<%=f.radio_button :shipping_id, 1, :checked=>true%> 快递
-			<span class="extra-info">+ ￥0</span>
-		</label>
-		<div class="control-group">
-			<h5>
-				收货时间 
-				<span class="required">*</span>
-			</h5>
-			<div class="form-group">
-				<%=f.select :ship_day,ship_day_options,:class=>"form-control"%>
-				<%=f.text_field :ship_special,:class=>"input-small hide datetime"%>
-				<%=f.select :ship_time2,ship_time_options,:class=>"form-control"%>
+			<div class="control-group">
+				<h5>
+					收货时间 
+					<span class="required">*</span>
+				</h5>
+				<div class="form-group">
+					<%=f.select :ship_day,ship_day_options,:class=>"form-control"%>
+					<%=f.text_field :ship_special,:class=>"input-small hide datetime"%>
+					<%=f.select :ship_time2,ship_time_options,:class=>"form-control"%>
+				</div>
 			</div>
-		</div>
-	</div>
 
-	<div class="section payment" id="payments">
-		<h5>支付方式</h5>
-		<% if cookies[:MLV] == "10" %>
-		<label class="radio">
-			<%=f.radio_button :payment, "term"%> <b>账期（与供应商协商）</b>
-		</label>
-		<br/>
-		<%end%>
+
+
+			<div class="section payment" id="payments">
+				<h5>支付方式</h5>
+				<% if cookies[:MLV] == "10" %>
+				<label class="radio">
+					<%=f.radio_button :payment, "term"%> <b>账期（与供应商协商）</b>
+				</label>
+				<br/>
+				<%end%>
 
 		<!--<%#if @advance>0 && @advance < @cart_total%>
 		<label class="checkbox">
