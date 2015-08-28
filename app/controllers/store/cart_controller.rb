@@ -124,7 +124,7 @@ end
     _type, goods_id, product_id = params[:id].split('_')
     @line_items.where(:obj_ident=>params[:id]).delete_all
     @user.custom_specs.where(:product_id=>product_id).delete_all if signed_in?
-    @line_item = Ecstore::Goods.find_by_id(params[:id])
+    
     find_cart!
     respond_to do |format|
       format.js 
