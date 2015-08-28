@@ -67,7 +67,7 @@
                                     <span>￥<%=(line_item.product.price*line_item.quantity)%></span>
                                 </td>
                                 <td class="action">
-                                    <%=link_to "删 除",cart_path(line_item.obj_ident),:class=>"delete btn btn-danger",:remote=>true,:method=>:delete%>
+                                    <%=button_to "删 除",cart_path(line_item.obj_ident),:class=>"delete btn btn-danger",:remote=>true,:method=>:delete%>
                                 </td>
                                 
                             </tr>
