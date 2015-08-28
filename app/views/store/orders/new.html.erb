@@ -96,7 +96,7 @@
 
 		<!--<%#if @advance >= @cart_total%>-->
 		<label class="radio" >
-			<%=f.radio_button :part_pay, @advance%> <b>预存款(余额：￥<%= @advance %>)</b>
+			<%= f.radio_button :payment, 'advance' %> <b>预存款(余额：￥<%= @advance %>)</b>
 		</label>
 		<!--<%#end%>-->
 	</div>
