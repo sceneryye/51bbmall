@@ -140,20 +140,7 @@ class Store::OrdersController < ApplicationController
 
   def create
 
-    user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
-    info_hash = {}
-    uid = info_hash[:uid] = current_user.uid if current_user   
-    info_hash = params_info(info_hash)      
-    res_data = RestClient.get user_wallet_url, {:params => info_hash}
-    res_data_hash = ActiveSupport::JSON.decode res_data
-
-    if res_data_hash['code'] == 0
-      @advance = res_data_hash['data']['balance'] / 100
-    else
-      render :text => message_error = "错误：#{res_data_hash['msg']}"
-    end
-
-    
+    @advance = user_wallet current_user.uid    
 
     if @advance < @cart_total
       return render :text => '您的余额不足，请充值！'
@@ -185,6 +172,7 @@ class Store::OrdersController < ApplicationController
     params[:order].merge!(:recommend_user=>recommend_user)
     #return render :text=>params[:order]
     #====================
+    
     @order = Ecstore::Order.new params[:order]
     if recommend_user == nil
       @order.commission=0
@@ -290,46 +278,48 @@ class Store::OrdersController < ApplicationController
       end
     end
 
-    if @order.save
-      @line_items.delete_all
+if @order.save
 
-      Ecstore::OrderLog.new do |order_log|
-        order_log.rel_id = @order.order_id
-        order_log.op_id = @order.member_id
-        order_log.op_name = @user.login_name
-        order_log.alttime = @order.createtime
-        order_log.behavior = 'creates'
-        order_log.result = "SUCCESS"
-        order_log.log_text = "订单创建成功！"
-      end.save
-      if return_url.nil?        
-        redirect_to order_path(@order)
-      else
-        redirect_to return_url
-      end
-    else
-      @addrs =  @user.member_addrs
-      @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
-      @coupons = @user.usable_coupons
-      render :new
-    end
+  @line_items.delete_all
 
+  Ecstore::OrderLog.new do |order_log|
+    order_log.rel_id = @order.order_id
+    order_log.op_id = @order.member_id
+    order_log.op_name = @user.login_name
+    order_log.alttime = @order.createtime
+    order_log.behavior = 'creates'
+    order_log.result = "SUCCESS"
+    order_log.log_text = "订单创建成功！"
+  end.save
+  
+  if return_url.nil?        
+    redirect_to order_path(@order)
+  else
+    redirect_to return_url
   end
+else
+  @addrs =  @user.member_addrs
+  @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
+  @coupons = @user.usable_coupons
+  render :new
+end
 
-  def mobile_show
-    supplier_id=params[:supplier_id]
-    @order = Ecstore::Order.find_by_order_id(params[:id])
+end
 
-    if supplier_id==nil
-      supplier_id=78
-    end
-    @supplier = Ecstore::Supplier.find(supplier_id)
+def mobile_show
+  supplier_id=params[:supplier_id]
+  @order = Ecstore::Order.find_by_order_id(params[:id])
 
-
-    render :layout=>@supplier.layout
+  if supplier_id==nil
+    supplier_id=78
   end
+  @supplier = Ecstore::Supplier.find(supplier_id)
 
-  def new
+
+  render :layout=>@supplier.layout
+end
+
+def new
     # @order = Ecstore::Order.new
 
     @addrs =  @user.member_addrs

@@ -8,5 +8,5 @@ class Ecstore::DiscountCode < Ecstore::Base
   belongs_to :user,:foreign_key=>"member_id"
 
   has_many :users, :foreign_key=>"discount_code"
-  has_many :orders, :foreign_key=>"discout_code"
+  has_many :orders, :foreign_key=>"discount_code"
 end

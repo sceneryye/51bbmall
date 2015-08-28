@@ -97,7 +97,7 @@
 			<li>付款状态 : <%=@order.pay_status_text%></li>
 			<li>发货状态 : <%=@order.ship_status_text%></li>
 			<li>客户备注 : <%=@order.memo%></li>
-            <li>特惠码 : <%=@order.discount_code%></span>
+            <li>特惠码 : <%=@order.discount_code.try :code%></span>
 			</li>
 		</ul>
 
@@ -207,27 +207,27 @@
 		<ul>
 			<li>
 				<span class="name">收货人: </span>
-				<span class="val"><%=@order.ship_name%></span>
+				<span class="val"><%= @order.ship_name.blank? ? '暂无信息' : @order.ship_name %></span>
 			</li>
 			<li>
 				<span class="name">收货地址 : </span>
-				<span class="val"><%=@order.ship_addr%></span>
+				<span class="val"><%=@order.ship_addr.blank? ? '暂无信息' : @order.ship_addr %></span>
 			</li>
 			<li>
 				<span class="name">邮编 : </span>
-				<span class="val"><%=@order.ship_zip%></span>
+				<span class="val"><%=@order.ship_zip.blank? ? '暂无信息' : @order.ship_zip %></span>
 			</li>
 			<li>
 				<span class="name">手机号码 : </span>
-				<span class="val"><%=@order.ship_mobile%></span>
+				<span class="val"><%=@order.ship_mobile.blank? ? '暂无信息' : @order.ship_mobile %></span>
 			</li>
 			<li>
 				<span class="name">固定电话 : </span>
-				<span class="val"><%=@order.ship_tel%></span>
+				<span class="val"><%=@order.ship_tel.blank? ? '暂无信息' : @order.ship_tel%></span>
 			</li>
 			<li>
 				<span class="name">电子邮件 : </span>
-				<span class="val"><%=@order.ship_email%></span>
+				<span class="val"><%=@order.ship_email.blank? ? '暂无信息' : @order.ship_email%></span>
 			</li>			
 		</ul>
 	</div>
@@ -243,6 +243,8 @@
 				<span>微信支付</span>
                  <%elsif @order.payment=="alipaywap"%>
                   <span>支付宝手机版</span>
+                  <%elsif @order.payment=="deposit"%>
+                  <span>预存款支付</span>
                   <%end%>
 			</li>
                 <%if @order.supplier_id==98%>

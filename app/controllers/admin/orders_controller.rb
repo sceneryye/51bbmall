@@ -1,23 +1,25 @@
 #encoding:utf-8
+require 'erb'
+include ERB::Util
 class Admin::OrdersController < Admin::BaseController
 	before_filter :get_return_url, :only=>[:show,:detail,:pay,:delivery,:reship,:refund]
 	skip_before_filter :verify_authenticity_token,:only=>[:batch]
 
-  def destroy
-    id = params[:id]
-    @order_log = Ecstore::OrderLog.where(:rel_id=>id)
-    @order_log.destroy_all
-    @order_item = Ecstore::OrderItem.where(:order_id=>id)
-    @order_item.destroy_all
-    @order = Ecstore::Order.where(:order_id=>id)
-    @order.destroy_all
+	def destroy
+		id = params[:id]
+		@order_log = Ecstore::OrderLog.where(:rel_id=>id)
+		@order_log.destroy_all
+		@order_item = Ecstore::OrderItem.where(:order_id=>id)
+		@order_item.destroy_all
+		@order = Ecstore::Order.where(:order_id=>id)
+		@order.destroy_all
 
-    respond_to do |format|
-      format.html { redirect_to admin_orders_url }
-      format.json { head :no_content }
-      format.js
-    end
-  end
+		respond_to do |format|
+			format.html { redirect_to admin_orders_url }
+			format.json { head :no_content }
+			format.js
+		end
+	end
 
 	def index
 		if params[:status].nil?
@@ -32,30 +34,30 @@ class Admin::OrdersController < Admin::BaseController
 
 		if !params[:ship_status].nil?
 			@orders_nw = @orders_nw.where(:ship_status=>params[:ship_status])
-    end
+		end
 
 		@order_ids = @orders_nw.pluck(:order_id)
-    role=current_admin.login_name.split( "_")[0]
-    if (role=="sale")
-      @orders = @orders_nw.where(:desktop_user_id=>current_admin.account_id)
+		role=current_admin.login_name.split( "_")[0]
+		if (role=="sale")
+			@orders = @orders_nw.where(:desktop_user_id=>current_admin.account_id)
 
-    elsif (role=="vendor")
-      vendor={'vendor_0001'=>66, 'vendor_0002'=>65,'vendor_ybpx'=>72,'vendor_xss'=>73,'vendor_xgy'=>63,'vendor_xj'=>64}
+		elsif (role=="vendor")
+			vendor={'vendor_0001'=>66, 'vendor_0002'=>65,'vendor_ybpx'=>72,'vendor_xss'=>73,'vendor_xgy'=>63,'vendor_xj'=>64}
      # @orders = @orders_nw.joins(:order_items).where('sdb_b2c_order_items.goods_id in (3466,3467)')
-        @orders = @orders_nw.joins(:order_items)
-        .where("sdb_b2c_order_items.goods_id in (select goods_id from sdb_b2c_goods where supplier=#{vendor[current_admin.login_name]})")
+     @orders = @orders_nw.joins(:order_items)
+     .where("sdb_b2c_order_items.goods_id in (select goods_id from sdb_b2c_goods where supplier=#{vendor[current_admin.login_name]})")
 
      elsif (current_admin.account_type=='shopadmin')#login_name=="admin")
-      @orders = @orders_nw
-  else
-  	  @orders = @orders_nw.where(:member_id=>"0")
-  end
-    @orders = @orders.includes(:user).paginate(:page=>params[:page],:per_page=>30)
-		respond_to do |format|
-			format.js
-			format.html
-		end
-	end
+	@orders = @orders_nw
+else
+	@orders = @orders_nw.where(:member_id=>"0")
+end
+@orders = @orders.includes(:user).paginate(:page=>params[:page],:per_page=>30)
+respond_to do |format|
+	format.js
+	format.html
+end
+end
 
 	# def export
 	# 	pp "---------------"
@@ -108,43 +110,43 @@ class Admin::OrdersController < Admin::BaseController
 
 	def batch
 		act = params[:act]
-              order_ids =  params[:order_ids] || []
-              conditions = { :order_id=>order_ids }
+		order_ids =  params[:order_ids] || []
+		conditions = { :order_id=>order_ids }
 
-              if act == "export"
-              	orders = Ecstore::Order.where(conditions)
-	              Ecstore::Order.export(orders)
-	              return render :json=>{:csv=>"/tmp/orders.csv"}
-              end
+		if act == "export"
+			orders = Ecstore::Order.where(conditions)
+			Ecstore::Order.export(orders)
+			return render :json=>{:csv=>"/tmp/orders.csv"}
+		end
 
-              if act == "tag"
-              	tegs = params[:tegs] || {}
+		if act == "tag"
+			tegs = params[:tegs] || {}
 
-	              tegs.values.each  do |teg|
-	                    	if teg[:technicals] == "checked"
-	                    		Ecstore::Tagable.where(:rel_id=>order_ids,:tag_type=>"orders",:tag_id=>teg[:tag_id]).delete_all if teg[:state] == "none"
-	                    	end
+			tegs.values.each  do |teg|
+				if teg[:technicals] == "checked"
+					Ecstore::Tagable.where(:rel_id=>order_ids,:tag_type=>"orders",:tag_id=>teg[:tag_id]).delete_all if teg[:state] == "none"
+				end
 
-	                    	if teg[:technicals] == "uncheck"
-	                    		order_ids.each do |order_id|
-	                    			Ecstore::Tagable.create(:rel_id=>order_id,:tag_id=>teg[:tag_id],:tag_type=>"orders",:app_id=>"b2c")
-	                    		end
-	                    	end
+				if teg[:technicals] == "uncheck"
+					order_ids.each do |order_id|
+						Ecstore::Tagable.create(:rel_id=>order_id,:tag_id=>teg[:tag_id],:tag_type=>"orders",:app_id=>"b2c")
+					end
+				end
 
-	                    	if teg[:technicals] == "partcheck"
-	                    		if teg[:state] == "all"
-	                    			order_ids.each do |order_id|
-				                     tagable = Ecstore::Tagable.where(:rel_id=>order_id,:tag_id=>teg[:tag_id],:tag_type=>"orders").first_or_initialize(:app_id=>"b2c")
-				                     tagable.save
-			                     end
-	                    		end
+				if teg[:technicals] == "partcheck"
+					if teg[:state] == "all"
+						order_ids.each do |order_id|
+							tagable = Ecstore::Tagable.where(:rel_id=>order_id,:tag_id=>teg[:tag_id],:tag_type=>"orders").first_or_initialize(:app_id=>"b2c")
+							tagable.save
+						end
+					end
 
-	                    		if teg[:state] == "none"
-	                    			Ecstore::Tagable.where(:rel_id=>order_ids,:tag_type=>"orders",:tag_id=>teg[:tag_id]).delete_all
-	                    		end
-	                    	end
-	              end
-              end
+					if teg[:state] == "none"
+						Ecstore::Tagable.where(:rel_id=>order_ids,:tag_type=>"orders",:tag_id=>teg[:tag_id]).delete_all
+					end
+				end
+			end
+		end
 
 
 		if act == "get_same_tags"
@@ -153,11 +155,11 @@ class Admin::OrdersController < Admin::BaseController
 
 			hash = Hash.new(0)
 			tag_ids.each do |id|
-			    if hash[id]
-			        hash[id] += 1
-			    else
-			        hash[id] = 1
-			    end
+				if hash[id]
+					hash[id] += 1
+				else
+					hash[id] = 1
+				end
 			end
 			stat = Hash.new
 
@@ -177,7 +179,7 @@ class Admin::OrdersController < Admin::BaseController
 			return render :json=>stat
 		end
 
-              render :nothing=>true
+		render :nothing=>true
 
 	end
 
@@ -354,27 +356,34 @@ class Admin::OrdersController < Admin::BaseController
 
 
 		if @refund.save
-			#部分退款
-			if @refund.money > 0 && @order.refunded_amount < @order.paid_amount
-				@order.update_attributes(:pay_status=>'4')
-				txt_key = "订单部分退款 ! "
-			else
-				@order.update_attributes(:pay_status=>'5')
-				txt_key = "订单已退款 ! "
+			#部分退款5
+			uid = @order.user.account.uid
+			money = params[:money].to_i * 100
+			acct_type = params[:acct_type].blank? ? 0 : params[:acct_type].to_i
+			valid_month = params[:valid_month].blank? ? 0 : params[:valid_month].to_i
+			remark = params[:valid_month].blank? ? 'no messages' : params[:memo]
+			if user_charge(uid, money, acct_type, valid_month, remark)
+				if @refund.money > 0 && @order.refunded_amount < @order.paid_amount
+					@order.update_attributes(:pay_status=>'4')
+					txt_key = "订单部分退款 ! "
+				else
+					@order.update_attributes(:pay_status=>'5')
+					txt_key = "订单已退款 ! "
+				end
+
+				Ecstore::OrderLog.new do |order_log|
+					order_log.rel_id = @order.order_id
+					order_log.op_id = current_admin.account_id
+					order_log.op_name = current_admin.login_name
+					order_log.alttime = @refund.t_payed
+					order_log.behavior = 'refunds'
+					order_log.result = "SUCCESS"
+					order_log.log_text = {:txt_key=>txt_key, :refund_id=>@refund.refund_id}.serialize
+				end.save
+
+				return_url =  params[:return_url] || admin_orders_url
+				redirect_to "#{return_url}##{@order.order_id}"
 			end
-
-			Ecstore::OrderLog.new do |order_log|
-				order_log.rel_id = @order.order_id
-				order_log.op_id = current_admin.account_id
-				order_log.op_name = current_admin.login_name
-				order_log.alttime = @refund.t_payed
-				order_log.behavior = 'refunds'
-				order_log.result = "SUCCESS"
-				order_log.log_text = {:txt_key=>txt_key, :refund_id=>@refund.refund_id}.serialize
-			end.save
-
-			return_url =  params[:return_url] || admin_orders_url
-			redirect_to "#{return_url}##{@order.order_id}"
 		else
 			render :refund
 		end
@@ -386,27 +395,27 @@ class Admin::OrdersController < Admin::BaseController
 
 		if @order.status == 'finish'
 			order_log = Ecstore::OrderLog.new do |order_log|
-	                order_log.rel_id = @order.order_id
-	                order_log.op_id = current_admin.account_id
-	                order_log.op_name = current_admin.login_name
-	                order_log.alttime = Time.now.to_i
-	                order_log.behavior = 'finish'
-	                order_log.result = "SUCCESS"
-	                order_log.log_text = "订单完成 !"
-	             end.save
-	      end
+				order_log.rel_id = @order.order_id
+				order_log.op_id = current_admin.account_id
+				order_log.op_name = current_admin.login_name
+				order_log.alttime = Time.now.to_i
+				order_log.behavior = 'finish'
+				order_log.result = "SUCCESS"
+				order_log.log_text = "订单完成 !"
+			end.save
+		end
 
-	      if @order.status == 'dead'
+		if @order.status == 'dead'
 			order_log = Ecstore::OrderLog.new do |order_log|
-	                order_log.rel_id = @order.order_id
-	                order_log.op_id = current_admin.account_id
-	                order_log.op_name = current_admin.login_name
-	                order_log.alttime = Time.now.to_i
-	                order_log.behavior = 'cancel'
-	                order_log.result = "SUCCESS"
-	                order_log.log_text = "取消订单 !"
-	             end.save
-	      end
+				order_log.rel_id = @order.order_id
+				order_log.op_id = current_admin.account_id
+				order_log.op_name = current_admin.login_name
+				order_log.alttime = Time.now.to_i
+				order_log.behavior = 'cancel'
+				order_log.result = "SUCCESS"
+				order_log.log_text = "取消订单 !"
+			end.save
+		end
 
 		respond_to do |format|
 			format.html
@@ -415,24 +424,24 @@ class Admin::OrdersController < Admin::BaseController
 	end
 
 	def comment
-        @order = Ecstore::Order.find(params[:id])
-    end
+		@order = Ecstore::Order.find(params[:id])
+	end
 
-    def update_memo
-    	@order = Ecstore::Order.find(params[:id])
-    	@order.memo = params[:ecstore_order][:memo]
-    	@order.save
-    	order_log = Ecstore::OrderLog.new do |order_log|
-	                order_log.rel_id = @order.order_id
-	                order_log.op_id = current_admin.account_id
-	                order_log.op_name = current_admin.login_name
-	                order_log.alttime = Time.now.to_i
-	                order_log.behavior = "memo"
-	                order_log.result = "SUCCESS"
-	                order_log.log_text = "memo info:#{params[:ecstore_order][:memo]}"
-	             end.save
-    	redirect_to admin_orders_url
-    end
+	def update_memo
+		@order = Ecstore::Order.find(params[:id])
+		@order.memo = params[:ecstore_order][:memo]
+		@order.save
+		order_log = Ecstore::OrderLog.new do |order_log|
+			order_log.rel_id = @order.order_id
+			order_log.op_id = current_admin.account_id
+			order_log.op_name = current_admin.login_name
+			order_log.alttime = Time.now.to_i
+			order_log.behavior = "memo"
+			order_log.result = "SUCCESS"
+			order_log.log_text = "memo info:#{params[:ecstore_order][:memo]}"
+		end.save
+		redirect_to admin_orders_url
+	end
 
 
 	# 购物单
@@ -454,5 +463,45 @@ class Admin::OrdersController < Admin::BaseController
 	def get_return_url
 		@return_url = request.env["HTTP_REFERER"] || admin_orders_url(:page=>params[:page])
 	end
+
+	def user_charge(uid, money, acct_type, valid_month, remark)
+      user_charge_url = 'http://103.16.125.100:9018/user_charge'
+      info_hash = {}
+      info_hash[:uid] = uid
+      info_hash[:money] = money    
+      info_hash = params_info(info_hash)
+      info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
+      Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + uid 
+      info_hash[:acct_type] = acct_type
+      info_hash[:valid_month] = valid_month   
+      info_hash[:remark] = url_encode remark
+      res_data = RestClient.get user_charge_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode res_data
+
+      if res_data_hash['code'] == 0
+        true
+      else
+        false
+      end
+    end
+
+    def params_info(options={})
+    brand_id = 'bb'
+    client_id = 'bbzg'
+    phone = params[:phone]
+    key = '1ed97bd965a8f052'
+    rc4_key = '1bb762f7ce24ceee'
+    ts = Time.now.to_i
+
+    info_hash={}    
+    info_hash[:brand_id] = brand_id
+    info_hash[:client_id] = client_id
+    info_hash.merge! options
+    info_hash[:ts] = ts.to_s
+
+    unsign = info_hash.map {|key,val| "#{val}"}.join('') + key
+    info_hash[:sign]  = Digest::MD5.hexdigest(unsign)
+    info_hash
+  end
 
 end

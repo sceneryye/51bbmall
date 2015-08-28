@@ -14,7 +14,7 @@ class Ecstore::Order < Ecstore::Base
 
   belongs_to :wechat_follower, :foreign_key=>"recommend_user"
 
-  belongs_to :dicount_code, :foreign_key=>"discount_code"
+  belongs_to :discount_code, :foreign_key=>"discount_code"
 
   self.accessible_all_columns
 

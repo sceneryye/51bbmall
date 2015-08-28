@@ -18,7 +18,7 @@ class Store::PaymentsController < ApplicationController
 		
 
 		#  update order payment
-		@order.update_attributes :payment=>pay_app_id,:last_modified=>Time.now.to_i,:installment=>installment,:part_pay=>part_pay if pay_app_id.to_s != @order.payment.to_s
+		@order.update_attributes :last_modified=>Time.now.to_i,:installment=>installment,:part_pay=>part_pay if pay_app_id.to_s != @order.payment.to_s
 
 		#params[:payment].merge! Ecstore::Payment::PAYMENTS[pay_app_id.to_sym]
 
@@ -47,6 +47,7 @@ class Store::PaymentsController < ApplicationController
 		end
 
 		@payment.money = @payment.cur_money = @order.pay_amount
+		@advance = user_wallet(current_user.uid)
 		if @payment.save
 			acct_type = 0
 			remark = @order.memo == '' || @order.memo.nil? ? 'no information' : @order.memo
@@ -55,13 +56,14 @@ class Store::PaymentsController < ApplicationController
 
 
 			
-			if @order.part_pay >= @order.total_amount
+			if @advance >= @order.total_amount
 				money = @order.total_amount.to_i * 100
 				if user_deduct(money, acct_type, remark)
 					@order.update_attributes(:pay_status => '1')
 					adapter  = params.delete(:adapter)
 					params.delete :controller
 					params.delete :action
+					@payment.update_attributes :status => 'succ'
 
 					@payment.payment_log.update_attributes({:return_ip=>request.remote_ip,:return_params=> params,:returned_at=>Time.now}) if @payment.payment_log
 
@@ -69,14 +71,14 @@ class Store::PaymentsController < ApplicationController
 					@user = @payment.user
 					order_num = current_user.member.order_num + 1
 					current_user.member.update_attributes(:order_num => order_num)
-					current_user.member.save
+					
 
 
 					Ecstore::OrderLog.new do |order_log|
 						order_log.rel_id = @order.order_id
 						order_log.op_id = @user.member_id
 						order_log.op_name = @user.login_name
-						order_log.alttime = @payment.t_payed
+						order_log.alttime = @order.createtime
 						order_log.behavior = 'payments'
 						order_log.result = "SUCCESS"
 						order_log.log_text = "订单支付成功！"
@@ -85,7 +87,7 @@ class Store::PaymentsController < ApplicationController
 				else 
 					render :text => '支付失败1'
 				end
-			elsif @order.part_pay < @order.total_amount
+			elsif @advance < @order.total_amount
 				return render :text => '余额不足，请充值！'
 				#money = @order.part_pay * 100
 				#if user_deduct(money, acct_type, remark)
