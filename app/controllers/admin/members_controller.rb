@@ -26,6 +26,7 @@ module Admin
       def destroy
         @member = Ecstore::Member.find(params[:id])
         @member.destroy
+        @member.account.destroy
         redirect_to admin_members_path
       end
 
