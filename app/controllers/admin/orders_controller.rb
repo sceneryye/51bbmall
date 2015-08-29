@@ -337,6 +337,10 @@ end
 			return render :text=>"该订单已退款 !",:layout=>"admin"
 		end
 
+		if params[:refund][:money] > @order.paid_amount - @order.refunded_amount
+			return render :text => "退款总金额超过付款总金额，退款失败！", :layout => 'admin'
+		end
+
 		@refund = Ecstore::Refund.new params[:refund]  do |refund|
 			refund.refund_id = Ecstore::Refund.generate_refund_id
 			refund.pay_ver = '1.0'
