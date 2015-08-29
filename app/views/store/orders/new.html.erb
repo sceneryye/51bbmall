@@ -322,28 +322,3 @@ function pendAddr(){
 }
 
 </script>
-<!--<script type="text/javascript">
-$("#advance").click(function(){ 
-  var ischeck=$(this).prop("checked");   
-  var part_amount = $('#part_amount').text();
-  var final_amount = $('#final_amount').text();
-  if(ischeck==false){   	
-    $('#part_amount').text(0);
-    $('#pay_amount').text(final_amount);
-  }
-  else{   	
-    if(part_amount > 0 && part_amount <= final_amount) {
-      $('#part_amount').text(part_amount);
-      $('#pay_amount').text(final_amount - part_amount);
-    }
-    else if(part_amount > final_amount) {
-      $('#part_amount').text(part_amount);
-      $('#pay_amount').text(0);
-    }
-    else {
-      $('#part_amount').text(0);
-      $('#pay_amount').text(final_amount);
-    }
-  } 
-}); 
-</script>-->
