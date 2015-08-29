@@ -85,8 +85,8 @@ def find_cart!
     else
           # return (render :js=>"window.location.href='#{site_path}'") if request.xhr?
       	   # redirect_to (site_path)
-         end
-       end
+        end
+      end
 
     # find categories
     def require_top_cats
@@ -159,38 +159,19 @@ def find_cart!
   end
 
   def user_wallet(uid = current_user.uid)
-      user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
-      info_hash = {}
-      info_hash[:uid] = uid      
-      info_hash = params_info(info_hash)      
-      res_data = RestClient.get user_wallet_url, {:params => info_hash}
-      res_data_hash = ActiveSupport::JSON.decode res_data
+    user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
+    info_hash = {}
+    info_hash[:uid] = uid      
+    info_hash = params_info(info_hash)      
+    res_data = RestClient.get user_wallet_url, {:params => info_hash}
+    res_data_hash = ActiveSupport::JSON.decode res_data
 
-      if res_data_hash['code'] == 0
-        return res_data_hash['data']['balance']
-      else
-        render :text => message_error = "错误：#{res_data_hash['msg']}"
-      end
+    if res_data_hash['code'] == 0
+      return res_data_hash['data']['balance']
+    else
+      render :text => message_error = "错误：#{res_data_hash['msg']}"
     end
+  end
 
-    def user_charge(uid, money, acct_type, valid_month, remark)
-      user_charge_url = 'http://103.16.125.100:9018/user_charge'
-      info_hash = {}
-      info_hash[:uid] = uid
-      info_hash[:money] = money    
-      info_hash = params_info(info_hash)
-      info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
-      Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + uid 
-      info_hash[:acct_type] = acct_type
-      info_hash[:valid_month] = valid_month   
-      info_hash[:remark] = url_encode remark
-      res_data = RestClient.get user_charge_url, {:params => info_hash}
-      res_data_hash = ActiveSupport::JSON.decode res_data
-
-      if res_data_hash['code'] == 0
-        true
-      else
-        false
-      end
-    end
+  
 end

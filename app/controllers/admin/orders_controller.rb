@@ -332,6 +332,7 @@ end
 	def dorefund
 		@order =Ecstore::Order.find_by_order_id(params[:id])
 
+
 		if @order.pay_status == "5"
 			return render :text=>"该订单已退款 !",:layout=>"admin"
 		end
@@ -356,13 +357,15 @@ end
 
 
 		if @refund.save
+
 			#部分退款5
-			uid = @order.user.account.uid
-			money = params[:money].to_i * 100
+			uid = @order.user.account.uid.to_s
+			money = params[:refund][:money].to_i * 100
 			acct_type = params[:acct_type].blank? ? 0 : params[:acct_type].to_i
-			valid_month = params[:valid_month].blank? ? 0 : params[:valid_month].to_i
+			valid_month = params[:valid_month].blank? ? 9 : params[:valid_month].to_i
 			remark = params[:valid_month].blank? ? 'no messages' : params[:memo]
-			if user_charge(uid, money, acct_type, valid_month, remark)
+			 res_data_hash = user_charge(uid, money, acct_type, valid_month, remark)
+			 if res_data_hash['code'] == 0				
 				if @refund.money > 0 && @order.refunded_amount < @order.paid_amount
 					@order.update_attributes(:pay_status=>'4')
 					txt_key = "订单部分退款 ! "
@@ -382,10 +385,13 @@ end
 				end.save
 
 				return_url =  params[:return_url] || admin_orders_url
-				redirect_to "#{return_url}##{@order.order_id}"
+				redirect_to '/admin/orders'
+			else
+				return render :text => "#{res_data_hash}"
 			end
+
 		else
-			render :refund
+			render :js => "allert('refun did not save!')"
 		end
 	end
 
