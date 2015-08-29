@@ -73,9 +73,9 @@
         <td><%= (Time.parse('1970-01-01 00:00:00') + member.account.createtime).strftime('%F') %></td>
         
         <%if (current_admin.login_name=="admin")%>
-        <td><%=link_to "查看",info_admin_member_path(member)%></td>
-        <td><%=link_to "编辑",edit_admin_member_path(member)%></td>
-        <td>删除</td>
+        <td><%= link_to "查看",info_admin_member_path(member) %></td>
+        <td><%= link_to "编辑",edit_admin_member_path(member) %></td>
+        <td><%= link_to "删除",admin_member_path(member), :method => :delete %></td>
         <%else%>
         <td style="display:none"><%=link_to "查看",info_admin_member_path(member)%></td>
         <td style="display:none"><%=link_to "编辑",edit_admin_member_path(member)%></td>

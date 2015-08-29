@@ -61,7 +61,7 @@
      	<select class="span2" id="refund_pay_app_id" name="refund[pay_app_id]">
      		<option></option>
      		<%payment_options.merge("offline"=>"线下支付").each do |value,text|%>
-		<option value="<%=value%>"><%=text%></option>
+		<option value="<%=value%>" <%= selected='selected' if value == 'deposit' %>><%=text%></option>
 		<%end%>
 	</select>
     </div>

@@ -23,6 +23,12 @@ module Admin
         end
       end
 
+      def destroy
+        @member = Ecstore::Member.find(params[:id])
+        @member.destroy
+        redirect_to admin_members_path
+      end
+
       def show
       end
 
@@ -46,6 +52,7 @@ module Admin
 
       def info
         @member = Ecstore::Member.find(params[:id])
+        @advance = (user_wallet @member.account.uid).to_i / 100
       end
 
       def send_sms
