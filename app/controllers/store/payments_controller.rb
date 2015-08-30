@@ -60,6 +60,7 @@ class Store::PaymentsController < ApplicationController
 				money = @order.total_amount.to_i * 100
 				if user_deduct(money, acct_type, remark)
 					@order.update_attributes(:pay_status => '1')
+
 					adapter  = params.delete(:adapter)
 					params.delete :controller
 					params.delete :action
@@ -71,6 +72,7 @@ class Store::PaymentsController < ApplicationController
 					@user = @payment.user
 					order_num = current_user.member.order_num + 1
 					current_user.member.update_attributes(:order_num => order_num)
+					
 					
 
 
