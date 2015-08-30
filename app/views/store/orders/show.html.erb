@@ -6,27 +6,27 @@
       <li><span>02. 收货方式</span></li>
       <li class="current-step"><span>03. 支付货款</span></li>
     </ul>
-  </div>
-  <div class="order-holder">
-    <%=form_for :payment,:url=>payments_path(:order_id=>@order.order_id),:method=>'post',:html=>{ :target=>"_blank" } do |f|%>
-    <%=f.hidden_field :currency, :value=>"CNY" %>
-    <%if @order.payment == "bcom"%>
-    <%=f.hidden_field :memo, :value=>"持交通银行卡在线支付可享受订单金额95折优惠" %>
-    <%end%>
+    
+    <div class="order-holder">
+      <%=form_for :payment,:url=>payments_path(:order_id=>@order.order_id),:method=>'post',:html=>{ :target=>"_blank" } do |f|%>
+      <%=f.hidden_field :currency, :value=>"CNY" %>
+      <%if @order.payment == "bcom"%>
+      <%=f.hidden_field :memo, :value=>"持交通银行卡在线支付可享受订单金额95折优惠" %>
+      <%end%>
 
-    <div class="order">
-      <div class="title">订单已经成功提交!</div>
-      <p>订单编号: <span><%=@order.order_id%></span>
-        &nbsp;&nbsp;&nbsp;
-        支付金额: ￥<span id="final_pay"><%#=@order.final_pay%><%=@order.final_amount%></span>
-        &nbsp;&nbsp;&nbsp;
-        <span id="products_total" data-amount="<%=@order.products_total%>"></span>
-        订单状态: <span class="status"><%=@order.order_status_text%></span>
+      <div class="order" style="margin-top:30px">
+        <div class="title">订单已经成功提交!</div>
+        <p>订单编号: <span><%=@order.order_id%></span>
+          &nbsp;&nbsp;&nbsp;
+          支付金额: ￥<span id="final_pay"><%#=@order.final_pay%><%=@order.final_amount%></span>
+          &nbsp;&nbsp;&nbsp;
+          <span id="products_total" data-amount="<%=@order.products_total%>"></span>
+          订单状态: <span class="status"><%=@order.order_status_text%></span>
 
-        <span id="pmts_total" class="hide" data-amount="<%=@order.pmts_total%>"></span>
-      </p>
-      <%=link_to "查看订单详细信息>>",detail_order_path(@order),:target=>"_blank"%>
-    </div>
+          <span id="pmts_total" class="hide" data-amount="<%=@order.pmts_total%>"></span>
+        </p>
+        <%=link_to "查看订单详细信息>>",detail_order_path(@order),:target=>"_blank"%>
+      </div>
 
     <!--<div class="payment">
       <span class="title"><%#=payments[@order.payment][:name]%></span>
@@ -74,3 +74,4 @@
       <%end%>
     </div>
   </div>
+</div>

@@ -163,6 +163,7 @@ class Store::OrdersController < ApplicationController
     params[:order].merge!(:ip=>request.remote_ip)
     params[:order].merge!(:member_id=>@user.member_id)
     params[:order].merge!(:supplier_id=>supplier_id)
+    params[:order].merge!(:status=>'active')
 
     #=====推广佣金计算=======
     recommend_user = session[:recommend_user]
@@ -291,7 +292,7 @@ if @order.save
     order_log.result = "SUCCESS"
     order_log.log_text = "订单创建成功！"
   end.save
-  
+
   if return_url.nil?        
     redirect_to order_path(@order)
   else
