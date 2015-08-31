@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="box-border">
-                        <%=form_for Ecstore::Account.new,:url=> user_login_auth_bbmall_index_path,:class=>"contact-form",:html=>{:role=>"form",data: {type: "script"}} do |f|%>
+                            <%=form_for Ecstore::Account.new,:url=> user_login_auth_bbmall_index_path,:class=>"contact-form",:html=>{:role=>"form",data: {type: "script"}} do |f|%>
                             <h4>登录</h4>
                             <p>
                                 <label>手机号</label>
@@ -34,47 +34,60 @@
                             <p>
                                 <button class="button" type="submit"><i class="fa fa-lock"></i> 登录</button>
                             </p>
-                        <%end%>
+                            <%end%>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                    <div class="box-border">
-                        <h4>注册</h4>
-                        <small>请输入您的手机号码注册新账户</small>
-                    <%=form_for Ecstore::Account.new,:url=> user_reg_auth_bbmall_index_path,:html=>{ :role=>"form",:id=>"register_form",data: {type: "script"}} do |f|%> 
-                        <p>
-                            <label>手机号</label>
-                            <%=f.text_field :login_name,:value=>"",:class=>"form-control",:placeholder=>"手机",:required=>"required"%>
-                        </p>
-                        <div class='validate'>
-                        <form>
-                        <span><input name="validate_code" class="form-control" placeholder="请输入验证码" id="validate-code-reg" type="text"></span>
-                        <span><button type="button" class="btn btn-success btn-sm" id="button-validate-code">获取验证码</button></span>
-                        </form>
+                        <div class="box-border">
+                            <h4>注册</h4>
+                            <small>请输入您的手机号码注册新账户</small>
+                            <%=form_for Ecstore::Account.new,:url=> user_reg_auth_bbmall_index_path,:html=>{ :role=>"form",:id=>"register_form", :class => 'form-inline', data: {type: "script"}} do |f|%> 
+                            <p>
+                                <div><label>手机号</label></div>
+                                <div><%=f.text_field :login_name,:value=>"", :id => 'phone-number', :class=>"form-control",:placeholder=>"手机",:required=>"required"%></div>
+                            </p>
 
-                        <p>
+                            
+                            <div class="form-group">
+                                <input name="validate_code" class="form-control" placeholder="请输入验证码" id="validate-code-reg" type="text">
+                                <button type="button" class="btn btn-success btn-sm" id="button-validate-code">获取验证码</button>
+                            </div>
+                            
+
+                            <p>
                               <input type="checkbox" checked="checked" value="agree" name="user[license]" id="license" class="x-input required" autocomplete="off">
-                                <label for="license" class="checkbox_label" id="i_agree">&nbsp;我已阅读并同意：</label><a href="/pages/zhucexieyi" target="_top"  id="reg_term">会员注册协议</a>
-                                <span id="and">和</span>&nbsp;<a href="/pages/ysbh" id="privacy" target="_top">隐私保护政策</a>
-                                <div class="help-block" rel="user_license"></div>
-                        </p>
-                        <p>
+                              <label for="license" class="checkbox_label" id="i_agree">&nbsp;我已阅读并同意：</label><a href="/pages/zhucexieyi" target="_top"  id="reg_term">会员注册协议</a>
+                              <span id="and">和</span>&nbsp;<a href="/pages/ysbh" id="privacy" target="_top">隐私保护政策</a>
+                              <div class="help-block" rel="user_license"></div>
+                          </p>
+                          <p>
                             <button class="button" type="submit"><i class="fa fa-user"></i>注册</button>
                         </p>
-                    <%end%>
+                        <%end%>
                     </div>
-                    </div>
-                    
                 </div>
+
             </div>
         </div>
     </div>
+</div>
 </div> 
 
-   
+
 <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
 <script src="/assets/jquery_ujs.js?body=1" type="text/javascript"></script>
 <script src="/assets/bootstrap-transition.js?body=1" type="text/javascript"></script>
 <script src="/assets/bootstrap-carousel.js?body=1" type="text/javascript"></script>
 <script src="/assets/jquery_placeholder_min.js?body=1" type="text/javascript"></script>
 <script src="/assets/login.js?body=1" type="text/javascript"></script>
+
+<script type="text/javascript">
+var phone_number = $('#phone-number').val();
+var code = <%= rand(100_000).to_s.rjust(6, '0') %>;
+var msg = '您的验证码为：' + code + ',若非您本人操作，请忽略该信息。'
+var msg_encode = encodeURIComponent(msg)
+var $valid = $('#button-validate-code');
+$valid.click(function(){
+    <%= send_sms(phone_number, msg_encode) %>;    
+})
+</script>
