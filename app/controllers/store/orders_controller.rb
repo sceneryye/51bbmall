@@ -19,8 +19,8 @@ class Store::OrdersController < ApplicationController
     @inventory = Ecstore::Inventory.where(:member_id=>current_account,:product_id=>params[:id]).first
 
     if @inventory.blank?
-    #全部出库，删除记录
-  else
+      #全部出库，删除记录
+    else
       #部分出库，修改数量
       quantity =  @inventory.quantity - @inventory.quantity
       Ecstore::Inventory.where(:member_id=>current_account,:product_id=>params[:id]).update_all(:quantity=>quantity)
@@ -91,50 +91,19 @@ class Store::OrdersController < ApplicationController
   end
 
   def index
-    supplier_id = params[:supplier_id]
     if  @user
-      supplier_id = @user.account.supplier_id
-      if supplier_id == nil
-        supplier_id=78
-      end
-      @supplier = Ecstore::Supplier.find(supplier_id)
       @orders =  Ecstore::Order.joins(:user).where(:member_id => params[:member_id]) || @user.orders.order("createtime desc")
     else
-      return_url={:return_url => "/goods?platform=#{params["platform"]}&supplier_id=#{supplier_id}"}.to_query
-      redirect_to "/auto_login?#{return_url}&id=#{supplier_id}"
+      return_url={:return_url => "/goods"}.to_query
+      redirect_to "/login?#{return_url}"
     end
   end
 
-  def index_mobile             ###手机订单
-    supplier_id = params[:supplier_id]
-    if  @user
-      if supplier_id == nil
-        supplier_id=78
-      end
-      @supplier = Ecstore::Supplier.find(supplier_id)
-      @orders =  @user.orders.order("createtime desc")
-
-      if params["platform"]=="mobile"
-        render :layout=>@supplier.layout
-      end
-    else
-      return_url={:return_url => "/goods?platform=mobile&supplier_id=#{params[:supplier_id]}"}.to_query
-      redirect_to "/auto_login?#{return_url}&id=#{params[:supplier_id]}"
-    end
-  end
-
+ 
   def show
 
     @order = Ecstore::Order.find_by_order_id(params[:id])
-    if params["platform"]=="mobile"
-      supplier_id=params[:supplier_id]
-      if supplier_id==nil
-        supplier_id=78
-      end
-      @supplier = Ecstore::Supplier.find(supplier_id)
-      render :layout=>@supplier.layout
-
-    end
+    render :layout=>"member"
   end
 
 
@@ -151,6 +120,7 @@ class Store::OrdersController < ApplicationController
         params[:order].merge!("ship_#{key}"=>addr.attributes[key])
       end
     else
+
     end
     
 
@@ -198,12 +168,12 @@ class Store::OrdersController < ApplicationController
         order_item.nums = line_item.quantity.to_i
         order_item.item_type = "product"
         if params[:cart_total_final].nil?
-         order_item.amount = order_item.price * order_item.nums
-       else
-         order_item.amount =  params[:cart_total_final]
-       end
+          order_item.amount = order_item.price * order_item.nums
+        else
+          order_item.amount =  params[:cart_total_final]
+        end
 
-       product_attr = {}
+        product_attr = {}
         # product.spec_desc["spec_value"].each  do |spec_id,spec_value|
         # 	spec = Ecstore::Spec.find_by_spec_id(spec_id)
         # 	product_attr.merge!(spec_id=>{"label"=>spec.spec_name,"value"=>spec_value})
@@ -279,45 +249,32 @@ class Store::OrdersController < ApplicationController
       end
     end
 
-if @order.save
+  if @order.save
 
-  @line_items.delete_all
+    @line_items.delete_all
 
-  Ecstore::OrderLog.new do |order_log|
-    order_log.rel_id = @order.order_id
-    order_log.op_id = @order.member_id
-    order_log.op_name = @user.login_name
-    order_log.alttime = @order.createtime
-    order_log.behavior = 'creates'
-    order_log.result = "SUCCESS"
-    order_log.log_text = "订单创建成功！"
-  end.save
+    Ecstore::OrderLog.new do |order_log|
+      order_log.rel_id = @order.order_id
+      order_log.op_id = @order.member_id
+      order_log.op_name = @user.login_name
+      order_log.alttime = @order.createtime
+      order_log.behavior = 'creates'
+      order_log.result = "SUCCESS"
+      order_log.log_text = "订单创建成功！"
+    end.save
 
-  if return_url.nil?        
-    redirect_to order_path(@order)
+    if return_url.nil?        
+      redirect_to order_path(@order)
+    else
+      redirect_to return_url
+    end
   else
-    redirect_to return_url
+    @addrs =  @user.member_addrs
+    @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
+    @coupons = @user.usable_coupons
+    render :new
   end
-else
-  @addrs =  @user.member_addrs
-  @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
-  @coupons = @user.usable_coupons
-  render :new
-end
 
-end
-
-def mobile_show
-  supplier_id=params[:supplier_id]
-  @order = Ecstore::Order.find_by_order_id(params[:id])
-
-  if supplier_id==nil
-    supplier_id=78
-  end
-  @supplier = Ecstore::Supplier.find(supplier_id)
-
-
-  render :layout=>@supplier.layout
 end
 
 def new
@@ -346,24 +303,9 @@ def new
       render :text => message_error = "错误：#{res_data_hash['msg']}"
     end
 
-  end
+end
 
-  def new_mobile_addr
-
-    supplier_id= @user.account.supplier_id
-    if supplier_id==nil
-      supplier_id=78
-    end
-    @supplier = Ecstore::Supplier.find(supplier_id)
-
-    @addrs =  @user.member_addrs
-    @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
-    if params[:return_url]
-      @return_url=params[:return_url]
-    end
-    render :layout=>@supplier.layout
-
-  end
+  
 
   def addr_detail
     @addr = Ecstore::MemberAddr.find(params[:id])
@@ -387,47 +329,7 @@ def new
  end
 
 
- def new_mobile
-
-  supplier_id= @user.account.supplier_id
-
-  if supplier_id.nil?
-    supplier_id=78
-  end
-
-  sql = "SELECT SUM(price*quantity) AS total,mdk.sdb_b2c_cart_objects.supplier_id,SUM(freight)/count(*) AS freight FROM mdk.sdb_b2c_cart_objects
-  INNER JOIN mdk.sdb_b2c_goods ON SUBSTRING_INDEX(SUBSTRING_INDEX(mdk.sdb_b2c_cart_objects.obj_ident,'_',2),'_',-1) = mdk.sdb_b2c_goods.goods_id
-  WHERE mdk.sdb_b2c_cart_objects.member_id=#{@user.member_id}
-  GROUP BY mdk.sdb_b2c_cart_objects.supplier_id"
-  @cart_total_by_supplier = ActiveRecord::Base.connection.execute(sql)
-  @cart_freight = 0
-  @favorable_terms = 0
-
-  @cart_total_by_supplier.each(:as => :hash) do |row|
-      if (row["total"]>=60 && row["supplier_id"]==97) || (row["total"]>=380 &&row["supplier_id"]==77) #|| @cart_total==0.01 #测试商品
-        @favorable_terms -=row["freight"]
-      end
-      @cart_freight += row["freight"]
-    end
-
-
-    @cart_total_final = @cart_total+ @cart_freight + @favorable_terms
-    @addrs =  @user.member_addrs
-    if @addrs.size==0
-      redirect_to "/orders/new_mobile_addr?supplier_id=#{supplier_id}&return_url=%2forders%2fnew_mobile?supplier_id%3d#{supplier_id}"
-    else
-      @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
-
-      if @pmtable
-        @order_promotions = Ecstore::Promotion.matched_promotions(@line_items)
-        @goods_promotions = Ecstore::Promotion.matched_goods_promotions(@line_items)
-        @coupons = @user.usable_coupons
-      end
-      @supplier = Ecstore::Supplier.find(supplier_id)
-      render :layout=>@supplier.layout
-    end
-  end
-
+ 
 
   def share
     wechat_user = params[:FromUserName]
@@ -466,6 +368,7 @@ def new
 
   def detail
     @order  = Ecstore::Order.find_by_order_id(params[:id])
+    render :layout=>"member"
   end
 
   def check_coupon
