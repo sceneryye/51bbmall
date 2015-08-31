@@ -1,11 +1,8 @@
 
-$("#line_<%=@line_item.id%>").remove();
+$("#line_<%=params[:id]%>").remove();
 
+$("#cart_total").html('<%=raw "￥#{format('%.2f',@cart_total)}"%>');
 
-   if ($("#supplierid_<%=params[:supplier_id]%>").children("li").length==0){
-       $("#supplier_<%=params[:supplier_id]%>").remove();
-           }
-$("#carter .modal-footer .total").html('<%=raw "￥#{@cart_total}"%>');
 var _pDoc =  window.document;
 $(_pDoc).find("#cart_link .cart-number").text('(<%=@cart_total_quantity%>)');
 $(_pDoc).find("#menu_cart .number").text('(<%=@cart_total_quantity%>)');

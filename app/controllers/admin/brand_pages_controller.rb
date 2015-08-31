@@ -84,8 +84,10 @@ class Admin::BrandPagesController < Admin::BaseController
     return_url =  admin_brand_pages_url if return_url.blank?
     
     @brand = Ecstore::Brand.find(params[:id])
-    Ecstore::Brand.where(:reco=>true).update_all :reco=>false
-    @brand.update_attribute :reco, true
+    val = @brand.reco == false ? true : false
+    @brand.update_attribute :reco, val
+
+    # Ecstore::Brand.where(:reco=>true).update_all :reco=>false
     redirect_to return_url
   end
 

@@ -5,12 +5,12 @@
         <div class="row">
             <div class="main-header">
                 <div class="row">
-                    <div class="col-sm-12 col-md-2 col-lg-2">
+                    <div class="col-sm-12 col-md-2 col-lg-2 hidden-xs">
                         <div class="logo">
                             <a href="/"><img src="/img/logo.png" alt="Logo"></a>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-lg-7">
+                    <div class="col-sm-12 col-md-6 col-lg-7 hidden-xs">
                         <div class="advanced-search box-radius">
                             <form class="form-inline" action="/search">
                                 <div class="form-group search-category">
@@ -31,7 +31,8 @@
                     </div>
                     <div class="col-sm-7 col-md-4 col-lg-3">
                         <div class="wrap-block-cl">
-                            <div class="inner-cl box-radius">
+                            <div class="inner-cl box-radius">                                
+                                <%if @user%>
                                 <div class="dropdown user-info">
                                   <a data-toggle="dropdown" role="button"><i class="fa fa-user"></i></a>
                                   <ul class="dropdown-menu">
@@ -39,14 +40,53 @@
                                         <li><a href="/member/favorites"><i class="fa fa-heart-o"></i>收藏夹</a></li>
                                         <li><a href="/cart"><i class="fa fa-arrow-circle-right"></i> 结账</a></li>
                                         <li><a href="/member/orders"><i class="fa fa-list"></i> 订单</a></li>
+                                        <li><a href="/logout"><i class="fa fa-sign-in"></i> 退出</a></li>
                                   </ul>
                                 </div>
-                                <%if @user%>
                                 <div class="language">
                                     <%=@user.mobile%>                                     
                                 </div>
-                                <div class="currency" >
-                                  <a href="/logout"><i class="fa fa-sign-in"></i> 退出</a>
+                                <div class="currency cart-mobile block-wrap-cart" >
+                                    <div class="iner-block-cart box-radius">
+                                        <a href="/cart">
+                                            <span class="total">&yen;<%= @cart_total %></span>
+                                        </a>
+                                    </div>
+                                    <div class="block-mini-cart">
+                                        <div class="mini-cart-content">
+                                            <h5 class="mini-cart-head"><%= @cart_total_quantity %> 件商品 </h5>
+                                            <div class="mini-cart-list">
+                                                <% if @cart_total_quantity > 0 %>
+                                                <div class="mini-cart-list">
+                                                    <ul>
+                                                        <% @line_items.each do |l| %>
+                                                        <li class="product-info">
+                                                            <div class="p-left">
+                                                                <a href="#" class="remove_link"></a>
+                                                                <a href="#">
+                                                                    <img class="img-responsive" src=<%= l.good.medium_pic %> alt="Product">
+                                                                </a>
+                                                            </div>
+                                                            <div class="p-right">
+                                                                <p class="p-name"><%= l.product.name %></p>
+                                                                <p class="product-price">&yen;<%= l.product.price %></p>
+                                                                <p>数量: <%= l.quantity %></p>
+                                                            </div>
+                                                        </li>
+                                                        <% end %>                                                            
+                                                    </ul>
+                                                </div>
+                                                <div class="toal-cart">
+                                                    <span>总共</span>
+                                                    <span class="toal-price pull-right">&yen;<%= @cart_total %></span>
+                                                </div>
+                                                <div class="cart-buttons">
+                                                    <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
+                                                </div>
+                                                <% end %>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <%else%>
                                 <div class="language">
@@ -56,50 +96,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-5 cart-mobile">
-                        <div class="block-wrap-cart">
-                            <div class="iner-block-cart box-radius">
-                                <a href="/cart">
-                                    <span class="total">&yen;<%= @cart_total %></span>
-                                </a>
-                            </div>
-                            <div class="block-mini-cart">
-                                <div class="mini-cart-content">
-                                    <h5 class="mini-cart-head"><%= @cart_total_quantity %> 件商品 </h5>
-                                    <div class="mini-cart-list">
-                                        <% if @cart_total_quantity > 0 %>
-                                        <div class="mini-cart-list">
-                                            <ul>
-                                                <% @line_items.each do |l| %>
-                                                <li class="product-info">
-                                                    <div class="p-left">
-                                                        <a href="#" class="remove_link"></a>
-                                                        <a href="#">
-                                                            <img class="img-responsive" src=<%= l.good.medium_pic %> alt="Product">
-                                                        </a>
-                                                    </div>
-                                                    <div class="p-right">
-                                                        <p class="p-name"><%= l.product.name %></p>
-                                                        <p class="product-price">&yen;<%= l.product.price %></p>
-                                                        <p>数量: <%= l.quantity %></p>
-                                                    </div>
-                                                </li>
-                                                <% end %>                                                            
-                                            </ul>
-                                        </div>
-                                        <div class="toal-cart">
-                                            <span>总共</span>
-                                            <span class="toal-price pull-right">&yen;<%= @cart_total %></span>
-                                        </div>
-                                        <div class="cart-buttons">
-                                            <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
-                                        </div>
-                                        <% end %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>                
         </div>
@@ -117,7 +114,7 @@
                                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                                         <i class="fa fa-bars"></i>
                                     </button>
-                                    <a class="navbar-brand" href="#">菜单</a>
+                                    <a class="navbar-brand" href="/"><img src="/img/logo.png" alt="Logo" style="height:35px;"></a>
                                 </div>
                                 <div id="navbar" class="navbar-collapse collapse">
                                     <ul class="nav navbar-nav">
@@ -208,6 +205,8 @@
                                                 </li>
                                             </ul> 
                                         </li>
+                                        <li class="visible-xs"><a href="/pages/help_problem">信息中心</a>
+
                                     </ul>
                                     <ul class="nav navbar-nav navbar-right">
                                         <li>
