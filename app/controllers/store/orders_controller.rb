@@ -98,7 +98,7 @@ class Store::OrdersController < ApplicationController
         supplier_id=78
       end
       @supplier = Ecstore::Supplier.find(supplier_id)
-      @orders =  @user.orders.order("createtime desc")
+      @orders =  Ecstore::Order.joins(:user).where(:member_id => params[:member_id]) || @user.orders.order("createtime desc")
     else
       return_url={:return_url => "/goods?platform=#{params["platform"]}&supplier_id=#{supplier_id}"}.to_query
       redirect_to "/auto_login?#{return_url}&id=#{supplier_id}"

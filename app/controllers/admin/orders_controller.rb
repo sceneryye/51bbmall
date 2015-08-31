@@ -28,6 +28,8 @@ class Admin::OrdersController < Admin::BaseController
 			@orders_nw = Ecstore::Order.where(:status=>params[:status]).order("createtime desc")
 		end
 
+		
+
 		if !params[:pay_status].nil?
 			@orders_nw = @orders_nw.where(:pay_status=>params[:pay_status])
 		end
@@ -43,21 +45,20 @@ class Admin::OrdersController < Admin::BaseController
 
 		elsif (role=="vendor")
 			vendor={'vendor_0001'=>66, 'vendor_0002'=>65,'vendor_ybpx'=>72,'vendor_xss'=>73,'vendor_xgy'=>63,'vendor_xj'=>64}
-     # @orders = @orders_nw.joins(:order_items).where('sdb_b2c_order_items.goods_id in (3466,3467)')
-     @orders = @orders_nw.joins(:order_items)
-     .where("sdb_b2c_order_items.goods_id in (select goods_id from sdb_b2c_goods where supplier=#{vendor[current_admin.login_name]})")
+			@orders = @orders_nw.joins(:order_items)
+			.where("sdb_b2c_order_items.goods_id in (select goods_id from sdb_b2c_goods where supplier=#{vendor[current_admin.login_name]})")
 
-     elsif (current_admin.account_type=='shopadmin')#login_name=="admin")
-	@orders = @orders_nw
-else
-	@orders = @orders_nw.where(:member_id=>"0")
-end
-@orders = @orders.includes(:user).paginate(:page=>params[:page],:per_page=>30)
-respond_to do |format|
-	format.js
-	format.html
-end
-end
+		elsif (current_admin.account_type=='shopadmin')
+			@orders = @orders_nw.where(:member_id => params[:member_id])
+		else
+			@orders = @orders_nw.where(:member_id=>"0")
+		end
+		@orders = @orders.includes(:user).paginate(:page=>params[:page],:per_page=>30)
+		respond_to do |format|
+			format.js
+			format.html
+		end
+	end
 
 	# def export
 	# 	pp "---------------"
@@ -368,8 +369,8 @@ end
 			acct_type = params[:acct_type].blank? ? 0 : params[:acct_type].to_i
 			valid_month = params[:valid_month].blank? ? 9 : params[:valid_month].to_i
 			remark = params[:valid_month].blank? ? 'no messages' : params[:memo]
-			 res_data_hash = user_charge(uid, money, acct_type, valid_month, remark)
-			 if res_data_hash['code'] == 0				
+			res_data_hash = user_charge(uid, money, acct_type, valid_month, remark)
+			if res_data_hash['code'] == 0				
 				if @refund.money > 0 && @order.refunded_amount < @order.paid_amount
 					@order.update_attributes(:pay_status=>'4')
 					txt_key = "订单部分退款 ! "
