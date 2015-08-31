@@ -92,12 +92,13 @@
     var unsign = brand_id + client_id + phone + ts + key;
     var sign = $.md5(unsign);
     var code = MathRand();
-    var msg = '您的验证码为：' + code + ',若非您本人操作，请忽略该信息。'
-    var msg_encode = encodeURIComponent(msg)
+    var msg = '您的验证码为：' + code + ',若非您本人操作，请忽略该信息。';
+    var msg_encode = encodeURIComponent(msg);
     var $valid = $('#button-validate-code');
     $valid.click(function(){
         $.ajax({
             url:'http://103.16.125.100:9018/send_sms',
+            crossDomain:true,
             data:{
                 'brand_id':brand_id,
                 'client_id':client_id,
@@ -106,9 +107,15 @@
                 'ts':ts,
                 'sign':sign
             },
-            dataType:'json',
-            type:'post'
-        });   
+            dataType:'JSONP',
+            type:'get',
+            success: function(data) {
+              if(data && data.resultcode == '200')
+              {
+                console.log(data.result.today);
+            }
+        }
+    });   
     });
 
     //random code send to user
