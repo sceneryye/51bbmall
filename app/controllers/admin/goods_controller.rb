@@ -246,7 +246,7 @@ module Admin
             else
               @goods = Ecstore::Good.order(@order)
             end
-		#	@goods = @goods.includes(:cat,:brand,:good_type,:tegs,:supplier)
+	     	#	@goods = @goods.includes(:cat,:brand,:good_type,:tegs,:supplier)
 
             if marketable.present?
                 @goods =  @goods.where(:marketable=>marketable)
@@ -304,32 +304,6 @@ module Admin
                 format.js
             end
       end
-
-   def black_good
-     @good =  Ecstore::BlackGood.find(params[:id])
-     @action_url ="black_good_edit?id=#{params[:id]}"
-   end
-
-      def black_good_new
-        @blackgood=Ecstore::BlackGood.new(params[:black_good]) do |sv|
-
-          sv.uptime=Time.now
-        #  sv.downtime=Time.parse(params[:black_good][:downtime]).to_i+(hour.to_i)*3600
-
-        end.save
-
-
-
-      end
-
-   def black_good_edit
-     @good =  Ecstore::BlackGood.find(params[:id])
-     @good.update_attributes(params[:black_good])
-     @action_url ="black_good/#{params[:id]}/edit"
-
-   end
-
-
 
 
    def edit
