@@ -86,7 +86,7 @@
 <script type="text/javascript">
     var brand_id = 'bb';
     var client_id = 'bbzg';
-    var phone = $('#phone-number').val();
+    
     var key = '1ed97bd965a8f052';    
     var ts = Date.parse(new Date());
     var unsign = brand_id + client_id + phone + ts + key;
@@ -95,7 +95,10 @@
     var msg = '您的验证码为：' + code + ',若非您本人操作，请忽略该信息。';
     var msg_encode = encodeURIComponent(msg);
     var $valid = $('#button-validate-code');
+    
     $valid.click(function(){
+        var phone = $('#phone-number').attr('value');
+        alert(phone);
         $.ajax({
             url:'http://103.16.125.100:9018/send_sms',
             crossDomain:true,
