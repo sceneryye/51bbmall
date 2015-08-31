@@ -85,7 +85,7 @@ class Store::PaymentsController < ApplicationController
 						order_log.result = "SUCCESS"
 						order_log.log_text = "订单支付成功！"
 					end.save
-					redirect_to  orders_path
+					redirect_to  orders_member_path
 				else 
 					render :text => '支付失败1'
 				end

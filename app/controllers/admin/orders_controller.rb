@@ -49,7 +49,8 @@ class Admin::OrdersController < Admin::BaseController
 			.where("sdb_b2c_order_items.goods_id in (select goods_id from sdb_b2c_goods where supplier=#{vendor[current_admin.login_name]})")
 
 		elsif (current_admin.account_type=='shopadmin')
-			@orders = @orders_nw.where(:member_id => params[:member_id])
+			@orders = @orders_nw if params[:member_id].nil?
+			@orders = @orders_nw.where(:member_id => params[:member_id] ) if params[:member_id].present?
 		else
 			@orders = @orders_nw.where(:member_id=>"0")
 		end

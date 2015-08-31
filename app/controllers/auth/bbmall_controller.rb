@@ -114,9 +114,10 @@ class Auth::BbmallController < ApplicationController
         flash[:success] = '登录成功！'
         redirect_to '/'
       else
-        message = res_data_hash['code'].to_s + ":#{res_data_hash['msg']}"
-        flash.now[:danger] = "#{message}"
-        return render :text => message
+        @message = res_data_hash['code'].to_s + ":#{res_data_hash['msg']}"
+        render login_path
+        flash.now[:danger] = "#{@message}"
+        end
       end
     end
 
