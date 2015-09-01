@@ -86,58 +86,13 @@
 
 
 <script type="text/javascript">
-    var brand_id = 'bb';
-    var client_id = 'bbzg';
-    
-    var key = '1ed97bd965a8f052';    
-    var ts = Date.parse(new Date());
-    
-    
-    var code = MathRand();
-    var msg = '您的验证码为：' + code + ',若非您本人操作，请忽略该信息。';
-    var msg_encode = encodeURIComponent(msg);
-    var $valid = $('#button-validate-code');
-    //var sign = $.md5('18521527509');
-    
-    $valid.hover(function(){
+    $('#button-validate-code').click(function(){
         var phone = $('#phone-number').val();
-        var unsign = brand_id + client_id + phone + ts + key;
-        var sign = $.md5("18521527509");
-        alert(sign);
         $.ajax({
-            url:'http://103.16.125.100:9018/send_sms',
-            crossDomain:true,
-            data:{
-                'brand_id':brand_id,
-                'client_id':client_id,
-                'phone':phone,
-                'content':msg_encode,
-                'ts':ts,
-                'sign':sign
-            },
-            dataType:'JSONP',
-            type:'get',
-            success: function(data) {
-              if(data && data.resultcode == '200')
-              {
-                console.log(data.result.today);
-            }
-        }
-    });   
+            url: <%= send_validate_code_auth_bbmall_index_path %>,
+            data:{phone:phone},
+            dataType: 'json',
+            type: 'POST'
+        });
     });
-
-    //random code send to user
-    function MathRand() 
-    { 
-        var Num=""; 
-        for(var i=0;i<6;i++) 
-        { 
-            Num+=Math.floor(Math.random()*10); 
-        } 
-        return Num;
-    }
-
-
-
-
 </script>

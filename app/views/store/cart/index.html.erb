@@ -18,7 +18,7 @@
                 <li><span>03. 收货方式</span></li>
                 <li><span>04. 支付货款</span></li>
             </ul>
-            <div class="heading-counter warning">您有:<span><%= @cart_total_quantity %>件 商品</span>在购物车中 </div>
+            <div class="heading-counter warning">您有:<span id="cart-total-number"><%= @cart_total_quantity %></span>件 商品在购物车中 </div>
             <div class="order-detail-content" id="cart">
                 <div class="row hidden-xs">                               
                     <div class="col-sm-2">图片</div>
@@ -72,7 +72,7 @@
                               ￥<%=(line_item.product.price*line_item.quantity)%>
                             </div>
                             <div class="col-sm-2 col-xs-9 action">
-                              <%=link_to "删 除",cart_path(line_item.obj_ident),:class=>"delete",:remote=>true,:method=>:delete%>
+                              <%=link_to "删 除",cart_path(line_item.obj_ident),:class=>"delete", :id => "products-delete", :remote=>true,:method=>:delete%>
                             </div>
                         </div>
                     </div>
@@ -96,5 +96,10 @@
 </div>
 
 <script type="text/javascript">
-      $(window.document).find(".cart-number").text("(<%=@cart_total_quantity%>)");
+$(document).ready(function(){
+    $("#products-delete").click(function(){
+        $("#cart-total-number").text("(<%=@cart_total_quantity%>)");
+    });
+});
+    
 </script>

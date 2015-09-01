@@ -332,6 +332,13 @@ class Auth::BbmallController < ApplicationController
       end
     end
 
+    def send_validate_code
+      phone = params['phone']
+      @code = rand(100000).to_s.rjust(6, '0')
+      msg = url_encode "您的验证码为：" + @code + url_encode ",若非本人操作，请忽略该信息。"
+      send_sms phone, msg
+    end
+
     private
 
 

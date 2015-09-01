@@ -46,6 +46,7 @@ namespace :auth do
     post 'card_pay', :on => :collection
     post 'forget_pwd_step1', :on => :collection
     post 'forget_pwd_step2', :on => :collection
+    post 'send_validate_code', :on => :collection
   end
 end
 
