@@ -130,7 +130,7 @@
             <div class="container">
                 <div class="row">
                     <div class="block-social">
-                        <ul class="list-social">
+                        <ul class="list-social" style="display:none">
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
@@ -142,7 +142,7 @@
                         </ul>
                     </div>
                     <div class="block-payment">
-                        <ul class="list-logo">
+                        <ul class="list-logo" style="display:none">
                             <li><a href="#"><img src="/img/payment1.png" alt="Payment Logo"></a></li>
                             <li><a href="#"><img src="/img/payment2.png" alt="Payment Logo"></a></li>
                             <li><a href="#"><img src="/img/payment3.png" alt="Payment Logo"></a></li>
@@ -164,9 +164,45 @@
                 </div>
             </div>
         </div>
+        
     </footer>
     <!-- ./footer -->
+<style>
+        #tool-bar {
+right:0px;
+width:100%;
+height:40px;
+text-align:center;
+overflow:hidden;
+  position: fixed;
+  z-index: 9999;
+  bottom: 0px;
+  background: #fd7400;
+  color: #fff;
+}
+#tool-bar a {color:#fff;padding:5px 20px;}
 
+        </style>
+        <div id="tool-bar" class="visible-xs">
+            <div class="container">
+                <div class="row">
+                <a href="/" class="" data-link="/">
+                    <span class="line"><i class="fa fa-home"></i></span> <span class="text">首页</span>
+                </a>
+                <a href="/gallery/561?type=1" data-link="/gallery/561?type=1" ptag="37128.9.2" style="display:" class="">
+                    <span class="line"><i class="fa fa-search"></i></span>   <span class="text">分类</span> 
+                </a>
+                <%if @user%>
+                <a href="/cart" data-link="/cart" needlogin="1">
+                    <span class="line"><i class="fa fa-shopping-cart"></i></span>        <span class="text">购物车</span> 
+                </a> 
+                <a href="/member" data-link="member" needlogin="1">
+                    <span class="line"><i class="fa fa-user"></i></span>  <span class="text">个人中心</span> 
+                </a>
+                <%end%>
+                </div>
+            </div>
+        </div>
     <a href="#" class="scroll_top" title="回到顶部" style="display: none;">Scroll</a>
  
     <script>

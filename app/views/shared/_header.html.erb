@@ -2,10 +2,10 @@
 <header id="header">
     <div class="container">
         <!-- main header -->
-        <div class="row">
+        <div class="row  hidden-xs">
             <div class="main-header">
                 <div class="row">
-                    <div class="col-sm-12 col-md-2 col-lg-2 hidden-xs">
+                    <div class="col-sm-12 col-md-2 col-lg-2">
                         <div class="logo">
                             <a href="/"><img src="/img/logo.png" alt="Logo"></a>
                         </div>
@@ -17,10 +17,6 @@
                                     <select id="category-select" class="search-category-select" style="display: none;">
                                         <option value="1">所有分类</option>
                                     </select>
-                                    <!--        <span class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0" id="category-select-button" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="category-select-menu" aria-haspopup="true" aria-activedescendant="ui-id-1" aria-labelledby="ui-id-1" aria-disabled="false" style="width: 141px;">
-                                    <span class="ui-icon ui-icon-triangle-1-s"></span>
-                                    <span class="ui-selectmenu-text">所有分类</span>
-                                    </span> -->
                                 </div>
                                 <div class="form-group search-input">
                                     <input type="text" placeholder="请输入您要查询的商品" id="search_input" name="q">
@@ -179,13 +175,13 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="dropdown">
+                                        <li>
                                             <a href="/gallery/561?type=1" class="dropdown-toggle">
                                                 <img src="/img/icon_hot.png" alt="Category status">
                                                 商品分类
                                             </a>
                                         </li>
-                                        <li class="dropdown">
+                                        <li>
                                             <a href="/brands" class="dropdown-toggle">
                                                 <img src="/img/icon_new.png" alt="Category status">
                                                 品牌专区
@@ -206,6 +202,7 @@
                                             </ul> 
                                         </li>
                                         <li class="visible-xs"><a href="/pages/help_problem">信息中心</a>
+                                         <li class="visible-xs"><a href="/member">账户中心</a>
 
                                     </ul>
                                     <ul class="nav navbar-nav navbar-right">
