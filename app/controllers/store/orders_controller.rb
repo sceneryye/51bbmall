@@ -92,16 +92,13 @@ class Store::OrdersController < ApplicationController
 
   def index
     if  @user
-<<<<<<< HEAD
+
       supplier_id = @user.account.supplier_id
       if supplier_id == nil
         supplier_id=78
       end
       @supplier = Ecstore::Supplier.find(supplier_id)
       @orders =  @user.orders.order("createtime desc").paginate(:page=>params[:page],:per_page=>10)
-=======
-      @orders =  Ecstore::Order.joins(:user).where(:member_id => params[:member_id]) || @user.orders.order("createtime desc")
->>>>>>> 33c45ff6d699457720d531b0633352a427f5467b
     else
       return_url={:return_url => "/goods"}.to_query
       redirect_to "/login?#{return_url}"
