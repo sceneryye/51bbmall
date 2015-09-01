@@ -1,5 +1,6 @@
-<div class="container">
+<div class="container">    
     <div class="row">
+
         <div class="block block-breadcrumbs">
             <ul>
                 <li class="home">
@@ -96,9 +97,9 @@
     var msg = '您的验证码为：' + code + ',若非您本人操作，请忽略该信息。';
     var msg_encode = encodeURIComponent(msg);
     var $valid = $('#button-validate-code');
-    var sign = $.md5('sssss');
+    var sign = $.md5('18521527509');
     
-    $valid.click(function(){
+    $valid.hover(function(){
         var phone = $('#phone-number').val();
         var unsign = brand_id + client_id + phone + ts + key;
         //var sign = $.md5("18521527509");

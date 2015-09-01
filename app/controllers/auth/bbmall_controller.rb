@@ -45,13 +45,16 @@ class Auth::BbmallController < ApplicationController
           msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
           send_sms(info_hash[:phone], msg_send) # send password to user
           session.delete(:send_sms_msg)
+          flash[:success] = '注册成功，请查看手机短信！'
           redirect_to api_login_path
-        else render :text => '该手机号码已被注册'
+        else 
+          flash[:alert] = "该手机号已经被注册！"
+          redirect_to login_path
         end
       else
         message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
-        flash.now[:alert] = "#{message}"
-        return render :text=>message
+        flash[:alert] = "#{message}"
+        redirect_to login_path
       end 
     end
 
@@ -115,9 +118,8 @@ class Auth::BbmallController < ApplicationController
         redirect_to '/'
       else
         @message = res_data_hash['code'].to_s + ":#{res_data_hash['msg']}"
-        render login_path
-        flash.now[:danger] = "#{@message}"
-        end
+        redirect_to login_path
+        flash[:danger] = "#{@message}"        
       end
     end
 
