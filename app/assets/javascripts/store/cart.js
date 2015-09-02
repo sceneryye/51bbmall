@@ -3,7 +3,7 @@ $(document).ready(function(){
 	var pWin = window.parent;
 	var pDoc = window.parent.document;
 	
-	$(".products-quantity").live("change",function(){
+	$(".products-quantity").on("change",function(){
 		var quantity = parseInt($(this).val());
 		console.log(quantity);
 		console.log($(this).attr('data-url'));

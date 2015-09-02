@@ -90,12 +90,17 @@
 			<br/>
 			<%end%>
 
-		<!--<%#if @advance>0 && @advance < @cart_total%>
-		<label class="checkbox">
-			<%##=f.check_box :part_pay, {:checked => true, :'data-amount'=>@advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
-			余额(<span>￥</span><span id="advance_value"><%#= @advance %></span>)
-		</label>
-		<%#end%>-->
+			<div class="form-group" id="advance_pay" style="margin-left:20px;">
+				<label class="checkbox">
+					<%=f.check_box :deposit, {:checked => true, :'data-amount'=> @advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
+					余额(<span>￥</span><span id="advance_value"><%= @advance %></span>)
+				</label>
+			</div>
+			<div class='form-group' id="part_pay_number" style="margin-left:20px;width:20%;">
+				<%= f.label :part_pay, '您希望使用的余额：' %> 
+				<%= f.number_field :part_pay, :id => 'part_pay_amount' %>
+			</div>
+
 		<!--<label class="radio" style="display:none">
 			<%#=f.radio_button :payment, "alipay"%> <b>支付宝</b>
 			<span class="extra-desc"><img src="/assets/store/alipay.png"/></span>
@@ -113,14 +118,14 @@
 			<span class="extra-desc"></span>
 		</label>-->
 
-		<!--<%#if @advance >= @cart_total%>-->
+		<!--<%# if @advance >= @cart_total %>
 		<label class="radio" style="margin-left:20px;">
-			<%= f.radio_button :payment, 'deposit' %> <b style="padding-left:5px;">预存款(余额：￥<%= @advance %>)</b>
+			<%#= f.radio_button :payment, 'deposit' %> <b style="padding-left:5px;">预存款(余额：￥<%#= @advance %>)</b>
 		</label>
-		<!--<%#end%>-->
-	</div>
+		<%# end %>
+	</div>-->
 
-	<div class="order-items" style="margin-left:10px;">
+	<div class="order-items">
 		<table class="table">
 			<tr>
 				<th>商品名称</th>
@@ -177,7 +182,7 @@
 
 	<div class="section promotions">
 
-		<div class="section checkout clearfix" style="margin-left:10px;">
+		<div class="section checkout clearfix">
 			<h4 style="font-weight:bold;">结算信息</h4>
 			<div class="left">
 				<div class="memo">
@@ -205,8 +210,8 @@
 				<!-- <div class="item">
 					<span class="text">商品总额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money" data-amount="<%=@cart_total%>" id="cart_amount">
-						<%=@cart_total%> 
+					<span class="money" data-amount="<%#=@cart_total%>" id="cart_amount">
+						<%#=@cart_total%> 
 					</span>
 				</div> -->
 				<div class="item">
@@ -237,53 +242,59 @@
 				<div class="item">
 					<span class="text">订单总金额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money" id="final_amount">15<%#= @cart_total %></span>
-				</div>
-
-			</div>
-			<div class="total" id="order_bill">
-				
-				<%unless @advance == 0%>
-				<div class="item">
-					<span class="text">预付金额：</span>
-					<span class="rmb-symbol">￥</span>
-					<span class="money part" id="part_amount">
-						<%= @advance > @cart_total || @advance == 0 ? @cart_total : @advance %>
-					</span>
-				</div>
-				<%end%>
-				
-				<div class="item bcom" for="#order_payment_bcom" style="display:none">
-					<span class="text">支付优惠(交通银行)：</span>
-					<span class="rmb-symbol">￥</span>
-					<span class="money bcom-discount" id="bcom_discount"></span>
+					<span class="money" id="final_amount"><%= @cart_total %></span>
 				</div>
 
 
-				<div class="item">
-					<span class="text">支付金额：</span>
-					<span class="rmb-symbol">￥</span>
-					<span class="money final" id="pay_amount"><%= @cart_total - @advance > 0 ? @cart_total - @advance : 0  %></span>
-				</div>
+				<div class="total" id="order_bill">
 
-			</div>
-			<div class="actions clearfix">
-				<%=f.submit "安 全 结 算",:class=>"btn btn-success btn-lg  "%>
+					<%unless @advance == 0%>
+					<div class="item">
+						<span class="text">预付金额：</span>
+						<span class="rmb-symbol">￥</span>
+						<span class="money part" id="part_amount">
+							<%= @advance > @cart_total || @advance == 0 ? @cart_total : @advance %>
+						</span>
+					</div>
+					<%end%>
+
+					<div class="item bcom" for="#order_payment_bcom" style="display:none">
+						<span class="text">支付优惠(交通银行)：</span>
+						<span class="rmb-symbol">￥</span>
+						<span class="money bcom-discount" id="bcom_discount"></span>
+					</div>
+
+
+					<div class="item">
+						<span class="text">支付金额：</span>
+						<span class="rmb-symbol">￥</span>
+						<span class="money final" id="pay_amount"><%= @cart_total - @advance > 0 ? @cart_total - @advance : 0  %></span>
+					</div>
+
+				</div>
+				<div class="actions clearfix">
+					<%=f.submit "安 全 结 算",:class=>"btn btn-success btn-lg  "%>
+				</div>
 			</div>
 		</div>
+		<%end%>
+		<%else%>
+		<p>您还没有选择商品。</p>
+		<%end%>
 	</div>
-	<%end%>
-	<%else%>
-	<p>您还没有选择商品。</p>
-	<%end%>
-</div>
 </div>
 
 <script type="text/javascript">
-	$('.radio').click(function(){
-		if($("input[type='radio']:checked").val() != null){
-			$('.addr-name-city').addClass('checked-border');
-		});
+	$('#advance').on('click', function(){
+		if($('#advance').prop('checked') == false){
+		$('#part_pay_number').hide();
+	}
+	else {
+		$('#part_pay_number').show();
+	
+	}
+	
+	});
 </script>
 
 <style type="text/css">

@@ -18,12 +18,12 @@ $ ->
     pmt_amount = pmt_total + coupon_total
     $("#pmt_amount").text(-pmt_amount).attr("data-amount",pmt_amount)
 
-    order_amount =  parseFloat($("#order_amount").data("amount")) || 0
+    order_amount =  parseFloat($("#order_amount").attr('data-amount')) || 0
 
-    coupon_amount =  parseFloat($("#coupon_amount").data("amount")) || 0
+    coupon_amount =  parseFloat($("#coupon_amount").attr('data-amount')) || 0
 
     part_amount = 0.0
-    part_amount =  parseFloat $("#advance").data("amount") if $("#advance").attr("checked") == "checked"
+    part_amount =  parseFloat $("#part_pay_amount").val() if $("#advance").attr("checked") == true
 
     pay_amount = order_amount - coupon_amount - pmt_amount
     $("#final_amount").text(pay_amount)
@@ -35,6 +35,7 @@ $ ->
       $("#bcom_discount").text(-bcom_discount_amount)
 
     pay_amount = pay_amount * bcom_discount - part_amount
+    pay_amount = if pay_amount > 0 then pay_amount else 0.0
     $("#pay_amount").text(pay_amount)
 
   window.compute_payment2 = ->
@@ -102,6 +103,13 @@ $ ->
   $(".addr-list").on "change","input[type='radio']", ->
     $(".addr-list .active").removeClass("active").find("form").remove()
     $(this).parent(".radio").addClass("active")
+
+
+  $('#advance_pay').on 'click' ->
+    alert($('#advance').attr('checked'))
+    $('#part_pay_number').hide() if $('#advance').prop('checked') == false
+    $('#part_pay_number').show() if $('#advance').prop('checked') == true
+
 
 
     if $(this).val() == 'new'
