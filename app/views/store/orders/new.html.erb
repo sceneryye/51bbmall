@@ -9,7 +9,7 @@
 			</ul>
 
 			<%if @line_items.size > 0%>
-			<div class="section addr" style="margin-top:30px;">
+			<div class="section addr" style="margin:20px 10px;border-bottom:1px solid rgb(240,240,240)">
 				<h4 style="font-weight:bold;">
 					收货人信息					
 				</h4>
@@ -23,14 +23,19 @@
 						
 						<span class="addr-detail-name"><%=addr.name%></span>
 						<span class="addr-detail-addr"><%=addr.addr%></span>
-						<span class="addr-detail-mobile"><%=addr.mobile%></span>
+						<span class="addr-detail-mobile" style="font-weight:500;"><%=addr.mobile%></span>
 
 						<%=link_to "修改",edit_member_addr_path(addr),:remote=>true,:class=>"update-link"%>
 					</label>
 					<%else%>
 					<label class="radio">
 						<%=radio_button_tag "member_addr", addr.addr_id%> 
-						<span class="addr-line"><%=addr.addr_line%></span>
+						<span class="addr-name-city"><%=addr.name%>  <%= addr.area.split('/')[1] %></span>
+						
+						<span class="addr-detail-name"><%=addr.name%></span>
+						<span class="addr-detail-addr"><%=addr.addr%></span>
+						<span class="addr-detail-mobile" style="font-weight:500;"><%=addr.mobile%></span>
+
 						<%=link_to "修改",edit_member_addr_path(addr), :remote=>true, :class=>"update-link"%>
 					</label>
 					<%end%>
@@ -38,7 +43,7 @@
 
 					<label class="radio">
 						<%=radio_button_tag "member_addr", "new"%>
-						<span>使用新地址+</span>
+						<span style="padding-left:5px;">使用新地址+</span>
 					</label>
 					<%end%>
 				</div>
@@ -52,38 +57,38 @@
 		<%=form_for :order,:url=>orders_path,:html=>{ :class=>"form-horizontal",:id=>"order_form" } do |f|%>
 		<%=hidden_field_tag "member_addr",@def_addr&&@def_addr.addr_id%>
 
-		<div class="section shipment">
-			<h5>配送方式</h5>
-			<label class="radio active ">
-				<%=f.radio_button :shipping_id, 0%><span class="addr-line">自提</span>
+		<div class="section shipment" style="margin:20px 10px;border-bottom:1px solid rgb(240,240,240)">
+			<h4 style="font-weight:bold">配送方式</h4>
+			<label class="radio active" style="margin-left:20px;">
+				<%=f.radio_button :shipping_id, 0%><span class="addr-line" style="padding-left:5px;">自提</span>
 			</label>
-			<label class="radio">
-				<%=f.radio_button :shipping_id, 1, :checked=>true%> 快递
+			<label class="radio" style="margin-left:20px;">
+				<%=f.radio_button :shipping_id, 1, :checked=>true%> <span style="padding-left:5px;">快递</span>
 				<span class="extra-info">+ ￥0</span>
 			</label>
+		</div>
 
-			<div class="control-group">
-				<h5>
-					收货时间 
-					<span class="required">*</span>
-				</h5>
-				<div class="form-group">
-					<%=f.select :ship_day,ship_day_options,:class=>"form-control"%>
-					<%=f.text_field :ship_special,:class=>"input-small hide datetime"%>
-					<%=f.select :ship_time2,ship_time_options,:class=>"form-control"%>
-				</div>
+		<div class="control-group" style="margin:20px 10px;">
+			<h4 style="font-weight:bold;">
+				收货时间 
+			</h4>
+			<div class="form-group">
+				<%=f.select :ship_day,ship_day_options%>
+				<%=f.text_field :ship_special,:class=>"input-small hide datetime"%>
+				<%=f.select :ship_time2,ship_time_options,:class=>"form-control", :width=>"30%"%>
 			</div>
+		</div>
 
 
 
-			<div class="section payment" id="payments">
-				<h5>支付方式</h5>
-				<% if cookies[:MLV] == "10" %>
-				<label class="radio">
-					<%=f.radio_button :payment, "term"%> <b>账期（与供应商协商）</b>
-				</label>
-				<br/>
-				<%end%>
+		<div class="section payment" id="payments" style="margin-left:10px;">
+			<h4 style="font-weight:bold">支付方式</h4>
+			<% if cookies[:MLV] == "10" %>
+			<label class="radio" style="margin-left:20px;">
+				<%=f.radio_button :payment, "term"%> <b style="padding-left:5px;">账期（与供应商协商）</b>
+			</label>
+			<br/>
+			<%end%>
 
 		<!--<%#if @advance>0 && @advance < @cart_total%>
 		<label class="checkbox">
@@ -109,13 +114,13 @@
 		</label>-->
 
 		<!--<%#if @advance >= @cart_total%>-->
-		<label class="radio" >
-			<%= f.radio_button :payment, 'deposit' %> <b>预存款(余额：￥<%= @advance %>)</b>
+		<label class="radio" style="margin-left:20px;">
+			<%= f.radio_button :payment, 'deposit' %> <b style="padding-left:5px;">预存款(余额：￥<%= @advance %>)</b>
 		</label>
 		<!--<%#end%>-->
 	</div>
 
-	<div class="order-items">
+	<div class="order-items" style="margin-left:10px;">
 		<table class="table">
 			<tr>
 				<th>商品名称</th>
@@ -172,8 +177,8 @@
 
 	<div class="section promotions">
 
-		<div class="section checkout clearfix">
-			<h5>结算信息</h5>
+		<div class="section checkout clearfix" style="margin-left:10px;">
+			<h4 style="font-weight:bold;">结算信息</h4>
 			<div class="left">
 				<div class="memo">
 					<div class="control-group">
@@ -232,7 +237,7 @@
 				<div class="item">
 					<span class="text">订单总金额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money" id="final_amount"><%= @cart_total %></span>
+					<span class="money" id="final_amount">15<%#= @cart_total %></span>
 				</div>
 
 			</div>
@@ -273,6 +278,38 @@
 	<%end%>
 </div>
 </div>
+
+<script type="text/javascript">
+	$('.radio').click(function(){
+		if($("input[type='radio']:checked").val() != null){
+			$('.addr-name-city').addClass('checked-border');
+		});
+</script>
+
+<style type="text/css">
+	.addr-list {
+		margin-left: 20px;
+	}
+	.addr-name-city {
+		padding: 5px 15px;
+		padding-left: 5px;
+		font-size: 1.1em;c
+		margin: 5px;
+	}
+
+	.addr-list .addr-detail-name, .addr-list .addr-detail-addr, .addr-list .addr-detail-mobie {
+		font-weight: 500;
+		margin: 5px;
+	}
+	.checked-border {
+		border: 2px rgb(92,137,200) solid;
+	}
+
+	.update-link {
+		color: green;
+		margin-left: 40px;
+	}
+</style>
 
 
 

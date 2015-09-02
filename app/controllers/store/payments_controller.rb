@@ -85,12 +85,15 @@ class Store::PaymentsController < ApplicationController
 						order_log.result = "SUCCESS"
 						order_log.log_text = "订单支付成功！"
 					end.save
+					flash[:success] = "订单支付成功，请等待配送！"
 					redirect_to  orders_member_path
 				else 
-					render :text => '支付失败1'
+					flash[:alert] = "订单支付失败，您可以从新支付订单。"
+					redirect_to  orders_member_path
 				end
 			elsif @advance < @order.total_amount
-				return render :text => '余额不足，请充值！'
+				flash[:alert] = "余额不足，请重新选择支付方式。"
+				redirect_to  orders_member_path
 				#money = @order.part_pay * 100
 				#if user_deduct(money, acct_type, remark)
 				#	@payment.update_attributes(:money => (@order.total_amount - @order.part_pay))
@@ -100,7 +103,8 @@ class Store::PaymentsController < ApplicationController
       #	render :text => '支付失败2'
     #end
   else 
-  	render :text => '余额支付有误'
+  	lash[:alert] = "余额支付有误，您可以重新支付。"
+  	redirect_to  orders_member_path
   end
 
 else
