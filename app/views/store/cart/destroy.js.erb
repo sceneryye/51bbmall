@@ -3,6 +3,5 @@ $("#line_<%=params[:id]%>").remove();
 
 $("#cart_total").html('<%=raw "￥#{format('%.2f',@cart_total)}"%>');
 
-var _pDoc =  window.document;
-$(_pDoc).find("#cart_link .cart-number").text('(<%=@cart_total_quantity%>)');
-$(_pDoc).find("#menu_cart .number").text('(<%=@cart_total_quantity%>)');
+$("#cart-total-number").text("<%=@cart_total_quantity%>");
+ 

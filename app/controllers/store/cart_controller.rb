@@ -107,11 +107,12 @@ class Store::CartController < ApplicationController
 
   
 	def update
+
 		quantity = params[:quantity]
 		@line_items.where(:obj_ident=>params[:id]).update_all(:quantity=>quantity)
 		@line_item  = @line_items.where(:obj_ident=>params[:id]).first
 		find_cart!
-		render "update"
+		#render "update"
 	end
 
 	def destroy

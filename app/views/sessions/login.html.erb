@@ -51,7 +51,7 @@
                             
                             <div class="form-group">
                                 <input name="validate_code" class="form-control" placeholder="请输入验证码" id="validate-code-reg" type="text">
-                                <button type="button" class="btn btn-success btn-sm" id="button-validate-code">获取验证码</button>
+                                <button type="button" onclick="getCode()" class="btn btn-success btn-sm" id="button-validate-code">获取验证码</button>
                             </div>
                             
 
@@ -86,13 +86,18 @@
 
 
 <script type="text/javascript">
+function getCode(){
     $('#button-validate-code').click(function(){
         var phone = $('#phone-number').val();
         $.ajax({
-            url: <%= send_validate_code_auth_bbmall_index_path %>,
+            url: "http://http://123.57.35.69/<%#= send_validate_code_auth_bbmall_index_path %>",
             data:{phone:phone},
             dataType: 'json',
             type: 'POST'
+            success: function(data){
+
+            }
         });
     });
+}
 </script>
