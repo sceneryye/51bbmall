@@ -60,6 +60,7 @@ class Auth::BbmallController < ApplicationController
 
 
     def user_login
+
       auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
       session[:from] = "external_auth"
 
@@ -111,7 +112,7 @@ class Auth::BbmallController < ApplicationController
               @user.save!(:validate=>false)              
             end
           end
-        end
+        end         
         account = Ecstore::Account.find_by_login_name(info_hash[:account])
         sign_in(account, '1')
         flash[:success] = '登录成功！'
