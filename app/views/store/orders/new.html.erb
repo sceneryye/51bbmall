@@ -10,7 +10,7 @@
 
 			<%if @line_items.size > 0%>
 			<div class="section addr" style="margin-top:30px;">
-				<h4>
+				<h4 style="font-weight:bold;">
 					收货人信息					
 				</h4>
 				<div class="checkcon clearfix addr-list">
@@ -19,8 +19,8 @@
 					<%if @def_addr == addr%>
 					<label class="radio active">
 						<%=radio_button_tag "member_addr", addr.addr_id,:checked=>true%>
-						<span class="addr-name"><%=addr.name%></span>
-						<span class="addr-city"><%= addr.area.split('/')[1] %></span>
+						<span class="addr-name-city"><%=addr.name%>  <%= addr.area.split('/')[1] %></span>
+						
 						<span class="addr-detail-name"><%=addr.name%></span>
 						<span class="addr-detail-addr"><%=addr.addr%></span>
 						<span class="addr-detail-mobile"><%=addr.mobile%></span>

@@ -519,3 +519,19 @@ select{
 // .inline{
 // 	display: inline;
 // }
+
+/****************order-new*****************/
+.addr-name-city {
+	padding: 5px 15px;
+	font-size: 1.1em;
+	margin: 5px;
+}
+
+.addr-detail-name, .addr-detail-addr, .addr-detail-mobie {
+	font-weight: thin;
+	margin: 5px;
+}
+.checked-border {
+	border: 2px rgb(92,137,200) solid;
+}
+
