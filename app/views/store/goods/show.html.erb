@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-7">
                         <div class="block-product-info">
-                        <%=form_for :product,:url=>add_cart_index_path,:class=>"form_add_cart" do |f|%>
+                        <%=form_for :product,:url=>add_cart_index_path,:html=>{:class=>"form_add_cart",:id=>"add_cart"} do |f|%>
                             <%=f.hidden_field :goods_id,:value=>@good.goods_id%>
                             <%=f.hidden_field :type_id,:value=>@good.type_id%>            
                             <h2 class="product-name"><%=@good.name %></h2>
@@ -59,7 +59,7 @@
                         <%end%>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-5 hidden-xs">
                         <%=render "/store/shared/top_sellers"%>
                     </div>
                 </div>

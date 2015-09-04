@@ -21,10 +21,11 @@
                 </div>           
 
                 <div class="col-sm-8 col-md-12 col-lg-2">
-                    <div class="block block-banner-owl kt-owl-carousel" ata-margin="0" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":1},"1000":{"items":1}}'>
+                    <div class="block block-banner-owl kt-owl-carousel hidden-xs" ata-margin="0" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":1},"1000":{"items":1}}'>
                         <div class="page-banner">
                             <ul class="list-banner">
-                                 <%@brands = Ecstore::Brand.where(:reco=>true).order("ordernum DESC").limit(8)
+                            <!-- <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'> -->
+                                <%@brands = Ecstore::Brand.where(:reco=>true).order("ordernum DESC").limit(8)
                                 i=0                              
                                 @brands.each do |brand|
                                  i+=1  
@@ -35,7 +36,7 @@
                                     <ul class="list-banner"> 
                                  <%end%>  
                                  <li>
-                                    <%=link_to brand_path(brand) do%>
+                                    <%=link_to brand_path(brand),:title=>brand.brand_name do%>
                                         <%=image_tag "/images/brands/b#{brand.brand_id}.jpg",:alt=>brand.brand_name %>
                                     <%end%>
                                 </li>                                
@@ -43,6 +44,21 @@
                             </ul>    
                         </div>
                     </div>
+
+                   
+                        <div class="page-banner visible-xs">
+                            <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'>
+                                <%i=0                              
+                                @brands.each do |brand|
+                                 i+=1%>
+                                 <li>
+                                    <%=link_to brand_path(brand),:title=>brand.brand_name do%>
+                                        <%=image_tag "/images/brands/b#{brand.brand_id}.jpg",:alt=>brand.brand_name %>
+                                    <%end%>
+                                </li>                                
+                               <%end if @brands && i<4 %>                        
+                            </ul>    
+                        </div>
                 </div>
             </div>
         </div>

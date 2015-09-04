@@ -168,7 +168,7 @@
     </footer>
     <!-- ./footer -->
 <style>
-        #tool-bar {
+        #bottom-bar {
 right:0px;
 width:100%;
 height:40px;
@@ -177,35 +177,75 @@ overflow:hidden;
   position: fixed;
   z-index: 9999;
   bottom: 0px;
-  background: #fd7400;
   color: #fff;
+  border: 1px solid #fd7400;
 }
+#tool-bar{
+height:60px;  background: #fd7400;}
 #tool-bar a {color:#fff;padding:5px 20px;}
 
-        </style>
-        <div id="tool-bar" class="visible-xs">
-            <div class="container">
-                <div class="row">
-                <a href="/" class="" data-link="/">
-                    <span class="line"><i class="fa fa-home"></i></span> <span class="text">首页</span>
-                </a>
-                <a href="/gallery/561?type=1" data-link="/gallery/561?type=1" ptag="37128.9.2" style="display:" class="">
-                    <span class="line"><i class="fa fa-search"></i></span>   <span class="text">分类</span> 
-                </a>
-                <%if @user%>
-                <a href="/cart" data-link="/cart" needlogin="1">
-                    <span class="line"><i class="fa fa-shopping-cart"></i></span>        <span class="text">购物车</span> 
-                </a> 
-                <a href="/member" data-link="member" needlogin="1">
-                    <span class="line"><i class="fa fa-user"></i></span>  <span class="text">个人中心</span> 
-                </a>
-                <%end%>
+</style>
+    <div id="bottom-bar" class="visible-xs">     
+
+        <div class="container" id ='product-bar' style="display:none">
+            <div class="row">
+
+               
+            <a href="#" data-link="#">
+               <input class="btn btn-success btn-lg  " name="commit" type="submit" value="加入收藏夹" />
+            </a>
+            <a href="javascript:document.getElementById('add_cart').submit();" data-link="javascript:document.getElementById('add_cart').submit();">
+               <input class="btn btn-success btn-lg  " name="commit" type="submit" value="加入购物车" />
+            </a>
+
+                 <div class="box-control-button" style="display:none">
+                                <a class="link-wishlist" href="#">收藏</a>
+                                <a class="link-compare" href="#">比较商品</a>
+                                <a class="link-sendmail" href="#">分享给朋友</a>
+                                <a class="link-print" href="#">购买</a>
+                            </div>
+
                 </div>
+        </div>
+        <div class="container" id="tool-bar">
+            <div class="row">
+            <a href="/" class="" data-link="/">
+                <span class="line"><i class="fa fa-home"></i></span> <span class="text">首页</span>
+            </a>
+            <a href="/gallery" data-link="/gallery">
+                <span class="line"><i class="fa fa-search"></i></span>   <span class="text">分类</span> 
+            </a>
+            <%if @user%>
+            <a href="/cart" data-link="/cart" needlogin="1">
+                <span class="line"><i class="fa fa-shopping-cart"></i></span>        <span class="text">购物车</span> 
+            </a> 
+            <a href="/member" data-link="member" needlogin="1">
+                <span class="line"><i class="fa fa-user"></i></span>  <span class="text">个人中心</span> 
+            </a>
+            <%else%>
+            <a>
+                 <a href="/login" data-link="member" needlogin="1">
+                <span class="line"><i class="fa fa-sign-in"></i></span>  <span class="text">注册/登录</span> 
+            </a>
+            </a>
+
+            <%end%>
             </div>
         </div>
+    </div>
+
     <a href="#" class="scroll_top" title="回到顶部" style="display: none;">Scroll</a>
  
     <script>
+
+        url =window.location.href
+        if (url.indexOf("/products/") >= 0 ){
+            document.getElementById("product-bar").style.display="block";
+            document.getElementById("tool-bar").style.display="none";            
+
+        }
+
+
         var myDate = new Date();
         var currentYear = myDate.getFullYear(); 
         document.getElementById('copyright_year').innerText=currentYear;
