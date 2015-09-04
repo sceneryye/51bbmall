@@ -1,3 +1,4 @@
+console.log("cart");
 $("#cart_total").html('<%=raw "￥#{ format('%.2f',@cart_total)}"%>');
 $(".c_t_price").html('<%=raw "￥#{ format('%.2f',@cart_total)}"%>');
 $("#products-total-<%=params[:id]%>").html('<%=raw "￥#{ format('%.2f',@line_item.line_total)}"%>');

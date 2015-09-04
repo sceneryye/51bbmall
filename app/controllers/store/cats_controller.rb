@@ -3,24 +3,9 @@ class Store::CatsController < ApplicationController
       layout 'standard'
   	before_filter :require_top_cats
 
-  def show_mobile
+  def index
 
-       @supplier = Ecstore::Supplier.find(params[:id])
-        name= params[:name]
-
-        goods_ids =""
-        sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='#{name}'"
-        results = ActiveRecord::Base.connection.execute(sql)
-        results.each(:as => :hash) do |row|
-          goods_ids= row["goods_ids"]
-        end
-
-        sql = " bn in (#{goods_ids})"
-
-        @goods = Ecstore::Good.where(sql)
-        @goods = @goods.order("p_order asc,uptime desc")
-        render :layout=>@supplier.layout
-
+        @cat = Ecstore::Category.first
   end
 
   def goods_list
