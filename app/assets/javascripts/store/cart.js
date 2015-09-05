@@ -9,12 +9,13 @@ $(document).ready(function(){
 		console.log($(this).attr('data-url'));
 		if(!/\d+/.test(quantity)) return false;
 		var url = $(this).attr('data-url');
+
 		$.ajax({
 			url: url,
 			type: "PUT",
 			data:{ quantity:quantity },
 			success:function(res){
-				alert(res);
+				console.log(quantity);
 			}
 		});
 	});

@@ -64,7 +64,7 @@
                  </div>
                  <div class="col-sm-1 col-xs-9 form-group">
                      
-                     <span><input class="form-control input-sm products-quantity" data-url="<%= cart_path(line_item.obj_ident) %>" id="product-quantity-<%= line_item.obj_ident %>" type="number" value="1"></span>
+                     <span><input class="form-control input-sm products-quantity" data-url="<%= cart_path(line_item.obj_ident) %>" id="product-quantity-<%= line_item.obj_ident %>" type="number" value="<%= line_item.quantity%>"></span>
                      
 
                  </div>
