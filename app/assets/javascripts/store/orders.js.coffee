@@ -105,10 +105,7 @@ $ ->
     $(this).parent(".radio").addClass("active")
 
 
-  $('#advance_pay').on 'click' ->
-    alert($('#advance').attr('checked'))
-    $('#part_pay_number').hide() if $('#advance').prop('checked') == false
-    $('#part_pay_number').show() if $('#advance').prop('checked') == true
+  
 
 
 

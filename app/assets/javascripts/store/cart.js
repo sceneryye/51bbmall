@@ -1,9 +1,9 @@
-
 $(document).ready(function(){
 	var pWin = window.parent;
 	var pDoc = window.parent.document;
 	
 	$(".products-quantity").on("change",function(){
+		alert("ok");
 		var quantity = parseInt($(this).val());
 		console.log(quantity);
 		console.log($(this).attr('data-url'));
