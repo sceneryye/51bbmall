@@ -97,7 +97,7 @@
 				</label>
 			</div>
 			<div class='form-group' id="part_pay_number" style="margin-left:20px;width:20%;">
-				<%= f.label :part_pay, '您希望使用的余额：' %> 
+				<%= f.label :part_pay, '您希望使用的余额：' %>" %> 
 				<%= f.number_field :part_pay, :id => 'part_pay_amount' %>
 			</div>
 
@@ -286,14 +286,18 @@
 <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
 	$('#advance').on('click', function(){
-		if($('#advance').prop('checked') == false){
-		$('#part_pay_number').hide();
-	}
-	else {
-		$('#part_pay_number').show();
-	
-	}
-	
+		//if($('#advance').prop('checked') == false){
+			if($('#advance').attr('checked') == false){
+				$('#part_pay_number').hide();
+			}
+			else {
+				$('#part_pay_number').show();	
+			}
+		});
+
+	$('#part_pay_amount').on('change', function(){
+		pay_amount = <%= @cart_total %> - parseFloat($('#part_pay_amount').val());
+		$('#pay_amount').text(pay_amount);
 	});
 </script>
 
