@@ -179,10 +179,12 @@ overflow:hidden;
   bottom: 0px;
   color: #fff;
   border: 1px solid #fd7400;
+  line-height: 15px;
 }
-#tool-bar{
-height:60px;  background: #fd7400;}
-#tool-bar a {color:#fff;padding:5px 20px;}
+#tool-bar{height:40px;  background: #fd7400;}
+#tool-bar a {color:#fff;}
+#tool-bar ul {width:100%;margin-top:5px;}
+#tool-bar li{float:left;width:25%;}
 
 </style>
     <div id="bottom-bar" class="visible-xs">     
@@ -209,27 +211,37 @@ height:60px;  background: #fd7400;}
         </div>
         <div class="container" id="tool-bar">
             <div class="row">
-            <a href="/" class="" data-link="/">
-                <span class="line"><i class="fa fa-home"></i></span> <span class="text">首页</span>
-            </a>
-            <a href="/gallery" data-link="/gallery">
-                <span class="line"><i class="fa fa-search"></i></span>   <span class="text">分类</span> 
-            </a>
+            <ul>
+            <li>
+                <a href="/" class="" data-link="/">
+                    <span class="line"><i class="fa fa-home"></i></span><br><span class="text">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/gallery" data-link="/gallery">
+                    <span class="line"><i class="fa fa-search"></i></span><br><span class="text">分类</span> 
+                </a>
+            </li>
             <%if @user%>
-            <a href="/cart" data-link="/cart" needlogin="1">
-                <span class="line"><i class="fa fa-shopping-cart"></i></span>        <span class="text">购物车</span> 
-            </a> 
-            <a href="/member" data-link="member" needlogin="1">
-                <span class="line"><i class="fa fa-user"></i></span>  <span class="text">个人中心</span> 
-            </a>
+            <li>
+                <a href="/cart" data-link="/cart" needlogin="1">
+                    <span class="line"><i class="fa fa-shopping-cart"></i></span><br><span class="text">购物车</span> 
+                </a> 
+            </li>
+            <li>
+                <a href="/member" data-link="member" needlogin="1">
+                    <span class="line"><i class="fa fa-user"></i></span><br><span class="text">个人中心</span> 
+                </a>
+            </li>
             <%else%>
-            <a>
-                 <a href="/login" data-link="member" needlogin="1">
-                <span class="line"><i class="fa fa-sign-in"></i></span>  <span class="text">注册/登录</span> 
-            </a>
-            </a>
+            <li>
+                <a href="/login" data-link="member" needlogin="1">
+                    <span class="line"><i class="fa fa-sign-in"></i></span><br><span class="text">注册/登录</span> 
+                </a>
+            </li>
 
             <%end%>
+        </ul>
             </div>
         </div>
     </div>

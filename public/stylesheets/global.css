@@ -486,8 +486,8 @@ img.alignright{
   line-height: 50px;
 }
 .block3 .block-head .nav-tab.tab-category li>a{
-  padding: 18px 20px;
-  font-size: 16px;
+  padding: 18px 15px;
+  font-size: 15px;
   text-transform: uppercase;
 }
 .block3 .block-head .nav-tab.tab-category li>a:focus{
