@@ -72,7 +72,7 @@
                     <%=render "/store/shared/top_review"%>
                     <%=render "/store/shared/hot_tags", :resource=>@home%>                         
                 </div>
-                <div class="col-sm-8 col-md-9">
+                <div class="col-sm-8 col-md-9 col-xs-12">
                     <!-- new-arrivals -->
                     <div class="block3 block-new-arrivals">
                         <div class="block-head">
@@ -83,7 +83,7 @@
                                 <%@home_galleries.each do |tag_id|%>
                                     <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>    
                                         <%i+=1%>
-                              <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li> 
+                                <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li> 
                                 <%end%>                       
                             </ul>
                         </div>
