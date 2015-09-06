@@ -8,32 +8,8 @@
             <span>list</span>
         </li>
     </ul>
-	<div class="sortPagiBar-inner">
-	
-		<nav>
-			<%=will_paginate @goods,:container=>false if @goods%>
-          <!-- <ul class="pagination">
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true">Next »</span>
-              </a>
-            </li>
-          </ul> -->
-        </nav>
-       <!--  <div class="show-product-item">
-        	<select class="">
-            	<option value="1">Show 15</option>
-            	<option value="1">Show 20</option>
-            </select>
-        </div> -->
-        
-        <div class="sort-product">
-        	<span>排序: </span>
+    <div class="sort-product">
+        	<div class="icon"><i class="fa fa-sort-alpha-asc"></i></div>
 			<%
 				query_hash = {}
 				# query_hash[:color] = params[:color] if params[:color]
@@ -57,14 +33,28 @@
 			<%end%>
 
 			<%=link_to "销量&darr;".html_safe,"?order=buy_count-desc&#{query}",:title=>"价格从高往低"%>
-			<%=link_to "人气&darr;".html_safe,"?order=view_count-asc&#{query}",:title=>"人气从高往低"%>
-
-        	<!-- <select>
-            	<option value="1">Postion</option>
-            	<option value="1">Product name</option>
-            </select> -->
-            <div class="icon"><i class="fa fa-sort-alpha-asc"></i></div>
+			<%=link_to "人气&darr;".html_safe,"?order=view_count-asc&#{query}",:title=>"人气从高往低"%>       	
+            
         </div>
+	<div class="sortPagiBar-inner">
+	
+		<nav>
+		
+		<div class="digg_pagination">
+		    <div class="page_info" style="display:none">
+		      <%= page_entries_info @goods %>
+		    </div>
+	    <%= will_paginate @goods, :container => false if @goods%>
+	  </div>         
+        </nav>
+       <!--  <div class="show-product-item">
+        	<select class="">
+            	<option value="1">Show 15</option>
+            	<option value="1">Show 20</option>
+            </select>
+        </div> -->
+        
+
 	</div>
 </div>
 <div class="category-products">
@@ -150,22 +140,15 @@
         </li>
     </ul>
 	<div class="sortPagiBar-inner">
-		<%=will_paginate @goods,:container=>false if @goods%>
 		<nav>
-          <ul class="pagination">
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true">Next »</span>
-              </a>
-            </li>
-          </ul>
+          <div class="digg_pagination">
+		    <div class="page_info" style="display:none">
+		      <%= page_entries_info @goods %>
+		    </div>
+	    <%= will_paginate @goods, :container => false if @goods%>
+	  </div>
         </nav>
-        <div class="show-product-item">
+        <!-- <div class="show-product-item">
         	<select class="">
             	<option value="1">Show 6</option>
             	<option value="1">Show 12</option>
@@ -178,6 +161,6 @@
             	<option value="1">Product name</option>
             </select>
             <div class="icon"><i class="fa fa-sort-alpha-asc"></i></div>
-        </div>
+        </div> -->
 	</div>	
 </div>
