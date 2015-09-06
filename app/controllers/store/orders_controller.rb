@@ -1,15 +1,13 @@
 #encoding:utf-8
 class Store::OrdersController < ApplicationController
   before_filter :authorize_user!
-  layout 'standard'
+  layout 'order'
 
   
   def share_order
-    supplier_id =params[:supplier_id]
-    @supplier = Ecstore::Supplier.find(supplier_id)
-    @order =Ecstore::Order.find_by_order_id(params[:id])
 
-    render :layout=>@supplier.layout
+    @order =Ecstore::Order.find_by_order_id(params[:id])
+    
   end
 
   def out_inventory
@@ -93,11 +91,6 @@ class Store::OrdersController < ApplicationController
   def index
     if  @user
 
-      supplier_id = @user.account.supplier_id
-      if supplier_id == nil
-        supplier_id=78
-      end
-      @supplier = Ecstore::Supplier.find(supplier_id)
       @orders =  @user.orders.order("createtime desc").paginate(:page=>params[:page],:per_page=>10)
     else
       return_url={:return_url => "/goods"}.to_query
@@ -358,8 +351,6 @@ end
       end
     end
 
-    render :layout=>@supplier.layout
-
   end
 
 
@@ -437,19 +428,6 @@ end
     departure= params[:departure]
     arrival= params[:arrival]
     @un= Ecstore::Express.serachall(departure,arrival)
-  end
-
-
-  def mobile_show_order
-    supplier_id=params[:supplier_id]
-
-    @order =Ecstore::Order.find_by_order_id(params[:id])
-    @delivery=Ecstore::Delivery.find_by_order_id(params[:id])
-
-    @supplier  =  Ecstore::Supplier.find(supplier_id)
-    render :layout=>@supplier.layout
-
-
   end
 
 end

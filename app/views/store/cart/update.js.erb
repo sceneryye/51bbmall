@@ -1,9 +1,12 @@
-console.log("cart");
+
 $("#cart_total").html('<%=raw "￥#{ format('%.2f',@cart_total)}"%>');
 $(".c_t_price").html('<%=raw "￥#{ format('%.2f',@cart_total)}"%>');
 $("#products-total-<%=params[:id]%>").html('<%=raw "￥#{ format('%.2f',@line_item.line_total)}"%>');
 $("#line_<%=params[:id]%> .line-point").text('<%= format('%.2f',@line_item.line_total)%>');
 $("#cart_link .cart-number").text('(<%=@cart_total_quantity%>)');
 $("#menu_cart .number").html('(<%=@cart_total_quantity%>)');
+
 $("#product-quantity-<%= params[:id] %>").val("<%=@cart_total_quantity%>");
 //$('#product-quantity-<%= line_item.obj_ident').val("<%= @line_item.quantity %>")
+
+$("#cart-total-number").text("<%=@cart_total_quantity%>");
