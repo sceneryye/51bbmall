@@ -1,7 +1,7 @@
 <div class="container">
-  <h1 class="page-title">当前购物状态</h1>
+  <h1 class="page-title hidden-xs">当前购物状态</h1>
   <div class="page-content page-order">
-    <ul class="step">
+    <ul class="step hidden-xs">
       <li><span>01. 商品列表</span></li>            
       <li><span>02. 收货方式</span></li>
       <li class="current-step"><span>03. 支付货款</span></li>
@@ -25,53 +25,55 @@
 
           <span id="pmts_total" class="hide" data-amount="<%=@order.pmts_total%>"></span>
         </p>
-        <%=link_to "查看订单详细信息>>",detail_order_path(@order),:target=>"_blank"%>
+        <div style="background-color:rgb(65,155,249), color:white">
+        <%=link_to "查看订单详细信息",detail_order_path(@order),:target=>"_blank", :style => "background-color:rgb(65,155,249); color:white;padding:5px 10px;"%>
+        </div>
       </div>
 
-    <!--<div class="payment">
-      <span class="title"><%#=payments[@order.payment][:name]%></span>
-      <%#if @order.status == 'active' && @order.pay_status == '0'%>
-      <a href="#" class="change" id="change_payment">更改支付方式>> </a>
-      <%#end%>
-      <div><%#=payments[@order.payment][:extra].html_safe%></div>
-    </div>
-
-    <div class="payments" id="payment_choices">
-      <h5>已选择的支付方式现修改为：</h5>
-
-      <%#if @order.part_pay?%>
-      <label class="checkbox">
-        <%#=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@order.part_pay.to_i,:id=>"advance" }, @order.part_pay.to_i, 0%> <b>预付款先支付</b>
-        余额(<span>￥<%#=@order.part_pay.to_i%></span>)
-      </label>
-      <%#end%>        
-      <%#if @user.advance >= @order.final_amount%>
-      <label class="radio">
-        <%#=f.radio_button :pay_app_id, "deposit", { :checked=>(@order.payment == 'deposit') } %> <b>预存款</b>
-      </label>
-      <%#end%>
-
-      <label class="radio">
-        <%#=f.radio_button :pay_app_id, "offline", { :checked=>(@order.payment == 'offline') }%> <b>货到付款</b>
-        <span class="extra-desc"></span>
-      </label>
-
-      <label class="radio" style="display:none">
-        <%#=f.radio_button :pay_app_id, "alipay", { :checked=>(@order.payment == 'alipay') }%> <b>支付宝</b>
-      </label>
-      <label class="radio" style="display:none">
-        <%#=f.radio_button :pay_app_id, "alipaywap", { :checked=>(@order.payment == 'alipaywap') }%> <b>支付宝手机版</b>
-      </label>
-      <label class="radio">
-        <%#=f.radio_button :pay_app_id, "wxpay", { :checked=>(@order.payment == 'wxpay') }%> <b>微信支付</b>
-      </label>-->
-
-      <div class="actions">
-        <div>支付成功后，可以在<%=link_to "订单详情",detail_order_path(@order),:target=>"_blank"%>处查看订单和追踪订单状态</div>
-        <br>
-        <%=f.submit "安全支付",:class=>"btn  btn-success btn-lg" if @order.pay_status == '0' && @order.status == 'active' && @order.payment != 'offline' %>
+      <div class="payment">
+        <span class="title"><%#=payments[@order.payment][:name]%></span>
+        <%#if @order.status == 'active' && @order.pay_status == '0'%>
+        <!--<a href="#" class="change" id="change_payment">更改支付方式>> </a>-->
+        <%#end%>
+        <div><%#=payments[@order.payment][:extra].html_safe%></div>
       </div>
-      <%end%>
+
+      <div class="payments" id="payment_choices">
+        <h5>已选择的支付方式现修改为：</h5>
+
+        <%if @order.part_pay?%>
+        <label class="checkbox" style="margin-left:20px;">
+          <%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@order.part_pay.to_i,:id=>"advance" }, @order.part_pay.to_i, 0%> <b>邦邦元宝先支付</b>
+          余额(<span>￥<%=@order.part_pay.to_i%></span>)
+        </label>
+        <%end%>        
+        <!--<%#if @user.advance >= @order.final_amount%>
+        <label class="radio" style="margin-left:20px;">
+          <%#=f.radio_button :pay_app_id, "deposit", { :checked=>(@order.payment == 'deposit') } %> <b>预存款</b>
+        </label>
+        <%#end%>-->
+
+        <label class="radio" style="margin-left:20px;">
+          <%=f.radio_button :pay_app_id, "offline", { :checked=>(@order.payment == 'offline') }%> <b>货到付款</b>
+          <span class="extra-desc"></span>
+        </label>
+
+        <label class="radio" style="display:none">
+          <%=f.radio_button :pay_app_id, "alipay", { :checked=>(@order.payment == 'alipay') }%> <b>支付宝</b>
+        </label>
+        <label class="radio" style="display:none">
+          <%=f.radio_button :pay_app_id, "alipaywap", { :checked=>(@order.payment == 'alipaywap') }%> <b>支付宝手机版</b>
+        </label>
+        <label class="radio" style="margin-left:20px;">
+          <%=f.radio_button :pay_app_id, "wxpay", { :checked=>(@order.payment == 'wxpay') }%> <b>微信支付</b>
+        </label>
+
+        <div class="actions">
+          <div>支付成功后，可以在<%=link_to "订单详情",detail_order_path(@order),:target=>"_blank"%>处查看订单和追踪订单状态</div>
+          <br>
+          <%=f.submit "安全支付",:class=>"btn  btn-success btn-lg" if @order.pay_status == '0' && @order.status == 'active' && @order.payment != 'offline' %>
+        </div>
+        <%end%>
+      </div>
     </div>
   </div>
-</div>
