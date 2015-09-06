@@ -26,7 +26,7 @@
           <span id="pmts_total" class="hide" data-amount="<%=@order.pmts_total%>"></span>
         </p>
         <div style="background-color:rgb(65,155,249), color:white">
-          <%=link_to "查看订单详细信息",detail_order_path(@order),:target=>"_blank"%>
+        <%=link_to "查看订单详细信息",detail_order_path(@order),:target=>"_blank", :style => "background-color:rgb(65,155,249); color:white;padding:5px 10px;"%>
         </div>
       </div>
 
@@ -42,18 +42,18 @@
         <h5>已选择的支付方式现修改为：</h5>
 
         <%if @order.part_pay?%>
-        <label class="checkbox">
+        <label class="checkbox" style="margin-left:20px;">
           <%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@order.part_pay.to_i,:id=>"advance" }, @order.part_pay.to_i, 0%> <b>邦邦元宝先支付</b>
           余额(<span>￥<%=@order.part_pay.to_i%></span>)
         </label>
         <%end%>        
-        <%if @user.advance >= @order.final_amount%>
-        <label class="radio">
-          <%=f.radio_button :pay_app_id, "deposit", { :checked=>(@order.payment == 'deposit') } %> <b>预存款</b>
+        <!--<%#if @user.advance >= @order.final_amount%>
+        <label class="radio" style="margin-left:20px;">
+          <%#=f.radio_button :pay_app_id, "deposit", { :checked=>(@order.payment == 'deposit') } %> <b>预存款</b>
         </label>
-        <%end%>
+        <%#end%>-->
 
-        <label class="radio">
+        <label class="radio" style="margin-left:20px;">
           <%=f.radio_button :pay_app_id, "offline", { :checked=>(@order.payment == 'offline') }%> <b>货到付款</b>
           <span class="extra-desc"></span>
         </label>
@@ -64,7 +64,7 @@
         <label class="radio" style="display:none">
           <%=f.radio_button :pay_app_id, "alipaywap", { :checked=>(@order.payment == 'alipaywap') }%> <b>支付宝手机版</b>
         </label>
-        <label class="radio">
+        <label class="radio" style="margin-left:20px;">
           <%=f.radio_button :pay_app_id, "wxpay", { :checked=>(@order.payment == 'wxpay') }%> <b>微信支付</b>
         </label>
 

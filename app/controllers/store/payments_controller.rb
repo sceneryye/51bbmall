@@ -56,8 +56,8 @@ class Store::PaymentsController < ApplicationController
 
 
 			
-			if @advance >= @order.total_amount
-				money = @order.total_amount.to_i * 100
+			if @order.pay_amount == 0 && @order.part_pay > 0
+				money = @order.part_pay * 100
 				if user_deduct(money, acct_type, remark)
 					@order.update_attributes(:pay_status => '1')
 
@@ -72,9 +72,6 @@ class Store::PaymentsController < ApplicationController
 					@user = @payment.user
 					order_num = current_user.member.order_num + 1
 					current_user.member.update_attributes(:order_num => order_num)
-					
-					
-
 
 					Ecstore::OrderLog.new do |order_log|
 						order_log.rel_id = @order.order_id
@@ -91,56 +88,53 @@ class Store::PaymentsController < ApplicationController
 					flash[:alert] = "订单支付失败，您可以从新支付订单。"
 					redirect_to  orders_member_path
 				end
-			elsif @advance < @order.total_amount
-				flash[:alert] = "余额不足，请重新选择支付方式。"
-				redirect_to  orders_member_path
-				#money = @order.part_pay * 100
-				#if user_deduct(money, acct_type, remark)
-				#	@payment.update_attributes(:money => (@order.total_amount - @order.part_pay))
 
-        #redirect_to "/payments/pay?id=#{@payment.payment_id}"  #pay_payment_path(@payment.payment_id)
-      #else
-      #	render :text => '支付失败2'
-    #end
-  else 
-  	flash[:alert] = "余额支付有误，您可以重新支付。"
-  	redirect_to  orders_member_path
-  end
-
-else
-	redirect_to order_url(@order)
-end
-end
-
-def debug
-	render :text=>"show"
-end
-
-def show
-	@payment = Ecstore::Payment.find_by_payment_id(params[:id])
-end
-
-def pay
-	@payment = Ecstore::Payment.find(params[:id])
-	if @payment && @payment.status == 'ready'
-		adapter = @payment.pay_app_id
-		order_id = @payment.pay_bill.rel_id
-		@modec_pay = ModecPay.new adapter do |pay|
-			pay.return_url = "#{site}/payments/#{adapter}/callback?payment_id=#{@payment.payment_id}"
-			pay.notify_url = "#{site}/payments/#{adapter}/notify?payment_id=#{@payment.payment_id}"
-			pay.pay_id = @payment.payment_id
-			pay.pay_amount = @payment.cur_money.to_f
-			pay.pay_time = Time.now
-			pay.subject = "邦邦芒订单(#{order_id})"
-			pay.installment = @payment.pay_bill.order.installment if @payment.pay_bill.order
-			pay.openid = @user.account.login_name
-			pay.spbill_create_ip = request.remote_ip
+			else 
+				if @order.part_pay > 0
+					money = @order.part_pay * 100
+					if user_deduct(money, acct_type, remark)
+						#此处调用支付接口
+						redirect_to  orders_member_path
+					end
+				else
+					#此处调用支付接口
+				end
+			end
 		end
+	end
+	
 
-		if adapter=='alipaywap'
-			render :text=>@modec_pay.html_form_alipaywap
-		elsif adapter=='wxpay'
-			render :inline=>@modec_pay.html_form_wxpay
+
+
+	def debug
+		render :text=>"show"
+	end
+
+	def show
+		@payment = Ecstore::Payment.find_by_payment_id(params[:id])
+	end
+
+	def pay
+		@payment = Ecstore::Payment.find(params[:id])
+		if @payment && @payment.status == 'ready'
+			adapter = @payment.pay_app_id
+			order_id = @payment.pay_bill.rel_id
+			@modec_pay = ModecPay.new adapter do |pay|
+				pay.return_url = "#{site}/payments/#{adapter}/callback?payment_id=#{@payment.payment_id}"
+				pay.notify_url = "#{site}/payments/#{adapter}/notify?payment_id=#{@payment.payment_id}"
+				pay.pay_id = @payment.payment_id
+				pay.pay_amount = @payment.cur_money.to_f
+				pay.pay_time = Time.now
+				pay.subject = "邦邦芒订单(#{order_id})"
+				pay.installment = @payment.pay_bill.order.installment if @payment.pay_bill.order
+				pay.openid = @user.account.login_name
+				pay.spbill_create_ip = request.remote_ip
+			end
+
+			if adapter=='alipaywap'
+				render :text=>@modec_pay.html_form_alipaywap
+			elsif adapter=='wxpay'
+				render :inline=>@modec_pay.html_form_wxpay
 		     # render :inline=>@modec_pay.html_form_wxpay,:layout=>"patch"
 		   else
 		   	render :inline=>@modec_pay.html_form
