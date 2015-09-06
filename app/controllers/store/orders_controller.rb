@@ -136,11 +136,13 @@ class Store::OrdersController < ApplicationController
       recommend_user= @user.login_name
     end
     params[:order].merge!(:recommend_user=>recommend_user)
-    #return render :text=>params[:order]
     #====================
-    
+    #return render :text => @cart_total.kind_of?(String)
+    final_amount = @cart_total.to_i
+    params[:order].merge!(:final_amount => final_amount)
+    #return render :text => "#{params[:order][:final_amount]} => #{params[:order]}"
     @order = Ecstore::Order.new params[:order]
-    @order.final_amount = @order.total_amount - @order.part_pay
+    
     if recommend_user == nil
       @order.commission=0
     end
@@ -156,7 +158,7 @@ class Store::OrdersController < ApplicationController
         order_item.name = product.name
         if cookies[:MLV] == "10"
           order_item.price = product.bulk
-        else∂
+        else
           order_item.price = product.price
         end
         order_item.goods_id = good.goods_id

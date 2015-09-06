@@ -40,19 +40,19 @@ $ ->
 
   window.compute_payment2 = ->
     products_total = 0.0
-    products_total =   parseFloat($("#products_total").data("amount")) || 0
+    products_total =   parseFloat($("#products_total").attr('data-amount')) || 0
 
     part_pay = 0.0
-    part_pay =  parseFloat($("#advance").data("amount")) || 0  if $("#advance").attr("checked") == "checked"
+    part_pay =  parseFloat($("#advance").attr('data-amount')) || 0  if $("#advance").attr("checked") == "checked"
 
     pmts_total = 0.0
-    pmts_total =  parseFloat($("#pmts_total").data("amount")) || 0
+    pmts_total =  parseFloat($("#pmts_total").attr('data-amount')) || 0
 
     order_total =  products_total - pmts_total
     bcom_discount = 0.0
     bcom_discount  = order_total - Math.round(order_total*0.95) if $("#bcom_payment").attr("checked") == "checked"
 
-    $("#final_pay").text(order_total - bcom_discount - part_pay)
+    
 
 
   compute_payment()
