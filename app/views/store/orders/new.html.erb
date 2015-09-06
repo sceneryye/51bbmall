@@ -97,7 +97,7 @@
 				</label>
 			</div>
 			<div class='form-group' id="part_pay_number" style="margin-left:20px;width:20%;">
-				<%= f.label :part_pay, '您希望使用的余额：' %>" %> 
+				<%= f.label :part_pay, '您希望使用的余额：' %> 
 				<%= f.number_field :part_pay, :id => 'part_pay_amount' %>
 			</div>
 
@@ -107,16 +107,16 @@
 		</label>
 		<label class="radio"  style="display:none">
 			<%#=f.radio_button :payment, "alipaywap"%> <b>支付宝手机</b>         
-			<span class="extra-desc"><img src="/assets/store/alipaywap.png"/></span>
+			<span class="extra-desc"><img src="/assets/store/alipaywap.png"/></span>-->
 		</label>
 		<label class="radio">
-			<%#=f.radio_button :payment, "wxpay", :checked=>true%> <b>微信支付</b>
+			<%=f.radio_button :payment, "wxpay", :checked=>true%> <b>微信支付</b>
 			<span class="extra-desc"><img src="/assets/store/wxpay.png"/></span>
 		</label>
 		<label class="radio">
-			<%#=f.radio_button :payment, "offline"%> <b>货到付款</b>
+			<%=f.radio_button :payment, "offline"%> <b>货到付款</b>
 			<span class="extra-desc"></span>
-		</label>-->
+		</label>
 
 		<!--<%# if @advance >= @cart_total %>
 		<label class="radio" style="margin-left:20px;">
@@ -253,7 +253,7 @@
 						<span class="text">预付金额：</span>
 						<span class="rmb-symbol">￥</span>
 						<span class="money part" id="part_amount">
-							<%= @advance > @cart_total || @advance == 0 ? @cart_total : @advance %>
+							0
 						</span>
 					</div>
 					<%end%>
@@ -289,6 +289,8 @@
 		//if($('#advance').prop('checked') == false){
 			if($('#advance').attr('checked') == false){
 				$('#part_pay_number').hide();
+				$('#part_amount').text('0');
+				$('#pay_amount').text("<%= @cart_total %>");
 			}
 			else {
 				$('#part_pay_number').show();	
@@ -296,8 +298,20 @@
 		});
 
 	$('#part_pay_amount').on('change', function(){
-		pay_amount = <%= @cart_total %> - parseFloat($('#part_pay_amount').val());
-		$('#pay_amount').text(pay_amount);
+		if($('#advance').attr('checked') == true) {
+			if($('#part_pay_amount').val() < 0) {
+				$('#part_pay_amount').val(0);
+				alert('预付款支付额度不能小于0');
+			}
+			if($('#part_pay_amount').val() > <%= @cart_total %>) {
+				$('#part_pay_amount').val(<%= @cart_total %>);
+				alert('预付款支付额度不能大于商品总金额');
+			}
+			
+			pay_amount = <%= @cart_total %> - parseFloat($('#part_pay_amount').val());
+			$('#pay_amount').text(pay_amount);
+			$('#part_amount').text($('#part_pay_amount').val());
+		}
 	});
 </script>
 
