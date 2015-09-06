@@ -94,7 +94,7 @@
 
 			<div class="form-group" id="advance_pay" style="margin-left:20px;">
 				<label class="checkbox">
-					<%=f.check_box :deposit, {:checked => true, :'data-amount'=> @advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
+					<%=f.check_box :payment, 'deposit', {:checked => true, :'data-amount'=> @advance, :id=>"advance" }, @advance, 0%> <b>预存款先支付</b>
 					余额(<span>￥</span><span id="advance_value"><%= @advance %></span>)
 				</label>
 			</div>
