@@ -108,11 +108,7 @@ class Store::OrdersController < ApplicationController
 
   def create
 
-    @advance = user_wallet current_user.uid    
-
-    if @advance < @cart_total
-      return render :text => '您的余额不足，请充值！'
-    end
+    @advance = user_wallet current_user.uid     
 
     if addr = Ecstore::MemberAddr.find_by_addr_id(params[:member_addr])
       ["name","area","addr","zip","tel","mobile"].each do |key,val|
@@ -144,6 +140,7 @@ class Store::OrdersController < ApplicationController
     #====================
     
     @order = Ecstore::Order.new params[:order]
+    @order.final_amount = @order.total_amount - @order.part_pay
     if recommend_user == nil
       @order.commission=0
     end
@@ -159,7 +156,7 @@ class Store::OrdersController < ApplicationController
         order_item.name = product.name
         if cookies[:MLV] == "10"
           order_item.price = product.bulk
-        else
+        else∂
           order_item.price = product.price
         end
         order_item.goods_id = good.goods_id

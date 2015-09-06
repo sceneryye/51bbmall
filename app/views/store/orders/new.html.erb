@@ -94,7 +94,8 @@
 
 			<div class="form-group" id="advance_pay" style="margin-left:20px;">
 				<label class="checkbox">
-					<%=f.check_box :payment, 'deposit', {:checked => true, :'data-amount'=> @advance, :id=>"advance" }%> <b>预存款先支付</b>
+					<%#=f.check_box {:checked => true, :'data-amount'=> @advance, :id=>"advance" }%> 
+					<input type="checkbox" checked="true" data-amount="<%= @advance %>" id="advance"><b>预存款先支付</b>
 					余额(<span>￥</span><span id="advance_value"><%= @advance %></span>)
 				</label>
 			</div>
@@ -303,11 +304,16 @@
 		if($('#advance').attr('checked') == true) {
 			if($('#part_pay_amount').val() < 0) {
 				$('#part_pay_amount').val(0);
-				alert('预付款支付额度不能小于0');
+				alert('邦邦元宝支付额度不能小于0');
 			}
 			if($('#part_pay_amount').val() > <%= @cart_total %>) {
 				$('#part_pay_amount').val(<%= @cart_total %>);
-				alert('预付款支付额度不能大于商品总金额');
+				alert('邦邦元宝支付额度不能大于商品总金额');
+			}
+
+			if($('#part_pay_amount').val() > <%= @advance %>) {
+				alert('您的余额不足，请重新填');
+				$('#part_pay_amount').val(0);
 			}
 			
 			pay_amount = <%= @cart_total %> - parseFloat($('#part_pay_amount').val());

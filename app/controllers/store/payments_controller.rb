@@ -103,7 +103,7 @@ class Store::PaymentsController < ApplicationController
       #	render :text => '支付失败2'
     #end
   else 
-  	lash[:alert] = "余额支付有误，您可以重新支付。"
+  	flash[:alert] = "余额支付有误，您可以重新支付。"
   	redirect_to  orders_member_path
   end
 

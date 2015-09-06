@@ -124,7 +124,7 @@
 
           <%if @order.part_pay?%>
               <label class="checkbox">
-                <%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@order.part_pay.to_i,:id=>"advance" }, @order.part_pay.to_i, 0%> <b>预付款先支付</b>
+                <%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@order.part_pay.to_i,:id=>"advance" }, @order.part_pay.to_i, 0%> <b>邦邦元宝先支付</b>
                 余额(<span>￥<%=@order.part_pay.to_i%></span>)
               </label>
           <%end%>
