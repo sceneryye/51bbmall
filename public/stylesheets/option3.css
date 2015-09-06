@@ -1000,7 +1000,7 @@ a:focus{
 		float: left;
 	}
 	.block3 .block-head .nav-tab.default li{
-		width: 100%;
+		width: 33%;
 		float: left;
 		height: 30px;
 		line-height: 30px;
@@ -1027,7 +1027,7 @@ a:focus{
 		margin: 0;
 	}
 	.block3 .block-head .nav-tab.tab-category li{
-		width: 100%;
+		width: 33%;
 		float: left;
 		line-height: 30px;
 	}
@@ -1051,7 +1051,7 @@ a:focus{
 		padding: 0;
 	}
 	.option3 .tab-cat-products .sub-cat li{
-		width: 50%;
+		width: 33%;
 		float: left;
 		padding-left: 10px;
 	}
