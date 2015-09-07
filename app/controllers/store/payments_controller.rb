@@ -59,7 +59,7 @@ class Store::PaymentsController < ApplicationController
 
 			
 			if @order.pay_amount == 0 && @order.part_pay > 0
-				money = @order.part_pay * 100
+				money = @order.part_pay.to_i * 100
 				if user_deduct(money, acct_type, remark)
 					@order.update_attributes(:pay_status => '1')
 
@@ -96,9 +96,11 @@ class Store::PaymentsController < ApplicationController
 					money = @order.part_pay * 100
 					if user_deduct(money, acct_type, remark)
 						#此处调用支付接口
+						flash[:success] = "邦邦元宝支付成功，请支付剩余资金。"
 						redirect_to  orders_member_path
 					end
 				else
+					flash[:success] = "开始支付。"
 					#此处调用支付接口
 				end
 			end

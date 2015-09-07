@@ -2,11 +2,11 @@
   <h1 class="page-title hidden-xs">当前购物状态</h1>
   <div class="page-content page-order">
     <ul class="step hidden-xs">
-      <li><span>01. 商品列表</span></li>            
+      <li><span>01. 商品列表</span></li>
       <li><span>02. 收货方式</span></li>
       <li class="current-step"><span>03. 支付货款</span></li>
     </ul>
-    
+
     <div class="order-holder">
       <%=form_for :payment,:url=>payments_path(:order_id=>@order.order_id),:method=>'post',:html=>{ :target=>"_blank" } do |f|%>
       <%=f.hidden_field :currency, :value=>"CNY" %>
@@ -46,7 +46,7 @@
           <%=f.check_box :part_pay, { :checked=>true, :'data-amount'=>@order.part_pay.to_i,:id=>"advance" }, @order.part_pay.to_i, 0%> <b>邦邦元宝先支付</b>
           余额(<span>￥<%=@order.part_pay.to_i%></span>)
         </label>
-        <%end%>        
+        <%end%>
         <!--<%#if @user.advance >= @order.final_amount%>
         <label class="radio" style="margin-left:20px;">
           <%#=f.radio_button :pay_app_id, "deposit", { :checked=>(@order.payment == 'deposit') } %> <b>预存款</b>

@@ -7,20 +7,20 @@
 			<b><%=@user.login_name%></b> ，欢迎您！
 			<span class="lv">
 				会员等级：<%=@user.member_lv.name%>
-			</span>&nbsp;         
+			</span>&nbsp;
 		</p>
-		<p class="validation">
+		<!--<p class="validation">
 			<span class="email">
 				邮箱认证：
-				<%if @user.email_validated?%>
+				<%#if @user.email_validated?%>
 					<span class="validated">邮箱已认证</span>
-				<%else%>
-					<%=link_to "邮箱未认证",email_validation_path%>
-				<%end%>
+				<%#else%>
+					<%#=link_to "邮箱未认证",email_validation_path%>
+				<%#end%>
 			</span>
 			
 			
-		</p>
+		</p>-->
 		<p>
 			<span class="notify">
 				<%=link_to  "待付款订单(#{@unpay_count})",orders_member_path(:pay_status=>'0',:status=>'active')%>

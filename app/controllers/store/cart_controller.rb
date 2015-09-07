@@ -10,7 +10,7 @@ class Store::CartController < ApplicationController
 		end
 	 end
 
-	
+
 	def add
 		# parse params
 		specs = params[:product].delete(:specs)
@@ -20,7 +20,7 @@ class Store::CartController < ApplicationController
 	    if quantity.blank? || quantity ==0
 	       quantity=1
 	    end
-    
+
 		#return render :text=> "specs:#{specs[0].length},customs:#{customs},quantity:#{quantity},goods_id:#{goods_id}"
 		# product_id = specs.collect do |spec_value_id|
 		# 	Ecstore::GoodSpec.where(params[:product].merge(:spec_value_id=>spec_value_id)).pluck(:product_id)
@@ -78,19 +78,19 @@ class Store::CartController < ApplicationController
 		#calculate cart_total and cart_total_quantity
 		find_cart!
 		redirect_to "/cart"
-   
+
 		#rescue
 		#render :text=>"add failed"
 	end
 
-  
+
 	def update
 		quantity = params[:quantity]
 		@line_items.where(:obj_ident=>params[:id]).update_attributes(:quantity=>quantity)
 		@line_item  = @line_items.where(:obj_ident=>params[:id]).first
 
 		find_cart!
-   
+
 		render "update"
 	end
 
@@ -101,6 +101,6 @@ class Store::CartController < ApplicationController
 
 		find_cart!
 		render "destroy"
-	end  
+	end
 
 end

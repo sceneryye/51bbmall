@@ -52,7 +52,7 @@ $ ->
     bcom_discount = 0.0
     bcom_discount  = order_total - Math.round(order_total*0.95) if $("#bcom_payment").attr("checked") == "checked"
 
-    
+
 
 
   compute_payment()
@@ -105,7 +105,7 @@ $ ->
     $(this).parent(".radio").addClass("active")
 
 
-  
+
 
 
 

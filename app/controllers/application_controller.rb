@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   include SessionsHelper
   include Breadcrumb
-  
-  
+
+
 
   layout "survey"
 
@@ -39,7 +39,7 @@ end
 
 
 
-private 
+private
 
 def adjust_format_for_mobile
   request.format = :mobile if params[:agent] == "mobile"
@@ -132,7 +132,7 @@ def find_cart!
     rc4_key = '1bb762f7ce24ceee'
     ts = Time.now.to_i
 
-    info_hash={}    
+    info_hash={}
     info_hash[:brand_id] = brand_id
     info_hash[:client_id] = client_id
     info_hash.merge! options
@@ -146,8 +146,8 @@ def find_cart!
   def user_wallet
     user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
     info_hash = {}
-    uid = info_hash[:uid] = current_user.uid      
-    info_hash = params_info(info_hash)      
+    uid = info_hash[:uid] = current_user.uid
+    info_hash = params_info(info_hash)
     res_data = RestClient.get user_wallet_url, {:params => info_hash}
     res_data_hash = ActiveSupport::JSON.decode res_data
 
@@ -161,8 +161,8 @@ def find_cart!
   def user_wallet(uid = current_user.uid)
     user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
     info_hash = {}
-    info_hash[:uid] = uid      
-    info_hash = params_info(info_hash)      
+    info_hash[:uid] = uid
+    info_hash = params_info(info_hash)
     res_data = RestClient.get user_wallet_url, {:params => info_hash}
     res_data_hash = ActiveSupport::JSON.decode res_data
 
@@ -173,5 +173,5 @@ def find_cart!
     end
   end
 
-  
+
 end

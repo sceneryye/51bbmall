@@ -14,18 +14,18 @@ class Auth::BbmallController < ApplicationController
   skip_before_filter :authorize_user!
   layout 'apitest'
 
-  def user_reg 
-    rc4_key = '1bb762f7ce24ceee'    
-    info_hash={}        
+  def user_reg
+    rc4_key = '1bb762f7ce24ceee'
+    info_hash={}
     info_hash[:phone] = params[:ecstore_account][:login_name]
-    info_hash = params_info(info_hash) 
+    info_hash = params_info(info_hash)
 
     login_name = info_hash[:phone]
     check_user = Ecstore::Account.find_by_login_name(login_name)
     return render :text => '该用户已存在，请登录或用别的手机号码注册' if check_user
 
-    url = 'http://103.16.125.100:9018/user_reg' #生产地址    
-    res_data = RestClient.get url, {:params =>info_hash}     
+    url = 'http://103.16.125.100:9018/user_reg' #生产地址
+    res_data = RestClient.get url, {:params =>info_hash}
     res_data_hash = ActiveSupport::JSON.decode(res_data)
 
     if res_data_hash['code'] == 0
@@ -34,12 +34,12 @@ class Auth::BbmallController < ApplicationController
       password = de_code(pw_enc)
       msg_send = "#{password}: #{uid}"
       #return render :text => msg_send
-      
+
       expires_in = 7200
       auth_ext = Ecstore::AuthExt.where(:provider=>"51bbmall",
         :uid=>uid).first_or_initialize(
         :expires_at=>expires_in + Time.now.to_i,
-        :expires_in=>expires_in)        
+        :expires_in=>expires_in)
 
         if res_data_hash['data']['first'] == '1'
           msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
@@ -47,7 +47,7 @@ class Auth::BbmallController < ApplicationController
           session.delete(:send_sms_msg)
           flash[:success] = '注册成功，请查看手机短信！'
           redirect_to api_login_path
-        else 
+        else
           flash[:alert] = "该手机号已经被注册！"
           redirect_to login_path
         end
@@ -55,7 +55,7 @@ class Auth::BbmallController < ApplicationController
         message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
         flash[:alert] = "#{message}"
         redirect_to login_path
-      end 
+      end
     end
 
 
@@ -66,23 +66,23 @@ class Auth::BbmallController < ApplicationController
 
       if auth_ext&&!auth_ext.expired?&&auth_ext.provider == '51bbmall'
         if auth_ext.account.nil?
-          cookies.delete :_auth_ext   
+          cookies.delete :_auth_ext
         else
           sign_in(auth_ext.account)
           #return render :text => '您已登陆！'
-        end   
-      end        
+        end
+      end
 
 
-      login_url = 'http://103.16.125.100:9018/user_login'      
-      info_hash={}        
+      login_url = 'http://103.16.125.100:9018/user_login'
+      info_hash={}
       info_hash[:account] = params[:ecstore_account][:login_name]
       password = params[:ecstore_account][:password]
       info_hash[:password] = Digest::MD5.hexdigest(password)
       info_hash = params_info(info_hash)
 
-      res_data = RestClient.get login_url, {:params => info_hash}          
-      res_data_hash = ActiveSupport::JSON.decode(res_data) 
+      res_data = RestClient.get login_url, {:params => info_hash}
+      res_data_hash = ActiveSupport::JSON.decode(res_data)
 
       expires_in = 7200
       if res_data_hash['code'] == 0
@@ -104,15 +104,15 @@ class Auth::BbmallController < ApplicationController
                 u.mobile = @account.login_name
                 u.source = "51bbmall"
                 u.member_lv_id = 1
-                u.cur = "CNY" 
-                u.reg_ip = request.remote_ip  
+                u.cur = "CNY"
+                u.reg_ip = request.remote_ip
                 u.regtime = now.to_i
                 u.email = "#{@account.login_name}@qq.com"
-              end              
-              @user.save!(:validate=>false)              
+              end
+              @user.save!(:validate=>false)
             end
           end
-        end         
+        end
         account = Ecstore::Account.find_by_login_name(info_hash[:account])
         sign_in(account, '1')
         flash[:success] = '登录成功！'
@@ -120,17 +120,17 @@ class Auth::BbmallController < ApplicationController
       else
         @message = res_data_hash['code'].to_s + ":#{res_data_hash['msg']}"
         redirect_to login_path
-        flash[:danger] = "#{@message}"        
+        flash[:danger] = "#{@message}"
       end
     end
 
 
-    def send_sms(phone, message)        
-      send_sms_url = 'http://103.16.125.100:9018/send_sms' 
-      info_hash = {}       
+    def send_sms(phone, message)
+      send_sms_url = 'http://103.16.125.100:9018/send_sms'
+      info_hash = {}
       info_hash[:phone] = phone
-      info_hash = params_info(info_hash)        
-      info_hash[:content] = message        
+      info_hash = params_info(info_hash)
+      info_hash[:content] = message
 
       res_data = RestClient.get send_sms_url, {:params => info_hash}
       session[:send_sms_msg] = res_data_hash = ActiveSupport::JSON.decode res_data
@@ -197,7 +197,7 @@ class Auth::BbmallController < ApplicationController
     def validate_code
       change_phone_url = 'http://103.16.125.100:9018/change_phone'
       info_hash = {}
-      uid = info_hash[:uid] = current_user.uid      
+      uid = info_hash[:uid] = current_user.uid
       info_hash[:phone] = session[:phone]
 
       session.delete(:phone)
@@ -211,25 +211,25 @@ class Auth::BbmallController < ApplicationController
       if res_data_hash['code'] == 0
         current_user.update_attribute!(:login_name, info_hash[:phone])
         current_user.user.update_attribute!(:mobile, info_hash[:phone])
-        render :text => "重新绑定手机成功！您现在的绑定手机为：#{current_user.login_name}" 
+        render :text => "重新绑定手机成功！您现在的绑定手机为：#{current_user.login_name}"
       else
         render :text => message_error = "错误：#{res_data_hash['msg']}"
       end
     end
 
-    
+
 
 
     def user_charge
       user_charge_url = 'http://103.16.125.100:9018/user_charge'
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid
-      info_hash[:money] = params[:money].to_i      
+      info_hash[:money] = params[:money].to_i
       info_hash = params_info(info_hash)
-      info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
-      Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid 
+      info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') +
+      Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid
       info_hash[:acct_type] = params[:acct_type].to_i
-      info_hash[:valid_month] = params[:valid_month].to_i     
+      info_hash[:valid_month] = params[:valid_month].to_i
       info_hash[:remark] = url_encode params[:remark]
       res_data = RestClient.get user_charge_url, {:params => info_hash}
       res_data_hash = ActiveSupport::JSON.decode res_data
@@ -248,10 +248,10 @@ class Auth::BbmallController < ApplicationController
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid
       info_hash[:money] = params[:money].to_i
-      if info_hash[:money] <= balance.to_i     
+      if info_hash[:money] <= balance.to_i
         info_hash = params_info(info_hash)
         info_hash[:acct_type] = params[:acct_type].to_i
-        info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') + 
+        info_hash[:order_no] = '23' + rand(10).to_s.rjust(2, '0') +
         Time.now.strftime('%Y%m%d%H%M%S') + rand(10).to_s.rjust(4, '0') + current_user.uid
         info_hash[:remark] = url_encode params[:remark]
         #return render :text => info_hash
@@ -272,7 +272,7 @@ class Auth::BbmallController < ApplicationController
       card_pay_url = 'http://103.16.125.100:9018/card_pay'
       info_hash = {}
       uid = info_hash[:uid] = current_user.uid
-      info_hash[:card_password] = params[:card_password]      
+      info_hash[:card_password] = params[:card_password]
       info_hash = params_info(info_hash)
       info_hash[:card_no] = params[:card_no]
       res_data = RestClient.get card_pay_url, {:params => info_hash}
@@ -286,14 +286,14 @@ class Auth::BbmallController < ApplicationController
     end
 
 
-    def forget_pwd_step1              
-      cookies[:login_name] = params[:login_name]      
+    def forget_pwd_step1
+      cookies[:login_name] = params[:login_name]
       cookies[:code] = rand(100_000).to_s.rjust(6, '0')
       msg_send = url_encode('您的验证码是：') + cookies[:code] + url_encode('，如非您本人操作，请忽略该短信。')
       send_sms(cookies[:login_name], msg_send)
       if session[:send_sms_msg]['code'] == 0
         redirect_to api_forget_pwd_step2_path
-      else 
+      else
         render :text => session[:send_sms_msg]['msg']
       end
       session.delete(:send_sms_msg)
@@ -305,8 +305,8 @@ class Auth::BbmallController < ApplicationController
         info_hash = {}
         info_hash[:account] = cookies[:login_name]
         info_hash = params_info info_hash
-        url = 'http://103.16.125.100:9018/user_info' #生产地址    
-        res_data = RestClient.get url, {:params =>info_hash}     
+        url = 'http://103.16.125.100:9018/user_info' #生产地址
+        res_data = RestClient.get url, {:params =>info_hash}
         res_data_hash = ActiveSupport::JSON.decode(res_data)
         cookies.delete(:login_name)
         cookies.delete(:code)
@@ -326,9 +326,9 @@ class Auth::BbmallController < ApplicationController
           message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
           flash.now[:alert] = "#{message}"
           return render :text=>message
-        end 
+        end
 
-      else 
+      else
         render :text => '验证码不正确！'
       end
     end
@@ -354,7 +354,7 @@ class Auth::BbmallController < ApplicationController
 
 
     def de_code(password)
-      de_password = hex2asc(password)      
+      de_password = hex2asc(password)
       rc4_key = '1bb762f7ce24ceee'
       dec=RC4.new(rc4_key)
       password = dec.decrypt(de_password)
