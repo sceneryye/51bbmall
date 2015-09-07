@@ -1,4 +1,6 @@
 #encoding:utf-8
+require 'erb'
+include ERB::Util
 require  'modec_pay'
 class Store::PaymentsController < ApplicationController
 	layout 'order'
@@ -102,7 +104,7 @@ class Store::PaymentsController < ApplicationController
 			end
 		end
 	end
-	
+
 
 
 

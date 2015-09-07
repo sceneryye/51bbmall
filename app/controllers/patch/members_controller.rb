@@ -15,7 +15,7 @@ class Patch::MembersController < ApplicationController
 
 
 	def show
-		@orders = @user.orders.limit(5)
+		@orders = @user.orders.order("createtime desc").limit(10)
 		@unpay_count = @user.orders.where(:pay_status=>'0',:status=>'active').size
 		add_breadcrumb("我的邦邦芒")
     @advance = user_wallet
