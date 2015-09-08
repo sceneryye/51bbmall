@@ -1,4 +1,4 @@
-<div class="container">    
+<div class="container">
     <div class="row">
 
         <div class="block block-breadcrumbs">
@@ -11,10 +11,10 @@
             </ul>
         </div>
         <div class="main-page">
-            <h1 class="page-title">登录/注册</h1>
+            <h1 class="page-title"><a href="javascript:void(0);" onclick="login()">登录</a>/注册</h1>
             <div class="page-content">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 login-function">
                         <div class="box-border">
                             <%=form_for Ecstore::Account.new,:url=> user_login_auth_bbmall_index_path,:class=>"contact-form",:html=>{:role=>"form",data: {type: "script"}} do |f|%>
                             <h4>登录</h4>
@@ -29,7 +29,7 @@
                             <p>
                                 <input type="checkbox" checked="checked" id="autologin" name="remember_me" value="1">
                                 <label id="remember_me" class="checkbox_label"  for="autologin"> 记住登录</label>
-                                <a class="forgot_link" href="/api_forget_pwd_step1" target="_top">找回密码</a> 
+                                <a class="forgot_link" href="/api_forget_pwd_step1" target="_top">找回密码</a>
                             </p>
                             <p><div id="login_msg"></div></p>
                             <p>
@@ -38,22 +38,22 @@
                             <%end%>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 reg-function">
                         <div class="box-border">
                             <h4>注册</h4>
                             <small>请输入您的手机号码注册新账户</small>
-                            <%=form_for Ecstore::Account.new,:url=> user_reg_auth_bbmall_index_path,:html=>{ :role=>"form",:id=>"register_form", :class => 'form-inline', data: {type: "script"}} do |f|%> 
+                            <%=form_for Ecstore::Account.new,:url=> user_reg_auth_bbmall_index_path,:html=>{ :role=>"form",:id=>"register_form", :class => 'form-inline', data: {type: "script"}} do |f|%>
                             <p>
                                 <div><label>手机号</label></div>
                                 <div><%=f.text_field :login_name,:value=>"", :id => 'phone-number', :class=>"form-control",:placeholder=>"手机",:required=>"required"%></div>
                             </p>
 
-                            
+
                             <div class="form-group">
                                 <input name="validate_code" class="form-control" placeholder="请输入验证码" id="validate-code-reg" type="text">
                                 <button type="button" onclick="getCode()" class="btn btn-success btn-sm" id="button-validate-code">获取验证码</button>
                             </div>
-                            
+
 
                             <p>
                               <input type="checkbox" checked="checked" value="agree" name="user[license]" id="license" class="x-input required" autocomplete="off">
@@ -72,32 +72,31 @@
         </div>
     </div>
 </div>
-</div> 
+</div>
 
-
-<script src="/assets/jquery.js" type="text/javascript"></script>
-<script src="/assets/jquery.js?body=1" type="text/javascript"></script>
-<script src="/assets/jquery_ujs.js?body=1" type="text/javascript"></script>
-<script src="/assets/bootstrap-transition.js?body=1" type="text/javascript"></script>
-<script src="/assets/bootstrap-carousel.js?body=1" type="text/javascript"></script>
-<script src="/assets/jquery_placeholder_min.js?body=1" type="text/javascript"></script>
-<script src="/assets/login.js?body=1" type="text/javascript"></script>
-<script src="/assets/jquery.md5.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="/js/login.js"></script>
+<script type="text/javascript" src="/assets/login.js.erb"></script>
 
 
 <script type="text/javascript">
-function getCode(){
-    $('#button-validate-code').click(function(){
+function login(){
+    $('.login-function').show();
+    $('.reg-function').hide();
+}
+
+    function getCode(){
+    //$('#button-validate-code').click(function(){
         var phone = $('#phone-number').val();
+        alert(phone);
         $.ajax({
             url: "http://http://123.57.35.69/<%#= send_validate_code_auth_bbmall_index_path %>",
             data:{phone:phone},
             dataType: 'json',
             type: 'POST'
             success: function(data){
-
             }
         });
-    });
+    //});
 }
 </script>

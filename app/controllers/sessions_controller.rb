@@ -58,10 +58,7 @@ class SessionsController < ApplicationController
 
 
   def create
-     
     @return_url=params[:return_url]
-
-
     @platform = params[:platform]
 
     if @platform =='mobile'
@@ -87,7 +84,7 @@ class SessionsController < ApplicationController
 
   def destroy
     sign_out
-    
+
     refer_url = request.env["HTTP_REFERER"]
     refer_url = "/" unless refer_url
     redirect_to refer_url
