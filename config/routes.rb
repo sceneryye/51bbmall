@@ -326,7 +326,7 @@ scope :module => "blog" do
     resources :brand_pages do
       get 'toggle', :on=>:member
       put 'order', :on=>:member
-      put 'reco', :on=>:member
+      get 'reco', :on=>:member
     end
 
     resources :promotions
