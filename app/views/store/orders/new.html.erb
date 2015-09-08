@@ -13,7 +13,7 @@
 			<%if @line_items.size > 0%>
 			<div class="section addr" style="margin:20px 10px;border-bottom:1px solid rgb(240,240,240)">
 				<h4 style="font-weight:bold;">
-					收货人信息					
+					收货人信息
 				</h4>
 				<div class="checkcon clearfix addr-list">
 					<%if @addrs.size>0%>
@@ -22,7 +22,7 @@
 					<label class="radio active">
 						<%=radio_button_tag "member_addr", addr.addr_id,:checked=>true%>
 						<span class="addr-name-city"><%=addr.name%>  <%= addr.area.split('/')[1] %></span>
-						
+
 						<span class="addr-detail-name"><%=addr.name%></span>
 						<span class="addr-detail-addr"><%=addr.addr%></span>
 						<span class="addr-detail-mobile" style="font-weight:500;"><%=addr.mobile%></span>
@@ -31,9 +31,9 @@
 					</label>
 					<%else%>
 					<label class="radio">
-						<%=radio_button_tag "member_addr", addr.addr_id%> 
+						<%=radio_button_tag "member_addr", addr.addr_id%>
 						<span class="addr-name-city"><%=addr.name%>  <%= addr.area.split('/')[1] %></span>
-						
+
 						<span class="addr-detail-name"><%=addr.name%></span>
 						<span class="addr-detail-addr"><%=addr.addr%></span>
 						<span class="addr-detail-mobile" style="font-weight:500;"><%=addr.mobile%></span>
@@ -72,7 +72,7 @@
 
 		<div class="control-group" style="margin:20px 10px;">
 			<h4 style="font-weight:bold;">
-				收货时间 
+				收货时间
 			</h4>
 			<div class="form-group">
 				<%=f.select :ship_day,ship_day_options%>
@@ -94,13 +94,13 @@
 
 			<div class="form-group" id="advance_pay" style="margin-left:20px;">
 				<label class="checkbox">
-					<%#=f.check_box {:checked => true, :'data-amount'=> @advance, :id=>"advance" }%> 
+					<%#=f.check_box {:checked => true, :'data-amount'=> @advance, :id=>"advance" }%>
 					<input type="checkbox" checked="true" data-amount="<%= @advance %>" id="advance"><b>预存款先支付</b>
 					余额(<span>￥</span><span id="advance_value"><%= @advance %></span>)
 				</label>
 			</div>
 			<div class='form-group' id="part_pay_number" style="margin-left:20px;width:20%;">
-				<%= f.label :part_pay, '您希望使用的余额：' %> 
+				<%= f.label :part_pay, '您希望使用的余额：' %>
 				<%= f.number_field :part_pay, :id => 'part_pay_amount' %>
 			</div>
 
@@ -109,7 +109,7 @@
 			<span class="extra-desc"><img src="/assets/store/alipay.png"/></span>
 		</label>
 		<label class="radio"  style="display:none">
-			<%#=f.radio_button :payment, "alipaywap"%> <b>支付宝手机</b>         
+			<%#=f.radio_button :payment, "alipaywap"%> <b>支付宝手机</b>
 			<span class="extra-desc"><img src="/assets/store/alipaywap.png"/></span>-->
 		</label>
 		<label class="radio" style="margin-left:20px;">
@@ -136,7 +136,7 @@
 				<th>数量</th>
 				<th>金额小计</th>
 			</tr>
-			
+
 			<%@line_items.each do |line_item|%>
 			<tr>
 				<%=hidden_field_tag "products[]",line_item.product.product_id%>
@@ -214,7 +214,7 @@
 					<span class="text">商品总额：</span>
 					<span class="rmb-symbol">￥</span>
 					<span class="money" data-amount="<%#=@cart_total%>" id="cart_amount">
-						<%#=@cart_total%> 
+						<%#=@cart_total%>
 					</span>
 				</div> -->
 				<div class="item">
@@ -241,7 +241,7 @@
 						-0
 					</span>
 				</div>
-				
+
 				<div class="item">
 					<span class="text">订单总金额：</span>
 					<span class="rmb-symbol">￥</span>
@@ -296,7 +296,7 @@
 				$('#pay_amount').text("<%= @cart_total %>");
 			}
 			else {
-				$('#part_pay_number').show();	
+				$('#part_pay_number').show();
 			}
 		});
 
@@ -315,7 +315,7 @@
 				alert('您的余额不足，请重新填');
 				$('#part_pay_amount').val(0);
 			}
-			
+
 			pay_amount = <%= @cart_total %> - parseFloat($('#part_pay_amount').val());
 			$('#pay_amount').text(pay_amount);
 			$('#part_amount').text($('#part_pay_amount').val());

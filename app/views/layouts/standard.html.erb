@@ -14,27 +14,29 @@
 <link rel="stylesheet" type="text/css" href="/stylesheets/option3.css">
 <link rel="stylesheet" type="text/css" href="/stylesheets/pagination.css">
 <link href="/stylesheets/css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="/js/owl.carousel.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+<!-- COUNTDOWN -->
+<script type="text/javascript" src="/js/jquery.plugin.js"></script>
+<script type="text/javascript" src="/js/jquery.countdown.js"></script>
+<!-- ./COUNTDOWN -->
+<script type="text/javascript" src="/js/jquery.actual.min.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
 <title>邦邦芒商城</title>
 <style type="text/css"></style></head>
 <body class="option3">
 
-<!-- ./header -->
+    <!-- ./header -->
 
-<%=render "/shared/header"%>
+    <%=render "/shared/header"%>
 
-<%= yield%>
-<%=render "/shared/footer"%>
-    <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
-    <script type="text/javascript" src="/js/owl.carousel.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-    <!-- COUNTDOWN -->
-    <script type="text/javascript" src="/js/jquery.plugin.js"></script>
-    <script type="text/javascript" src="/js/jquery.countdown.js"></script>
-    <!-- ./COUNTDOWN -->
-    <script type="text/javascript" src="/js/jquery.actual.min.js"></script>
-    <script type="text/javascript" src="/js/script.js"></script>
+    <%= yield%>
+    <%=render "/shared/footer"%>
+    
 
 </body>
 </html>

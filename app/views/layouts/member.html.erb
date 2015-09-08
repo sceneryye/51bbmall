@@ -17,36 +17,36 @@
 <title>邦邦芒商城</title>
 <style type="text/css"></style></head>
 <body class="option3">
-<%=render "/shared/header"%>
+    <%=render "/shared/header"%>
 
-<div class="container">
-    <div class="row">
-
-        <div class="block block-breadcrumbs">
-            <ul>
-                <li class="home">
-                    <a href="/"><i class="fa fa-home"></i></a>
-                    <span></span>
-                </li>
-                <li><a href="/member">个人中心</a>
-                    <span></span>
-                </li>
-                <li> </li>
-            </ul>
-        </div>
+    <div class="container">
         <div class="row">
-            <div class="col-sm-4 col-md-3">
-                <%=render "/patch/shared/menu"%> 
-            </div>
-            <div class="col-sm-8 col-md-9">
-                <%= yield%>
 
+            <div class="block block-breadcrumbs">
+                <ul>
+                    <li class="home">
+                        <a href="/"><i class="fa fa-home"></i></a>
+                        <span></span>
+                    </li>
+                    <li><a href="/member">个人中心</a>
+                        <span></span>
+                    </li>
+                    <li> </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-md-3">
+                    <%=render "/patch/shared/menu"%> 
+                </div>
+                <div class="col-sm-8 col-md-9">
+                    <%= yield%>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<%=render "/shared/footer"%>
+    <%=render "/shared/footer"%>
     <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
@@ -58,6 +58,7 @@
     <!-- ./COUNTDOWN -->
     <script type="text/javascript" src="/js/jquery.actual.min.js"></script>
     <script type="text/javascript" src="/js/script.js"></script>
+    <script src="/assets/area_seletor.js?body=1" type="text/javascript"></script>
 
     <script type="text/javascript" src="/js/easyzoom.js"></script>
 

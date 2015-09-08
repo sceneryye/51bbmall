@@ -3,11 +3,11 @@ class Store::OrdersController < ApplicationController
   before_filter :authorize_user!
   layout 'order'
 
-  
+
   def share_order
 
     @order =Ecstore::Order.find_by_order_id(params[:id])
-    
+
   end
 
   def out_inventory
@@ -98,7 +98,7 @@ class Store::OrdersController < ApplicationController
     end
   end
 
- 
+
   def show
 
     @order = Ecstore::Order.find_by_order_id(params[:id])
@@ -108,7 +108,7 @@ class Store::OrdersController < ApplicationController
 
   def create
 
-    @advance = user_wallet current_user.uid     
+    @advance = user_wallet current_user.uid
 
     if addr = Ecstore::MemberAddr.find_by_addr_id(params[:member_addr])
       ["name","area","addr","zip","tel","mobile"].each do |key,val|
@@ -117,7 +117,7 @@ class Store::OrdersController < ApplicationController
     else
 
     end
-    
+
 
     return_url=params[:return_url]
     platform=params["platform"];
@@ -142,7 +142,7 @@ class Store::OrdersController < ApplicationController
     params[:order].merge!(:final_amount => final_amount)
     #return render :text => "#{params[:order][:final_amount]} => #{params[:order]}"
     @order = Ecstore::Order.new params[:order]
-    
+
     if recommend_user == nil
       @order.commission=0
     end
@@ -247,39 +247,39 @@ class Store::OrdersController < ApplicationController
       end
     end
 
-  if @order.save
+    if @order.save
 
-    @line_items.delete_all
+      @line_items.delete_all
 
-    Ecstore::OrderLog.new do |order_log|
-      order_log.rel_id = @order.order_id
-      order_log.op_id = @order.member_id
-      order_log.op_name = @user.login_name
-      order_log.alttime = @order.createtime
-      order_log.behavior = 'creates'
-      order_log.result = "SUCCESS"
-      order_log.log_text = "订单创建成功！"
-    end.save
+      Ecstore::OrderLog.new do |order_log|
+        order_log.rel_id = @order.order_id
+        order_log.op_id = @order.member_id
+        order_log.op_name = @user.login_name
+        order_log.alttime = @order.createtime
+        order_log.behavior = 'creates'
+        order_log.result = "SUCCESS"
+        order_log.log_text = "订单创建成功！"
+      end.save
 
-    if return_url.nil?        
-      redirect_to order_path(@order)
+      if return_url.nil?
+        redirect_to order_path(@order)
+      else
+        redirect_to return_url
+      end
     else
-      redirect_to return_url
+      @addrs =  @user.member_addrs
+      @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
+      @coupons = @user.usable_coupons
+      render :new
     end
-  else
-    @addrs =  @user.member_addrs
-    @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
-    @coupons = @user.usable_coupons
-    render :new
+
   end
 
-end
-
-def new
+  def new
     # @order = Ecstore::Order.new
 
     @addrs =  @user.member_addrs
-    
+
     @def_addr = @addrs.where(:def_addr=>1).first || @addrs.first
 
     if @pmtable
@@ -290,8 +290,8 @@ def new
 
     user_wallet_url = 'http://103.16.125.100:9018/user_wallet'
     info_hash = {}
-    uid = info_hash[:uid] = current_user.uid if current_user   
-    info_hash = params_info(info_hash)      
+    uid = info_hash[:uid] = current_user.uid if current_user
+    info_hash = params_info(info_hash)
     res_data = RestClient.get user_wallet_url, {:params => info_hash}
     res_data_hash = ActiveSupport::JSON.decode res_data
 
@@ -301,9 +301,9 @@ def new
       render :text => message_error = "错误：#{res_data_hash['msg']}"
     end
 
-end
+  end
 
-  
+
 
   def addr_detail
     @addr = Ecstore::MemberAddr.find(params[:id])
@@ -327,18 +327,18 @@ end
  end
 
 
- 
 
-  def share
-    wechat_user = params[:FromUserName]
-    if @user
-      wechat_user=@user.account.login_name
-    end
-    @supplier = Ecstore::Supplier.find(params[:supplier_id])
-    @share=0
-    @sharelast = 0
-    if wechat_user
-      @order_all = Ecstore::Order.where(:recommend_user=>wechat_user,:pay_status=>'1').select("sum(commission) as share").group(:recommend_user).first
+
+ def share
+  wechat_user = params[:FromUserName]
+  if @user
+    wechat_user=@user.account.login_name
+  end
+  @supplier = Ecstore::Supplier.find(params[:supplier_id])
+  @share=0
+  @sharelast = 0
+  if wechat_user
+    @order_all = Ecstore::Order.where(:recommend_user=>wechat_user,:pay_status=>'1').select("sum(commission) as share").group(:recommend_user).first
 
       #return render :text=>@order.final_amount
       if @order_all
