@@ -1,12 +1,11 @@
 $(document).ready(function(){
 	var pWin = window.parent;
 	var pDoc = window.parent.document;
-	
+
 	$(".products-quantity").on("change",function(){
-	
 		var quantity = parseInt($(this).val());
-		console.log(quantity);
-		console.log($(this).attr('data-url'));
+		//console.log(quantity);
+		// console.log($(this).attr('data-url'));
 		if(!/\d+/.test(quantity)) return false;
 		var url = $(this).attr('data-url');
 
@@ -15,7 +14,6 @@ $(document).ready(function(){
 			type: "PUT",
 			data:{ quantity:quantity },
 			success:function(res){
-				//alert(res);
 			}
 		});
 	});

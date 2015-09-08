@@ -7,3 +7,5 @@ $("#cart_link .cart-number").text('(<%=@cart_total_quantity%>)');
 $("#menu_cart .number").html('(<%=@cart_total_quantity%>)');
 $("#product-quantity-<%= params[:id] %>").val("<%=@cart_total_quantity%>");
 $("#cart-total-number").text("<%=@cart_total_quantity%>");
+$('.mini-cart-head').text('<%= @cart_total_quantity %>');
+$('.mini-cart-total-price').html('<%=raw "￥#{ format('%.2f',@cart_total)}"%>');
