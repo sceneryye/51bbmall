@@ -59,7 +59,9 @@ class Auth::BbmallController < ApplicationController
     end
 
 
-    def user_login
+
+
+    def user_login login_name = nil, passowrd = nil
 
       auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
       session[:from] = "external_auth"
@@ -76,8 +78,8 @@ class Auth::BbmallController < ApplicationController
 
       login_url = 'http://103.16.125.100:9018/user_login'
       info_hash={}
-      info_hash[:account] = params[:ecstore_account][:login_name]
-      password = params[:ecstore_account][:password]
+      info_hash[:account] = login_name || params[:ecstore_account][:login_name]
+      password = password || params[:ecstore_account][:password]
       info_hash[:password] = Digest::MD5.hexdigest(password)
       info_hash = params_info(info_hash)
 
@@ -143,10 +145,10 @@ class Auth::BbmallController < ApplicationController
     end
 
 
-    def user_info
+    def user_info uid = nil
       user_info_url = 'http://103.16.125.100:9018/user_info'
       info_hash = {}
-      info_hash[:account] = current_user.login_name
+      info_hash[:account] = uid || current_user.login_name
       info_hash = params_info(info_hash)
 
       res_data = RestClient.get user_info_url, {:params => info_hash}
@@ -154,9 +156,8 @@ class Auth::BbmallController < ApplicationController
 
       if res_data_hash['code'] == 0
         res_data_hash['data']['password'] = de_code(res_data_hash['data']['password'])
-      else
-        return render :text => message_error = "错误：#{res_data_hash['msg']}"
       end
+      res_data_hash
     end
 
     def change_pwd
@@ -338,6 +339,29 @@ class Auth::BbmallController < ApplicationController
       @code = rand(100000).to_s.rjust(6, '0')
       msg = url_encode("您的验证码为：") + @code + url_encode(",若非本人操作，请忽略该信息。")
       send_sms phone, msg
+    end
+
+    def synchro_login
+      a_id = '0'
+      app_id = '1001'
+      serve = 'user.login'
+      ts = Time.now.to_i.to_s
+      uid = params[:uid]
+      ks = "a_id=0&appid=1001&cs=app&service=user.login&timestamp=" + ts + "&u_id=" + uid+ "&key=abcdefghijkLMNOPQ"
+      key_string = Digest::MD5.hexdigest ks
+      if params['cs'] == 'app' && params['sign'] == key_string
+        user_info_hash = user_info uid
+        if user_info_hash['code'] == 0
+          login_name = user_info_hash['code']['phone']
+          password = user_info_hash['code']['password']
+          user_login login_name, passowrd
+        else
+          render :text => res_data_hash
+        end
+      else
+        respond = {}
+        return respond['code'] = '参数不正确'
+      end
     end
 
     private

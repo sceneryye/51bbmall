@@ -109,7 +109,7 @@ end
       redirect_to "/member_addrs/mobile?platform=mobile&supplier_id=#{@supplier.id}"
    else
 
-    redirect_to "/member_addrs?platform=#{params[:platform]}"
+    redirect_to "/member_addrs"
   end
 
   end

@@ -50,6 +50,8 @@ namespace :auth do
   end
 end
 
+get 'oapi' => 'auth/bbmall#synchro_login'
+
 
 
 

@@ -40,45 +40,44 @@
             <%=image_tag line_item.good.medium_pic,:style=>"width:100%"%>
             <%end%>
           </div>
-          <div class="col-sm-10  col-xs-8 lead">
-           <div class="row">
-           <div class="col-sm-5 col-xs-12" style="text-align:center;font-size:0.8em;font-weight:normal;padding:0;">
-              <h5>
-                <%if line_item.good.default_image&&line_item.product.list_pictures.first.blank?%>
-                <%=link_to line_item.product.name,"/product-"+line_item.good.goods_id.to_s+".html",:target=>"_blank"%>
-                <%else%>
-                <%=link_to line_item.product.name,good_path(line_item.good.bn),:target=>"_blank"%>
-                <%end%>
-              </h5>
-            </div>
-            <div  class="col-sm-1 col-xs-6" style="text-align:center;font-size:0.8em;font-weight:normal;padding:0;">
-              <span><%=line_item.product.spec_info%></span>
-              <div class="cus-text">
-                <%line_item.product.custom_spec_values_of(@user).each_with_index do |cus,idx|%>
-                <%=idx+1%> : <%=cus%> <br />
-                <%end%>
-              </div>
-            </div>
-            <div class="col-sm-1 col-xs-6 form-group cart_avail cart-description" style="text-align:center;font-size:0.8em;font-weight:normal;padding:0;">
-              <span class="label label-success">现货</span>
-            </div>
-            <div class="col-sm-1 col-xs-3 form-group price cart-description" style="text-align:center;font-size:0.8em;font-weight:normal;padding:0;">
-             ￥<span class="product-price-list" id="product-price-<%= line_item.obj_ident %>"><%= format('%.2f',line_item.product.price)%></span>
-           </div>
-           <div class="col-sm-1 col-xs-9 form-group cart-description" style="text-align:center;font-size:0.8em;font-weight:normal;padding:0;">
 
-             <span><input class="form-control input-sm products-quantity" data-url="<%= cart_path(line_item.obj_ident) %>" id="product-quantity-<%= line_item.obj_ident %>" type="number" value="<%= line_item.quantity.to_i%>"></span>
-
-
-           </div>
-           <div class="col-sm-1 col-xs-3 line-total form-group cart-description" style="text-align:center;font-size:0.8em;font-weight:normal;padding:0;">
-            ￥<span class='product-total' id="products-total-<%= line_item.obj_ident %>"><%=(line_item.product.price*line_item.quantity)%></span>
+          <div class="col-sm-4 col-xs-8" style="text-align:center;padding:0;">
+            <h5>
+              <%if line_item.good.default_image&&line_item.product.list_pictures.first.blank?%>
+              <%=link_to line_item.product.name,"/product-"+line_item.good.goods_id.to_s+".html",:target=>"_blank"%>
+              <%else%>
+              <%=link_to line_item.product.name,good_path(line_item.good.bn),:target=>"_blank"%>
+              <%end%>
+            </h5>
           </div>
-          <div class="col-sm-2 col-xs-9 action cart-description" style="text-align:center;font-size:0.8em;font-weight:normal;padding:0;">
-            <%=link_to "删 除",cart_path(line_item.obj_ident),:class=>"delete", :id => "products-delete", :remote=>true,:method=>:delete%>
+          <div  class="col-sm-1 col-xs-8" style="text-align:center;padding:0;">
+            <span><%=line_item.product.spec_info%></span>
+            <div class="cus-text">
+              <%line_item.product.custom_spec_values_of(@user).each_with_index do |cus,idx|%>
+              <%=idx+1%> : <%=cus%> <br />
+              <%end%>
+            </div>
           </div>
+          <div class="col-sm-1 col-xs-8 form-group cart_avail cart-description" style="text-align:center;padding:0;">
+            <span class="label label-success">现货</span>
+          </div>
+          <div class="col-sm-1 col-xs-3 form-group price cart-description" style="text-align:center;padding:0;">
+           ￥<span class="product-price-list" id="product-price-<%= line_item.obj_ident %>"><%= format('%.2f',line_item.product.price)%></span>
+         </div>
+         <div class="col-sm-1 col-xs-4 form-group cart-description" style="text-align:center;padding:0;">
+
+           <span><input class="form-control input-sm products-quantity" style="padding:0 5px;width:80%;margin:0 auto;" data-url="<%= cart_path(line_item.obj_ident) %>" id="product-quantity-<%= line_item.obj_ident %>" type="number" value="<%= line_item.quantity.to_i%>"></span>
+
+
+         </div>
+         <div class="col-sm-1 col-xs-4 line-total form-group cart-description" style="text-align:center;padding:0;">
+          ￥<span class='product-total' id="products-total-<%= line_item.obj_ident %>"><%=(line_item.product.price*line_item.quantity)%></span>
+        </div>
+        <div class="col-sm-1 col-xs-4 action cart-description" style="text-align:center;padding:0;">
+          <%=link_to "删 除",cart_path(line_item.obj_ident),:class=>"delete", :id => "products-delete", :remote=>true,:method=>:delete%>
         </div>
       </div>
+
     </div>
     <%end%>
     <div class="row">

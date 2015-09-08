@@ -17,7 +17,7 @@ class Store::CartController < ApplicationController
 
 		# @line_item  = @line_items.where(:obj_ident=>obj_ident).first
 		# return render :text=>@line_item.line_total
-		
+
 	 end
 
 

@@ -4,6 +4,9 @@ $(document).ready(function(){
 
 	$(".products-quantity").on("change",function(){
 		var quantity = parseInt($(this).val());
+		if(quantity < 1) {
+			quantity = 1;
+		}
 		//console.log(quantity);
 		// console.log($(this).attr('data-url'));
 		if(!/\d+/.test(quantity)) return false;
