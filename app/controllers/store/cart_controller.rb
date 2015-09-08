@@ -8,6 +8,16 @@ class Store::CartController < ApplicationController
 			#render :layout=>"standard"
 			redirect_to "/login"
 		end
+
+		# quantity = 4
+		# obj_ident= 'goods_26243_31641'
+		# #quantity = 4 #params[:quantity]
+
+		# @line_items.where(:obj_ident=>obj_ident).update_all(:quantity=>quantity)
+
+		# @line_item  = @line_items.where(:obj_ident=>obj_ident).first
+		# return render :text=>@line_item.line_total
+		
 	 end
 
 
@@ -86,8 +96,12 @@ class Store::CartController < ApplicationController
 
 	def update
 		quantity = params[:quantity]
-		@line_items.where(:obj_ident=>params[:id]).update_attributes(:quantity=>quantity)
-		@line_item  = @line_items.where(:obj_ident=>params[:id]).first
+		obj_ident= params[:id]
+		#quantity = 4 #params[:quantity]
+
+		@line_items.where(:obj_ident=>obj_ident).update_all(:quantity=>quantity)
+
+		@line_item  = @line_items.where(:obj_ident=>obj_ident).first
 
 		find_cart!
 

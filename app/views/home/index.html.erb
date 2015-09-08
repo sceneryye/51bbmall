@@ -6,7 +6,7 @@
                 </div>
                 <div class="col-sm-8 col-md-9 col-lg-7">
                     <!-- Home slide -->
-                    <div class="block-slider">
+                    <div class="block-slider" style="display:none">
                         <ul class="home-slider kt-bxslider">
                             <%@home.sliders.each_with_index do |key,index|%>
                             <li>
@@ -35,7 +35,7 @@
                                     <div class="page-banner">
                                     <ul class="list-banner"> 
                                  <%end%>  
-                                 <li>
+                                 <li><%=@brands.size%>
                                     <%=link_to brand_path(brand),:title=>brand.brand_name do%>
                                         <%=image_tag "/images/brands/b#{brand.brand_id}.jpg",:alt=>brand.brand_name %>
                                     <%end%>
@@ -44,7 +44,6 @@
                             </ul>    
                         </div>
                     </div>
-
                    
                         <div class="page-banner visible-xs">
                             <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'>
