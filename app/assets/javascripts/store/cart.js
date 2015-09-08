@@ -15,8 +15,7 @@ $(document).ready(function(){
 			type: "PUT",
 			data:{ quantity:quantity },
 			success:function(res){
-				alert('ok');
-				alert(res);
+				//alert(res);
 			}
 		});
 	});
