@@ -152,50 +152,57 @@ a:hover{
 /*#cart .modal-footer{
   float: left;
   width: 830px;
-}*/
-#cart .black_btn {
-  background: url("black_btn.png") no-repeat scroll left bottom transparent;
-  float: right;
-  height: 52px;
-  font-size: 17px;
-  line-height: 48px;
-  color: #eee;
-  font-weight: normal;
-  text-align: center;
-  text-shadow: 0 -1px 0 #000;
-  /*margin: 45px 0 10px -5px;*/
-  width: 148px;
-  *margin-top: -45px;
-}
-#cart .black_btn:hover {
-  background: url("black_btn.png") no-repeat scroll left top transparent;
-}
-#cart .mini_black_btn {
-  background: url("mini_black_btn.png") no-repeat scroll left bottom transparent;
-  float: right;
-  height: 24px;
-  font-size: 12px;
-  line-height: 22px;
-  color: #eee;
-  font-weight: normal;
-  text-align: center;
-  text-shadow: 0 -1px 0 #000;
-  /*margin: 45px 0 10px -5px;*/
-  width: 48px;
-}
-#cart .mini_black_btn:hover {
-  background: url("mini_black_btn.png") no-repeat scroll left top transparent;
-}
-#cart .total{
-  color: red;
-  line-height: 48px;
-  font-size: 18px;
-}
+  }*/
+  #cart .black_btn {
+    background: url("black_btn.png") no-repeat scroll left bottom transparent;
+    float: right;
+    height: 52px;
+    font-size: 17px;
+    line-height: 48px;
+    color: #eee;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: 0 -1px 0 #000;
+    /*margin: 45px 0 10px -5px;*/
+    width: 148px;
+    *margin-top: -45px;
+  }
+  #cart .black_btn:hover {
+    background: url("black_btn.png") no-repeat scroll left top transparent;
+  }
+  #cart .mini_black_btn {
+    background: url("mini_black_btn.png") no-repeat scroll left bottom transparent;
+    float: right;
+    height: 24px;
+    font-size: 12px;
+    line-height: 22px;
+    color: #eee;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: 0 -1px 0 #000;
+    /*margin: 45px 0 10px -5px;*/
+    width: 48px;
+  }
+  #cart .mini_black_btn:hover {
+    background: url("mini_black_btn.png") no-repeat scroll left top transparent;
+  }
+  #cart .total{
+    color: red;
+    line-height: 48px;
+    font-size: 18px;
+  }
 
-#cart .modal-footer{
-  text-align: left;
-}
+  #cart .modal-footer{
+    text-align: left;
+  }
 
- .cart-description {
-  text-align: center;
- }
+  #cart {
+    .cart-description {
+      text-align: center;
+      font-size: 1em;
+      font-weight:  normal;
+    }
+    .line-total {
+
+    }
+  }
