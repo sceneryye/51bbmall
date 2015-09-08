@@ -51,7 +51,7 @@
                         <div class="currency cart-mobile block-wrap-cart" >
                             <div class="iner-block-cart box-radius">
                                 <a href="/cart">
-                                    <span class="total">&yen;<span class="mini-cart-total-price"><%= @cart_total %></span></span>
+                                    <span class="total"><span class="mini-cart-total-price"><%= @cart_total %></span></span>
                                 </a>
                             </div>
                             <div class="block-mini-cart">
@@ -71,7 +71,7 @@
                                                     </div>
                                                     <div class="p-right">
                                                         <p class="p-name"><%= l.product.name %></p>
-                                                        <p class="product-price">&yen;<%= l.product.price %></p>
+                                                        <p class="product-price"><%= l.product.price %></p>
                                                         <p>数量: <span class="mini-cart-quantity"><%= l.quantity %></span></p>
                                                     </div>
                                                 </li>
@@ -80,7 +80,7 @@
                                         </div>
                                         <div class="toal-cart">
                                             <span>总共</span>
-                                            <span class="toal-price pull-right">&yen;<span class="mini-cart-total-price"><%= @cart_total %></span></span>
+                                            <span class="toal-price pull-right"><span class="mini-cart-total-price"><%= @cart_total %></span></span>
                                         </div>
                                         <div class="cart-buttons">
                                             <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
@@ -219,12 +219,12 @@
                                             <div class="block-wrap-cart">
                                                 <div class="iner-block-cart">
                                                     <a href="/cart">
-                                                        <span class="total">&yen;<span class="mini-cart-total-price"><%= @cart_total %></span></span>
+                                                        <span class="total"><span class="mini-cart-total-price"><%= @cart_total %></span></span>
                                                     </a>
                                                 </div>
                                                 <div class="block-mini-cart">
                                                     <div class="mini-cart-content">
-                                                        <h5 class="mini-cart-head mini-cart-quantity"><%= @cart_total_quantity %> 件商品 </h5>
+                                                        <h5 class="mini-cart-head"><span class=" mini-cart-quantity"><%= @cart_total_quantity %></span> 件商品 </h5>
                                                         <% if @cart_total_quantity > 0 %>
                                                         <div class="mini-cart-list">
                                                             <ul>
@@ -238,7 +238,7 @@
                                                                     </div>
                                                                     <div class="p-right">
                                                                         <p class="p-name"><%= l.product.name %></p>
-                                                                        <p class="product-price">&yen;<%= l.product.price %></p>
+                                                                        <p class="product-price"><%= l.product.price %></p>
                                                                         <p>数量: <span class="mini-cart-quantity"><%= l.quantity %></span></p>
                                                                     </div>
                                                                 </li>
@@ -247,7 +247,7 @@
                                                         </div>
                                                         <div class="toal-cart">
                                                             <span>总共</span>
-                                                            <span class="toal-price pull-right">&yen;<span class="mini-cart-total-price"><%= @cart_total %></span></span>
+                                                            <span class="toal-price pull-right"><span class="mini-cart-total-price"><%= @cart_total %></span></span>
                                                         </div>
                                                         <div class="cart-buttons">
                                                             <a href="/orders/new" class="button-radius btn-check-out">下单<span class="icon"></span></a>
