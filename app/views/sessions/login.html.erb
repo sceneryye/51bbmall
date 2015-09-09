@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-sm-6 login-function">
                         <div class="box-border">
-                            <%=form_for Ecstore::Account.new,:url=> user_login_auth_bbmall_index_path,:class=>"contact-form",:html=>{:role=>"form",data: {type: "script"}} do |f|%>
+                            <%=form_for Ecstore::Account.new,:url=> user_login_auth_bbmall_index_path,:class=>"contact-form",:html=>{:role=>"form",data: {type: "script"}, :id => 'reg-form'} do |f|%>
                             <h4>登录</h4>
                             <p>
                                 <label>手机号</label>
@@ -62,7 +62,7 @@
                               <div class="help-block" rel="user_license"></div>
                           </p>
                           <p>
-                            <button class="btn btn-primary" disabled="disabled" type="button" id="reg-button"><i class="fa fa-user"></i>注册</button>
+                            <button class="btn btn-primary" data-link="javascript:document.getElementById('add_cart').submit();" disabled="disabled" type="button" id="reg-button"><i class="fa fa-user"></i>注册</button>
                         </p>
                         <%end%>
                     </div>
