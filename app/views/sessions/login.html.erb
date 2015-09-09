@@ -86,9 +86,7 @@ function login(){
 }
 
     function getCode(){
-    //$('#button-validate-code').click(function(){
-        var phone = $('#phone-number').val();
-        alert(phone);
+        alert('sss');
         $.ajax({
             url: "http://http://123.57.35.69/<%#= send_validate_code_auth_bbmall_index_path %>",
             data:{phone:phone},
@@ -97,6 +95,5 @@ function login(){
             success: function(data){
             }
         });
-    //});
 }
 </script>
