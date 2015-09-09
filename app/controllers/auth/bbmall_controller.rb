@@ -141,6 +141,7 @@ class Auth::BbmallController < ApplicationController
         return res_data_hash
       else
         message_error = "发送失败，错误：#{res_data_hash['msg']}"
+        return res_data_hash
       end
     end
 
@@ -336,7 +337,7 @@ class Auth::BbmallController < ApplicationController
 
     def send_validate_code
       phone = params['phone']
-      @code = rand(100000).to_s.rjust(6, '0')
+      @code = params['code']
       msg = url_encode("您的验证码为：") + @code + url_encode(",若非本人操作，请忽略该信息。")
       send_sms phone, msg
     end

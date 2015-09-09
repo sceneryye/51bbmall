@@ -28,7 +28,7 @@
             setTimeout(function(){
                 t.find('.owl-item.active').last().addClass('last-item');
             }, 100);
-            
+
           })
         });
     }
@@ -115,7 +115,7 @@
             );
             slider.reloadSlider();
         })
-        
+
      }
 
     /**==============================
@@ -148,13 +148,13 @@
                 var austDay = new Date($(this).data('y'),$(this).data('m') - 1,$(this).data('d'),$(this).data('h'),$(this).data('i'),$(this).data('s'));
                 $(this).countdown({
                     until: austDay,
-                    labels: labels, 
+                    labels: labels,
                     layout: layout
                 });
             });
         }
 
-        // CATEGORY FILTER PRICE 
+        // CATEGORY FILTER PRICE
         $('.slider-range-price').each(function(){
             var min             = $(this).data('min');
             var max             = $(this).data('max');
@@ -179,16 +179,16 @@
         $(document).on('click','.tree-menu li',function(){
             $(this).toggleClass('active');
             $(this).children('ul').slideToggle();
-            
+
           //  return false;
         })
 
          $('.add-cart-product').on('click', function() {
-            $(this).closest("form").submit();                            
+            $(this).closest("form").submit();
             return false;
         });
-                                                
-       
+
+
         // Zoom
         if($('.easyzoom').length >0){
             // Instantiate EasyZoom instances
@@ -202,7 +202,7 @@
                 $(this).closest('.product-list-thumb').find('a').each(function(){
                     $(this).removeClass('selected');
                 })
-                
+
                 $(this).addClass('selected');
 
                 var $this = $(this);
@@ -258,7 +258,7 @@
             $(this).closest('.product').addClass('active');
             return false;
         })
-        /* scroll top */ 
+        /* scroll top */
         $(document).on('click','.scroll_top',function(){
             $('body,html').animate({scrollTop:0},400);
             return false;

@@ -11,7 +11,7 @@
             </ul>
         </div>
         <div class="main-page">
-            <h1 class="page-title"><a href="javascript:void(0);" onclick="login()">登录</a>/注册</h1>
+            <h1 class="page-title"><a href="javascript:void(0);" onclick="login()">登录</a>/<a href="javascript:void(0);" onclick="reg()">注册</a></h1>
             <div class="page-content">
                 <div class="row">
                     <div class="col-sm-6 login-function">
@@ -51,7 +51,7 @@
 
                             <div class="form-group">
                                 <input name="validate_code" class="form-control" placeholder="请输入验证码" id="validate-code-reg" type="text">
-                                <button type="button" onclick="getCode()" class="btn btn-success btn-sm" id="button-validate-code">获取验证码</button>
+                                <button type="button" onclick="getCode()" class="btn btn-success btn-sm" id="button-validate-code">免费获取验证码</button>
                             </div>
 
 
@@ -62,7 +62,7 @@
                               <div class="help-block" rel="user_license"></div>
                           </p>
                           <p>
-                            <button class="button" type="submit"><i class="fa fa-user"></i>注册</button>
+                            <button class="btn btn-primary" disabled="disabled" type="button" id="reg-button"><i class="fa fa-user"></i>注册</button>
                         </p>
                         <%end%>
                     </div>
@@ -75,25 +75,84 @@
 </div>
 
 <script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="/js/login.js"></script>
-<script type="text/javascript" src="/assets/login.js.erb"></script>
 
 
 <script type="text/javascript">
-function login(){
-    $('.login-function').show();
-    $('.reg-function').hide();
-}
-
-    function getCode(){
-        alert('sss');
-        $.ajax({
-            url: "http://http://123.57.35.69/<%#= send_validate_code_auth_bbmall_index_path %>",
-            data:{phone:phone},
-            dataType: 'json',
-            type: 'POST'
-            success: function(data){
+    var code;
+    var wait = 60;
+    //Create sms validate code with 6 numbers
+    function createCode(){
+        code = '';
+        for(var i = 0; i < 6; i ++) {
+            code += parseInt(Math.random()*10).toString();
+        }
+        return code;
+    }
+    //check the code which user inputed was correct or not
+    function validate_code(){
+        $('#validate-code-reg').on('change', function(){
+            if($(this).val().replace(/[ ]/g,"").length != 6) {
+                alert("请输入6位验证码");
             }
+            else if($(this).val().toString().replace(/[ ]/g,"") != code) {
+                alert('您输入的验证码不正确，请重新输入。'+code + "=>" + $(this).val());
+                $(this).val(' ');
+            }
+            else {
+                $('#reg-button').removeAttr('disabled');
+            }
+
         });
-}
+    }
+    //switch the login/reg pages
+    function login(){
+        $('.login-function').show();
+        $('.reg-function').hide();
+    }
+
+    function reg() {
+        $('.login-function').hide();
+        $('.reg-function').show();
+    }
+    //countdown
+    function time() {
+        var validate = $('#button-validate-code');
+        if (wait == 0) {
+            validate.removeAttr("disabled");
+            validate.text("免费获取验证码");
+            wait = 60;
+        } else {
+            validate.attr("disabled", 'disabled');
+            validate.text("重新发送(" + wait + ")");
+            wait--;
+            setTimeout(function() {
+                time()
+            },
+            1000)
+        }
+    }
+
+
+    //send code to rails with ajax
+    function getCode(){
+        var phone = $('#phone-number').val();
+        var reg = /^1[3|4|5|8][0-9]\d{8}$/;
+        if(reg.test(phone)){
+            createCode();
+            $.ajax({
+                url: "http://123.57.35.69/auth/bbmall/send_validate_code",
+                data:{phone:phone,
+                  code:code},
+                  dataType: 'json',
+                  type: 'POST',
+                  success: function(res){
+                  }
+              });
+            validate_code();
+            time();
+        }
+        else {
+            alert('请输入正确的手机号码');
+        }
+    }
 </script>
