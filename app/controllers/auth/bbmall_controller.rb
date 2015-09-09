@@ -349,7 +349,7 @@ class Auth::BbmallController < ApplicationController
       uid = params[:uid]
       ks = "a_id=0&appid=1001&cs=app&service=user.login&timestamp=" + ts + "&u_id=" + uid+ "&key=abcdefghijkLMNOPQ"
       key_string = Digest::MD5.hexdigest ks
-      if params['cs'] == 'app' && params['sign'] == key_string
+      if params['cs'] == 'app' && params['sign'] == key_string && params[:key] = 'abcdefghijkLMNOPQ'
         user_info_hash = user_info uid
         if user_info_hash['code'] == 0
           login_name = user_info_hash['code']['phone']
