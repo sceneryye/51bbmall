@@ -9,7 +9,6 @@ class Patch::MemberAddrsController < ApplicationController
   end
 
   def new
-    session[:return_url] = params[:return_url]
     @addr = Ecstore::MemberAddr.new
     if params[:platform]=="mobile"
       @supplier = Ecstore::Supplier.find(@user.account.supplier_id)
@@ -64,9 +63,6 @@ class Patch::MemberAddrsController < ApplicationController
   end
 
   def create
-   if return_url = session[:return_url]
-    session.delete(:return_url)
-  end
   @addr = Ecstore::MemberAddr.new params[:addr].merge!(:member_id=>@user.member_id)
   if @addr.save
     if return_url

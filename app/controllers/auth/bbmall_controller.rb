@@ -340,7 +340,7 @@ class Auth::BbmallController < ApplicationController
     end
 
     def simple_login login_name, uid
-      auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
+      #auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
       if Ecstore::Account.find_by_login_name(login_name).nil?
         now = Time.now
         @account = Ecstore::Account.new do |ac|
@@ -348,7 +348,7 @@ class Auth::BbmallController < ApplicationController
           ac.login_password = '123456'
           ac.account_type ="member"
           ac.createtime = now.to_i
-          ac.auth_ext = auth_ext || 'none'
+          #ac.auth_ext = 'none'
           ac.uid = uid
         end
 
@@ -371,29 +371,32 @@ class Auth::BbmallController < ApplicationController
       account = Ecstore::Account.find_by_login_name(login_name)
       sign_in(account, '1')
       flash[:success] = '登录成功！'
-      redirect_to '/'
+      redirect_to '/home'
     end
 
 
     def synchro_login
+      if params['timestamp'].nil?
+        return redirect_to login_path
+      end
       a_id = '0'
       app_id = '1001'
       serve = 'user.login'
-      ts = Time.now.to_i.to_s
-      uid = params[:u_id]
-      ks = "a_id=0&appid=1001&cs=app&service=user.login&timestamp=" + ts + "&u_id=" + uid.to_s+ "&key=abcdefghijkLMNOPQ"
+      ts = params['timestamp']
+      uid = params['u_id']
+      ks = "a_id=0&appid=1001&cs=app&service=user.login&timestamp=" + ts.to_s + "&u_id=" + uid.to_s+ "&key=abcdefghijkLMNOPQ"
       key_string = Digest::MD5.hexdigest ks
 
-      if params['cs'] == 'app' && params[:key] = 'abcdefghijkLMNOPQ'
+      if key_string == params['sign']
         user_info_hash = user_info uid
         if user_info_hash['code'] == 0
           login_name = user_info_hash['data']['phone']
           simple_login login_name, uid
         else
-          render :text => res_data_hash
+          redirect_to login_path
         end
       else
-        redirect_to '/'
+        redirect_to login_path
       end
     end
 
