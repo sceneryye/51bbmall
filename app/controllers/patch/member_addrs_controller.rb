@@ -63,6 +63,7 @@ class Patch::MemberAddrsController < ApplicationController
   end
 
   def create
+    return_url = params[:return_url]
   @addr = Ecstore::MemberAddr.new params[:addr].merge!(:member_id=>@user.member_id)
   if @addr.save
     if return_url
