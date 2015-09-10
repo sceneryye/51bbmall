@@ -387,6 +387,12 @@ class Auth::BbmallController < ApplicationController
       ks = "a_id=0&appid=1001&cs=app&service=user.login&timestamp=" + ts.to_s + "&u_id=" + uid.to_s+ "&key=abcdefghijkLMNOPQ"
       key_string = Digest::MD5.hexdigest ks
 
+      account = Ecstore::Account.find_by_uid(uid)
+      unless account.nil?
+        sign_in(account, '1')
+        flash[:success] = '登录成功！'
+        return redirect_to '/home'
+      end
       if key_string == params['sign']
         user_info_hash = user_info uid
         if user_info_hash['code'] == 0

@@ -9,9 +9,9 @@ module ModecPay
 		attr_accessor :action, :method, :charset
 		attr_accessor :fields
 		attr_accessor :filter
-		
+
 		attr_accessor :return_url, :notify_url
-		
+
 		attr_accessor :installment
 
 		#  payment id in db
@@ -27,16 +27,16 @@ module ModecPay
 
     attr_accessor :openid, :spbill_create_ip
 
-		# A block pass to sort_by 
+		# A block pass to sort_by
 		# == Example
 		#   payment.sorter = Proc.new { |key,val|  key }
 		# Or a Array that contain fields,specify the order
 		# == Example
 		#   payment.sorter = ['version','lan','sign','_charset']
 		#   if extra  in fields,those extra will append to fields
-		#   
+		#
 		#   This is used to order fields for form
-		attr_accessor :sorter 
+		attr_accessor :sorter
 
 		def initialize
 			self.fields = {}
@@ -294,9 +294,9 @@ document.getElementById("getBrandWCPayRequest").click();
 
     end
 
-		private 
+		private
 
-		#  === Example 
+		#  === Example
 		#  def make_sign
 		#      _sign = "secret string"
 		#      self.fields['sign'] = _sign
