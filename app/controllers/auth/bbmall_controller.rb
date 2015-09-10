@@ -41,36 +41,33 @@ class Auth::BbmallController < ApplicationController
         :expires_at=>expires_in + Time.now.to_i,
         :expires_in=>expires_in)
 
-        if res_data_hash['data']['first'] == '1'
-          msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
+
+        msg_send =  url_encode("注册成功！您的初始密码是：") + password + url_encode("，您的用户id是：") + uid + url_encode("。")
           send_sms(info_hash[:phone], msg_send) # send password to user
           session.delete(:send_sms_msg)
           flash[:success] = '注册成功，请查看手机短信！'
-          redirect_to api_login_path
+          redirect_to login_path
+
         else
-          flash[:alert] = "该手机号已经被注册！"
+          message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
+          flash[:alert] = "#{message}"
           redirect_to login_path
         end
-      else
-        message = '错误代码=' + res_data_hash['code'].to_s + ":  #{res_data_hash['msg']}"
-        flash[:alert] = "#{message}"
-        redirect_to login_path
       end
-    end
 
 
 
 
-    def user_login login_name = nil, passowrd = nil
+      def user_login login_name = nil, passowrd = nil
 
-      auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
-      session[:from] = "external_auth"
+        auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
+        session[:from] = "external_auth"
 
-      if auth_ext&&!auth_ext.expired?&&auth_ext.provider == '51bbmall'
-        if auth_ext.account.nil?
-          cookies.delete :_auth_ext
-        else
-          sign_in(auth_ext.account)
+        if auth_ext&&!auth_ext.expired?&&auth_ext.provider == '51bbmall'
+          if auth_ext.account.nil?
+            cookies.delete :_auth_ext
+          else
+            sign_in(auth_ext.account)
           #return render :text => '您已登陆！'
         end
       end
@@ -149,7 +146,7 @@ class Auth::BbmallController < ApplicationController
     def user_info uid = nil
       user_info_url = 'http://103.16.125.100:9018/user_info'
       info_hash = {}
-      info_hash[:account] = uid || current_user.login_name
+      info_hash[:account] = uid || current_user.try(:login_name)
       info_hash = params_info(info_hash)
 
       res_data = RestClient.get user_info_url, {:params => info_hash}
@@ -342,26 +339,61 @@ class Auth::BbmallController < ApplicationController
       send_sms phone, msg
     end
 
+    def simple_login login_name, uid
+      auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
+      if Ecstore::Account.find_by_login_name(login_name).nil?
+        now = Time.now
+        @account = Ecstore::Account.new do |ac|
+          ac.login_name = login_name
+          ac.login_password = '123456'
+          ac.account_type ="member"
+          ac.createtime = now.to_i
+          ac.auth_ext = auth_ext || 'none'
+          ac.uid = uid
+        end
+
+        Ecstore::Account.transaction do
+          if @account.save!(:validate => false)
+            @user = Ecstore::User.new do |u|
+              u.member_id = @account.account_id
+              u.mobile = @account.login_name
+              u.source = "51bbmallapp"
+              u.member_lv_id = 1
+              u.cur = "CNY"
+              u.reg_ip = request.remote_ip
+              u.regtime = now.to_i
+              u.email = "#{@account.login_name}@qq.com"
+            end
+            @user.save!(:validate=>false)
+          end
+        end
+      end
+      account = Ecstore::Account.find_by_login_name(login_name)
+      sign_in(account, '1')
+      flash[:success] = '登录成功！'
+      redirect_to '/'
+    end
+
+
     def synchro_login
       a_id = '0'
       app_id = '1001'
       serve = 'user.login'
       ts = Time.now.to_i.to_s
-      uid = params[:uid]
-      ks = "a_id=0&appid=1001&cs=app&service=user.login&timestamp=" + ts + "&u_id=" + uid+ "&key=abcdefghijkLMNOPQ"
+      uid = params[:u_id]
+      ks = "a_id=0&appid=1001&cs=app&service=user.login&timestamp=" + ts + "&u_id=" + uid.to_s+ "&key=abcdefghijkLMNOPQ"
       key_string = Digest::MD5.hexdigest ks
-      if params['cs'] == 'app' && params['sign'] == key_string && params[:key] = 'abcdefghijkLMNOPQ'
+
+      if params['cs'] == 'app' && params[:key] = 'abcdefghijkLMNOPQ'
         user_info_hash = user_info uid
         if user_info_hash['code'] == 0
-          login_name = user_info_hash['code']['phone']
-          password = user_info_hash['code']['password']
-          user_login login_name, passowrd
+          login_name = user_info_hash['data']['phone']
+          simple_login login_name, uid
         else
           render :text => res_data_hash
         end
       else
-        respond = {}
-        return respond['code'] = '参数不正确'
+        redirect_to '/'
       end
     end
 

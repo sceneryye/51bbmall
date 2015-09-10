@@ -9,6 +9,7 @@ class Patch::MemberAddrsController < ApplicationController
   end
 
   def new
+    session[:return_url] = params[:return_url]
     @addr = Ecstore::MemberAddr.new
     if params[:platform]=="mobile"
       @supplier = Ecstore::Supplier.find(@user.account.supplier_id)
@@ -27,7 +28,7 @@ class Patch::MemberAddrsController < ApplicationController
     if params[:platform]=="mobile"
       @supplier = Ecstore::Supplier.find(@user.account.supplier_id)
 
-     redirect_to "/member_addrs/mobile?supplier_id=#{@supplier.id}"
+      redirect_to "/member_addrs/mobile?supplier_id=#{@supplier.id}"
 
     else
       @newurl = "new"
@@ -35,26 +36,26 @@ class Patch::MemberAddrsController < ApplicationController
     end
 
   end
-def mobile
-  @supplier = Ecstore::Supplier.find(params[:supplier_id])
-  @addrs = @user.member_addrs.paginate(:per_page=>10,:page=>params[:page])
-  @newurl = "new_memberaddr_add?supplier_id=#{@supplier.id}"
+  def mobile
+    @supplier = Ecstore::Supplier.find(params[:supplier_id])
+    @addrs = @user.member_addrs.paginate(:per_page=>10,:page=>params[:page])
+    @newurl = "new_memberaddr_add?supplier_id=#{@supplier.id}"
 
-  render :layout => @supplier.layout
+    render :layout => @supplier.layout
 
-end
+  end
 
 
   def edit
     @addr = Ecstore::MemberAddr.find(params[:id])
     @method = :put
     @action_url = member_addr_path(@addr)
-=begin
+
     respond_to do |format|
       format.html
       format.js
     end
-=end
+
     if params[:platform]=="mobile"
       @supplier = Ecstore::Supplier.find(@user.account.supplier_id)
       layout = @supplier.layout
@@ -63,20 +64,20 @@ end
   end
 
   def create
-    @addr = Ecstore::MemberAddr.new params[:addr].merge!(:member_id=>@user.member_id)
-
-    return_url= params[:return_url]
-
-   if @addr.save
-      if return_url
-        redirect_to return_url
-      else
-        respond_to do |format|
-          format.js
-          format.html { redirect_to member_addrs_url }
-        end
-      end
+   if return_url = session[:return_url]
+    session.delete(:return_url)
+  end
+  @addr = Ecstore::MemberAddr.new params[:addr].merge!(:member_id=>@user.member_id)
+  if @addr.save
+    if return_url
+      redirect_to return_url
     else
+      respond_to do |format|
+        format.js
+        format.html { redirect_to member_addrs_url }
+      end
+    end
+  else
       render "error.js" #, status: :unprocessable_entity
     end
 
@@ -107,10 +108,10 @@ end
     if params[:platform]=="mobile"
       @supplier=Ecstore::Supplier.find(params[:supplier_id])
       redirect_to "/member_addrs/mobile?platform=mobile&supplier_id=#{@supplier.id}"
-   else
+    else
 
-    redirect_to "/member_addrs"
-  end
+      redirect_to "/member_addrs"
+    end
 
   end
   def _form_manco_second
@@ -134,7 +135,7 @@ end
 
     else
       redirect_to "/member_addrs/_form_manco_second?supplier_id=#{@supplier.id}"
-  end
     end
+  end
 
 end
