@@ -9,7 +9,7 @@ class Patch::ProfilesController < ApplicationController
     clear_breadcrumbs
     add_breadcrumb("我的邦邦芒",:member_path)
   end
-  
+
   def show
     @tab = params[:tab] || "basic"
 
@@ -75,7 +75,7 @@ end
   def modify_password
      @account =  current_account
      if @account.update_attributes(params[:account])
-        sign_out 
+        sign_out
         redirect_to root_path
      else
         render :password
@@ -83,7 +83,7 @@ end
   end
 
   def change_phone
-    
+
   end
 
   private

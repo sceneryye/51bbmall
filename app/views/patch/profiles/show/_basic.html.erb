@@ -38,7 +38,7 @@
 	</div>
 	<div class="field">
 		<label>详细地址</label>
-		<span><%=@user.addr.present? ? @user.addr.first : "未填写" %></span>
+		<span><%=@user.member_addrs.present? ? @user.member_addrs.all.first.addr : "未填写" %></span>
 	</div>
 	<div class="field">
 		<label>手机:</label>
