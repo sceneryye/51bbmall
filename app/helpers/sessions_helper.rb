@@ -14,7 +14,7 @@ module SessionsHelper
 	def current_account=(account)
 		@account = account
 	end
-	
+
 	def signed_in?
 		!current_account.nil?
 	end
@@ -64,7 +64,7 @@ module SessionsHelper
        	return_url = request.url
        	return_url = request.env["HTTP_REFERER"] if request.xhr?
 
-       	
+
 
        	cookies[:unlogin_url] = {:value=>return_url,:domain=>"123.57.35.69"}
 
@@ -91,7 +91,7 @@ module SessionsHelper
   end
 
 
-  private 
+  private
 
   def authorize_user!
 
@@ -137,7 +137,7 @@ module SessionsHelper
 
 	return true if  current_account
 	return true if  session[:admin_id]
-	  	# return true if  Rails.env == "development"	  	
+	  	# return true if  Rails.env == "development"
 	  end
 
 	  def simple_authorize_user!
