@@ -2,7 +2,7 @@
         <div class="row">
             <div class="row">
                 <div class="col-sm-4 col-md-3 col-lg-3 hidden-xs">
-                    <%=render "/home/left_menu.html.erb"%>
+                    <%=render "/home/left_menu"%>
                 </div>
                 <div class="col-sm-8 col-md-9 col-lg-7">
                     <!-- Home slide -->
@@ -12,13 +12,13 @@
                             <li>
                                 <%=link_to key['link_url'],:target=>"_blank" do%>
                                     <%=image_tag key['pic_url'] %>
-                                <%end%>      
-                            </li>                             
+                                <%end%>
+                            </li>
                             <%end%>
                         </ul>
                     </div>
-                    <!-- ./Home slide -->                   
-                </div>           
+                    <!-- ./Home slide -->
+                </div>
 
                 <div class="col-sm-8 col-md-12 col-lg-2">
                     <div class="block block-banner-owl kt-owl-carousel hidden-xs" ata-margin="0" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":1},"1000":{"items":1}}'>
@@ -26,37 +26,37 @@
                             <ul class="list-banner">
                             <!-- <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'> -->
                                 <%@brands = Ecstore::Brand.where(:reco=>true).order("ordernum DESC").limit(8)
-                                i=0                              
+                                i=0
                                 @brands.each do |brand|
-                                 i+=1  
+                                 i+=1
                                  if i%4==1 && i!=1%>
                                     </ul>
                                     </div>
                                     <div class="page-banner">
-                                    <ul class="list-banner"> 
-                                 <%end%>  
+                                    <ul class="list-banner">
+                                 <%end%>
                                  <li>
                                     <%=link_to brand_path(brand),:title=>brand.brand_name do%>
                                         <%=image_tag "/images/brands/b#{brand.brand_id}.jpg",:alt=>brand.brand_name %>
                                     <%end%>
-                                </li>                                
-                               <%end if @brands%>                        
-                            </ul>    
+                                </li>
+                               <%end if @brands%>
+                            </ul>
                         </div>
                     </div>
-                   
+
                         <div class="page-banner visible-xs">
                             <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'>
-                                <%i=0                              
+                                <%i=0
                                 @brands.each do |brand|
                                  i+=1%>
                                  <li>
                                     <%=link_to brand_path(brand),:title=>brand.brand_name do%>
                                         <%=image_tag "/images/brands/b#{brand.brand_id}.jpg",:alt=>brand.brand_name %>
                                     <%end%>
-                                </li>                                
-                               <%end if @brands && i<4 %>                        
-                            </ul>    
+                                </li>
+                               <%end if @brands && i<4 %>
+                            </ul>
                         </div>
                 </div>
             </div>
@@ -69,36 +69,36 @@
                     <%=render "/store/shared/special"%>
                     <%=render "/store/shared/big_save"%>
                     <%=render "/store/shared/top_review"%>
-                    <%=render "/store/shared/hot_tags", :resource=>@home%>                         
+                    <%=render "/store/shared/hot_tags", :resource=>@home%>
                 </div>
                 <div class="col-sm-8 col-md-9 col-xs-12">
                     <!-- new-arrivals -->
                     <div class="block3 block-new-arrivals">
                         <div class="block-head">
                             <h3 class="block-title">最新上架</h3>
-                            <ul class="nav-tab default">   
+                            <ul class="nav-tab default">
                                 <%i=0%>
                                 <% @home_galleries=[132,130,126]%>
                                 <%@home_galleries.each do |tag_id|%>
-                                    <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>    
+                                    <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>
                                         <%i+=1%>
-                                <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li> 
-                                <%end%>                       
+                                <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li>
+                                <%end%>
                             </ul>
                         </div>
                         <div class="block-inner">
                             <div class="tab-container">
                              <%i=0%>
                             <%@home_galleries.each do |tag_id|
-                                @gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first                                
+                                @gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first
                                 i+=1
-                                if !@gallery.nil?        
+                                if !@gallery.nil?
                                     @categories = Ecstore::Category.where("cat_id in (#{@gallery.categories})").order("p_order")
                                 end%>
                                 <div class="tab-panel <%='active' if i==1%>" id="tab-<%=tag_id%>">
                                     <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
-                                    <%goods=Ecstore::Good.where("marketable ='true' and cat_id in (#{@gallery.categories})").order("p_order ASC, goods_id DESC").limit(4)%>                           
-                                   <%goods.each do |good|%> 
+                                    <%goods=Ecstore::Good.where("marketable ='true' and cat_id in (#{@gallery.categories})").order("p_order ASC, goods_id DESC").limit(4)%>
+                                   <%goods.each do |good|%>
                                         <li class="product">
                                             <div class="product-container">
                                                 <div class="product-left">
@@ -145,7 +145,7 @@
                         <div class="block-inner">
                             <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
                             <%goods=Ecstore::Good.where("marketable ='true' and cat_id =494").order("p_order ASC, goods_id DESC").limit(4)%>
-                                    <%goods.each do |good|%> 
+                                    <%goods.each do |good|%>
                                 <li class="product">
                                     <div class="product-container">
                                         <div class="product-left">
@@ -186,31 +186,31 @@
                         <a class="banner banner4" href="#"><img src="/img/images04.png" alt="Banner"></a>
                     </div>
                     <!-- ./group banner -->
-                
+
                     <div class="block3 tab-cat-products">
                         <%i=0%>
                         <% @home_galleries=[125,127,128]%>
                         <div class="block-head">
                             <ul class="nav-tab tab-category">
                             <%@home_galleries.each do |tag_id|%>
-                            <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>    
+                            <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>
                             <%i+=1%>
-                              <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li> 
-                            <%end%>                          
+                              <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li>
+                            <%end%>
                             </ul>
                         </div>
                         <div class="block-inner">
                             <div class="tab-container">
                                 <%i=0%>
                                 <%@home_galleries.each do |tag_id|%>
-                                <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>    
+                                <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>
                                 <%i+=1%>
-                                <%if !@gallery.nil?%>        
+                                <%if !@gallery.nil?%>
                                     <%@categories = Ecstore::Category.where("cat_id in (#{@gallery.categories})").order("p_order")%>
                                 <%end%>
                                 <div class="tab-panel <%='active' if i==1%>" id="tab-<%=tag_id%>">
                                     <div class="sub-cat">
-                                        <ul>                            
+                                        <ul>
                                         <%@categories.each do |category|%>
                                           <li><%=link_to category.cat_name,cat_path(category)%></li>
                                         <%end%>
@@ -219,7 +219,7 @@
                                     <div class="cat-product">
                                         <ul class="products kt-owl-carousel" data-responsive='{"0":{"items":1},"600":{"items":2},"768":{"items":2},"1200":{"items":3}}' data-nav="true" data-loop="true" data-margin="22">
                                         <%goods=Ecstore::Good.where("marketable ='true' and cat_id =#{@categories.first.cat_id}").order("p_order ASC, goods_id DESC").limit(4)%>
-                                        <%goods.each do |good|%> 
+                                        <%goods.each do |good|%>
                                             <li class="product">
                                                 <div class="product-container">
                                                     <div class="product-left">
@@ -244,7 +244,7 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                           <%end%>                         
+                                           <%end%>
                                         </ul>
                                     </div>
                                 </div>
@@ -255,9 +255,9 @@
                 </div>
             </div>
         </div>
-    </div>                                        
-                                            
-                                       
+    </div>
+
+
     <div class="container">
         <div class="row">
             <!-- banner -->
@@ -315,6 +315,6 @@
                 </div>
             </div>
             <!-- ./banner -->
-           
+
         </div>
     </div>
