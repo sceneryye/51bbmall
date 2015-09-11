@@ -50,7 +50,8 @@ module SessionsHelper
 
        def sign_out
        	current_account = nil
-       	[:MEMBER,:loginName,:UNAME,:MLV,:CUR,:LANG].each do |e|
+        current_user = nil
+       	[:MEMBER,:loginName, :loginName, :UNAME,:MLV,:CUR,:LANG].each do |e|
        		if Rails.env == "production"
        			cookies.delete(e.to_s,:domain=>"123.57.35.69")
        		else

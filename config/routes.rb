@@ -513,6 +513,14 @@ scope :module => "blog" do
 
   delete 'member' => 'patch/member#destroy'
 
+  scope :module => 'admin' do
+    resource :summaries do
+      collection do
+        get 'index'
+      end
+    end
+  end
+
 
   scope :module => "patch" do
     resource :profile do

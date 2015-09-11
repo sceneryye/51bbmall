@@ -87,7 +87,7 @@ class SessionsController < ApplicationController
 
     refer_url = request.env["HTTP_REFERER"]
     refer_url = "/" unless refer_url
-    redirect_to refer_url
+    redirect_to '/'
 
   end
 
