@@ -8,4 +8,5 @@ ENV['JAVA_HOME'] = "/usr/bin/java"
 Modengke::Application.initialize!
 
 PIC_PATH= "/home/trade/pics/images"
-
+# Logfile
+RAILS_DEFAULT_LOGGER = Logger.new("#{Rails.root}/log/#{Rails.env}.log")
