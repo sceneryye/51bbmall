@@ -16,7 +16,7 @@ module SessionsHelper
 	end
 
 	def signed_in?
-		!current_account.nil?
+		!current_account.nil? || !current_user.nil?
 	end
 
 	def sign_in(account,remember_me = nil)
