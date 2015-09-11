@@ -4,7 +4,7 @@
         <h4 class="widget-title">限时特价</h4>
     </div>
     <div class="block-inner">
-        <ul class="list-slide kt-owl-carousel owl-carousel owl-theme owl-loaded" data-loop="true" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:1},&quot;600&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:1}}">
+        <ul class="list-slide kt-owl-carousel owl-carousel owl-theme owl-loaded" data-loop="true" data-nav="true" data-responsive="{&quot;0&quot;:{&quot;items&quot;:2},&quot;600&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:1}}">
           <% goods_ids =""%>
            <% sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Big Save'"%>
            <% results = ActiveRecord::Base.connection.execute(sql)%>

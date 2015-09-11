@@ -4,7 +4,7 @@
         <h4 class="widget-title">特别推荐</h4>
     </div>
     <div class="block-inner">
-        <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":2},"768":{"items":1}}'>
+        <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"768":{"items":1}}'>
          <% goods_ids =""%>
            <% sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Special'"%>
            <% results = ActiveRecord::Base.connection.execute(sql)%>

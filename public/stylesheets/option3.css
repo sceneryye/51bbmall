@@ -45,7 +45,7 @@ a:focus{
 	padding: 0;
 	text-transform: uppercase;
 }
-.option3 .products .product-container{
+/*.option3 .products .product-container{
 	padding: 0;
 	position: inherit;
 }
@@ -59,12 +59,14 @@ a:focus{
 .option3 .products .product-container:hover .product-right{
 	margin-top: 0;
 }
+*/
 .option3 .products .btn-quick-view{
 	background-color: #fd7400;
 }
+/*
 .option3 .products .product-button{
 	margin-top: 20px;
-}
+}*/
 .option3 .tagcloud a:hover{
 	background: #fd7400;
 }

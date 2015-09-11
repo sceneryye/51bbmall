@@ -68,7 +68,7 @@
                 <div class="col-sm-4 col-md-3">
                     <%=render "/store/shared/special"%>
                     <%=render "/store/shared/big_save"%>
-                    <%=render "/store/shared/top_review"%>
+                    <%#=render "/store/shared/top_review"%>
                     <%=render "/store/shared/hot_tags", :resource=>@home%>                         
                 </div>
                 <div class="col-sm-8 col-md-9 col-xs-12">
@@ -96,7 +96,7 @@
                                     @categories = Ecstore::Category.where("cat_id in (#{@gallery.categories})").order("p_order")
                                 end%>
                                 <div class="tab-panel <%='active' if i==1%>" id="tab-<%=tag_id%>">
-                                    <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
+                                    <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
                                     <%goods=Ecstore::Good.where("marketable ='true' and cat_id in (#{@gallery.categories})").order("p_order ASC, goods_id DESC").limit(4)%>                           
                                    <%goods.each do |good|%> 
                                         <li class="product">
@@ -131,7 +131,7 @@
                         </div>
                         <div class="block-footer">
                             <div class="text-center banner-hover">
-                                <a href="#"><img src="/img/adv-avantage.png" alt="Banner"></a>
+                                <a href="#"><img src="/images/0000/adv-avantage.png" alt="Banner"></a>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                             <a class="link-all" href="/tuan">更多</a>
                         </div>
                         <div class="block-inner">
-                            <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
+                            <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
                             <%goods=Ecstore::Good.where("marketable ='true' and cat_id =494").order("p_order ASC, goods_id DESC").limit(4)%>
                                     <%goods.each do |good|%> 
                                 <li class="product">
@@ -180,10 +180,11 @@
                     <!-- Hot deals -->
                     <!-- group banner -->
                     <div class="group-banner3 banner-hover">
-                        <a class="banner banner1" href="#"><img src="/img/images01.png" alt="Banner"></a>
-                        <a class="banner banner2" href="#"><img src="/img/images02.png" alt="Banner"></a>
-                        <a class="banner banner3" href="#"><img src="/img/images03.png" alt="Banner"></a>
-                        <a class="banner banner4" href="#"><img src="/img/images04.png" alt="Banner"></a>
+                      
+                        <a class="banner banner1" href="/brands/jiapei"><img src="/images/0000/images01.jpg" alt="Banner"></a>
+                        <a class="banner banner2" href="/products/a01300001"><img src="/images/0000/images02.png" alt="Banner"></a>
+                        <a class="banner banner3" href="/products/a01300065"><img src="/images/0000/images03.png" alt="Banner"></a>
+                        <a class="banner banner4" href="/products/a01290003"><img src="/images/0000/images05.png" alt="Banner"></a>
                     </div>
                     <!-- ./group banner -->
                 
@@ -217,7 +218,7 @@
                                         </ul>
                                     </div>
                                     <div class="cat-product">
-                                        <ul class="products kt-owl-carousel" data-responsive='{"0":{"items":1},"600":{"items":2},"768":{"items":2},"1200":{"items":3}}' data-nav="true" data-loop="true" data-margin="22">
+                                        <ul class="products kt-owl-carousel" data-responsive='{"0":{"items":2},"600":{"items":2},"768":{"items":2},"1200":{"items":3}}' data-nav="true" data-loop="true" data-margin="22">
                                         <%goods=Ecstore::Good.where("marketable ='true' and cat_id =#{@categories.first.cat_id}").order("p_order ASC, goods_id DESC").limit(4)%>
                                         <%goods.each do |good|%> 
                                             <li class="product">
