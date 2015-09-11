@@ -5,6 +5,7 @@
 	<div class="basic">
 		<p class="welcome">
 			<b><%=@user.login_name%></b> ，欢迎您！
+			<span class="visible-xs-* visible-sm-*"><%= link_to "退出登录", member_path(current_user), :method => :delete %></span>
 			<span class="lv">
 				会员等级：<%=@user.member_lv.name%>
 			</span>&nbsp;

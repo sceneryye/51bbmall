@@ -108,5 +108,10 @@ class Patch::MembersController < ApplicationController
 		@favorites = @user.favorites.includes(:good).paginate(:page=>params[:page],:per_page=>10,:order=>"create_time desc")
 		add_breadcrumb("我的收藏")
 	end
+
+  def destroy
+    sign_out
+    redirect_to '/'
+  end
 	
 end

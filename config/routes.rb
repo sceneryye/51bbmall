@@ -511,6 +511,8 @@ scope :module => "blog" do
 
   end
 
+  delete 'member' => 'patch/member#destroy'
+
 
   scope :module => "patch" do
     resource :profile do
