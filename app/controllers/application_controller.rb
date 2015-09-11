@@ -52,7 +52,7 @@ end
 
 def find_cart!
   if signed_in?
-    @line_items = Ecstore::Cart.where(:member_id=>current_account.account_id)
+    @line_items = Ecstore::Cart.where(:member_id=>(current_account.nil? ? current_user.try(:account_id) : current_account.try(:account_id)))
 
   else
     member_ident = @m_id
@@ -81,7 +81,7 @@ def find_cart!
 
      return  true if (params[:token].present? || params[:agent] == "mobile") && !signed_in?
      if signed_in?
-      @user = current_account.user
+      @user = current_account.try(:user) || current_user.user
     else
           # return (render :js=>"window.location.href='#{site_path}'") if request.xhr?
       	   # redirect_to (site_path)

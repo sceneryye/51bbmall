@@ -11,6 +11,10 @@ module SessionsHelper
 		@current_user ||= Ecstore::Account.find_by_login_name(cookies[:loginName])
 	end
 
+  def current_user=(account)
+    @account = account
+  end
+
 	def current_account=(account)
 		@account = account
 	end
@@ -21,6 +25,7 @@ module SessionsHelper
 
 	def sign_in(account,remember_me = nil)
 		current_account = account
+    current_user = account
 		cookies.signed[:_auth_ext] =  account.auth_ext.id if account.auth_ext
 		account.user.increment!(:login_count)  if  account.user &&  !account.user.new_record?
          #cookie for ecstore
@@ -105,7 +110,7 @@ module SessionsHelper
 	end
 
 
-	return true if  current_account
+	return true if  current_account || current_user
 #	  	return true if  session[:admin_id]
 	  	# return true if  Rails.env == "development"
 	  	if cookies["MEMBER"]
@@ -118,6 +123,7 @@ module SessionsHelper
 		  	else
 		  		goto_login_path
 		  	end
+
 		  else
 		  	goto_login_path
 		  end

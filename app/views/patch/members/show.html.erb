@@ -1,7 +1,7 @@
 
 
 <div class="section member-info clearfix">
-	
+
 	<div class="basic">
 		<p class="welcome">
 			<b><%=@user.login_name%></b> ，欢迎您！
@@ -18,8 +18,8 @@
 					<%#=link_to "邮箱未认证",email_validation_path%>
 				<%#end%>
 			</span>
-			
-			
+
+
 		</p>-->
 		<p>
 			<span class="notify">
@@ -38,13 +38,13 @@
 <table class="table table-striped" id="order_list">
 	<tr>
 		<th>订单号</th>
-		<th>订单商品</th>		
+		<th>订单商品</th>
 		<th>下单时间</th>
 		<th>订单金额</th>
 		<th>订单状态</th>
 		<th>操作</th>
 	</tr>
-	
+
 	<%@orders.each  do |order|%>
 	<tr>
 		<td><%=link_to order.order_id, order_path(order)%></td>
@@ -61,7 +61,7 @@
 
 			<%end%>
 		</td>
-		
+
 		<td><%=order.created_at%></td>
 		<td>&yen;<%=order.final_amount.to_i%></td>
 		<td><%=order.status_text%></td>
