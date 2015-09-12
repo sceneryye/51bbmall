@@ -236,7 +236,7 @@ class Ecstore::Order < Ecstore::Base
   end
 
   def part_pay?
-    self.part_pay > 0
+    self.try :part_pay > 0
   end
 
 
