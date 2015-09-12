@@ -4,6 +4,7 @@ class Admin::SummariesController < Admin::BaseController
     @dates = Ecstore::Account.all.map do |t|
       (Time.zone.at t.createtime).strftime('%F')
     end.uniq.sort {|a, b| b <=> a}
+
     @dates.each do |d|
       today = (Time.parse d).to_i
       today_over = today + 3600 * 24
