@@ -1,5 +1,5 @@
 <div class="container summary">
-  <div class='col-md-8 col-md-offset-2'>
+  <div class='col-md-8 col-md-offset-2 new-member-amount'>
     <h3 class="title">今日概览</h3>
 
     <table class="table-hover table table-striped">
@@ -12,7 +12,27 @@
       <tr class="<%= 'info' if index % 2 == 0 %>">
         <td><%= date %></td>
         <td><%= @total_member[index] %></td>
-        <td><%= @total_member[index] - @user_before_today[index] %></td>
+        <td><a href="javascript:avoid(0);" onclick="show_new_member"><%= @total_member[index] - @member_before_today[index] %></a></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div class='col-md-8 col-md-offset-2 new-member-detail'>
+    <h3 class="title">新增用户</h3>
+    <h4><a href="javascript:void(0);" onclick="show_new_member_amount()">返回</a></h4>
+
+    <table class="table-hover table table-striped">
+    <tr class="table-title">
+        <td>注册时间</td>
+        <td>手机号码</td>
+        <td>用户id</td>
+      </tr>
+      <% @new_members.each_with_index do |new_member, index| %>
+      <tr class="<%= 'info' if index % 2 == 0 %>">
+        <td><%= (Time.zone.at new_member.createtime).strftime('%Y-%m-%d %T') %></td>
+        <td><%= new_member.login_name %></td>
+        <td><%= new_member.uid %></td>
       </tr>
       <% end %>
     </table>
