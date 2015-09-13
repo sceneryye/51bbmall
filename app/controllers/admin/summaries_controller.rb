@@ -8,7 +8,7 @@ class Admin::SummariesController < Admin::BaseController
     @dates.each do |d|
       today = (Time.parse d).to_i
       today_over = today + 3600 * 24
-      @total_member << Ecstore::Account.all.count
+      @total_member << Ecstore::Account.where('createtime < ?', today_over).count
       @user_before_today << Ecstore::Account.where('createtime < ?', today).count
     end
 
