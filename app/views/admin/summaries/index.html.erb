@@ -12,7 +12,7 @@
       <tr class="<%= 'info' if index % 2 == 0 %>">
         <td><%= date %></td>
         <td><%= @total_member[index] %></td>
-        <td><a href="javascript:avoid(0);" onclick="show_new_member"><%= @total_member[index] - @member_before_today[index] %></a></td>
+        <td><a href="javascript:avoid;" onclick="show_new_member()"><%= @total_member[index] - @member_before_today[index] %></a></td>
       </tr>
       <% end %>
     </table>
@@ -38,3 +38,16 @@
     </table>
   </div>
 </div>
+
+<script type="text/javascript">
+$('.new-member-detail').hide();
+function show_new_member() {
+  $('.new-member-amount').hide();
+  $('.new-member-detail').show();
+}
+
+function show_new_member_amount(){
+  $('.new-member-amount').show();
+  $('.new-member-detail').hide();
+}
+</script>
