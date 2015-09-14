@@ -30,9 +30,9 @@
     <td><%#= tag.tag_ext.deadline.strftime("%Y-%m-%d %H:%M:%S") if tag.tag_ext&&tag.tag_ext.deadline.present?%></td>
     <td><%#=link_to "编辑",edit_admin_tag_ext_path(tag)%></td>
   </tr>
-<% end %>-->
+<% end %>
 </table>
 
 <div class="pagination">
-  <%= will_paginate @tags, :container => false %>
-</div>
+  <%#= will_paginate @tags, :container => false %>
+</div>-->

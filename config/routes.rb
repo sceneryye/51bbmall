@@ -518,6 +518,7 @@ scope :module => "blog" do
     resource :summaries do
       collection do
         get 'index'
+        get 'new_members'
       end
     end
   end

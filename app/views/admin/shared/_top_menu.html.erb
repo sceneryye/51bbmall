@@ -7,17 +7,13 @@
           <span class="icon-bar"></span>
         </a> -->
         <a class="brand" href="#">
-          <%if request.domain=="trade"%>
-          邦邦芒
-          <%else%>
-          卓展数据
-          <%end%>
-          管理系统
+
+          邦邦芒 管理系统
         </a>
         <%if admin_signed_in?%>
         <div class="navbar">
           <ul class="nav">
-           
+
             <%if current_admin.has_right_of("topics","index") || current_admin.has_right_of("articles","index")%>
             <li class="<%='active' if %w(topics articles).include?(controller_name)%>">
               <%=link_to admin_topics_path,:class=>"dropdown-toggle" do %>
@@ -41,10 +37,10 @@
             </li>
             <%end%>
 
-            <%if current_admin.has_right_of("homes","index") || 
+            <%if current_admin.has_right_of("homes","index") ||
               current_admin.has_right_of("static_pages","index") ||
               current_admin.has_right_of("footers","index")%>
-              
+
               <li class="<%='active' if %w(homes static_pages footers).include?(controller_name)%>">
                 <%=link_to admin_static_pages_path,:class=>"dropdown-toggle" do %>
                 自定义页面 <b class="caret" style="border-top-color: #fff;border-bottom-color: #fff; margin-top:7px;margin-left:2px;"></b>
@@ -62,7 +58,7 @@
                   <li>
                     <%=link_to "页脚",admin_footers_path if current_admin.has_right_of("footers","index")%>
                   </li>
-                  
+
                 </ul>
               </li>
               <%end%>
@@ -94,7 +90,7 @@
                 </ul>
               </li>
               <%end%>
-              <%if current_admin.has_right_of("tags","index") || 
+              <%if current_admin.has_right_of("tags","index") ||
                 current_admin.has_right_of("tag_exts","index") %>
 
                 <li class="<%='active' if %w(tags tag_exts).include?(controller_name)%>">
@@ -135,7 +131,7 @@
                       <li>
                         <%=link_to "商品品牌",admin_brand_adms_path  if current_admin.has_right_of("brand_adms","index")%>
                       </li>
-                      
+
                       <li>
                         <%=link_to "商品规格",admin_specifications_path  if current_admin.has_right_of("specifications","index")%>
                       </li>
@@ -144,7 +140,7 @@
                   </li>
                   <%end%>
 
-                  
+
 
 
                   <%if current_admin.has_right_of("orders","index")%>
@@ -184,7 +180,7 @@
                     </li>
                     <%end%>
 
-                    
+
 
                     <%if current_admin.has_right_of("emails","index")%>
                     <li class="<%='active' if controller_name=='emails'%>">
@@ -215,22 +211,22 @@
                     </li>
 
                     <%end%>
-                    <%if current_admin.has_right_of("vshop","index")%>
-                    <li class="<%='active' if controller_name=='vshop'%>">
+                    <!--<%#if current_admin.has_right_of("vshop","index")%>
+                    <li class="<%#='active' if controller_name=='vshop'%>">
                       <a href="#">微店管理</a>
                       <ul class="dropdown-menu " aria-labelledby="dropdownMenu">
                         <li>
-                          <%=link_to "微店信息",'/admin/weshop/edit' if current_admin.has_right_of("promotions","index")%>
-                          <%=link_to "关注用户",'/admin/wechat/followers' if current_admin.has_right_of("promotions","index")%>
-                          <%=link_to "用户分组",'/admin/wechat/groups' if current_admin.has_right_of("promotions","index")%>
-                          <%=link_to "微信菜单",'/admin/wechat/menu' if current_admin.has_right_of("promotions","index")%>
-                          <%=link_to "微信群发", '/admin/wechat/batch_sending' if current_admin.has_right_of("promotions","index")%>
-                          <%=link_to "平台佣金", '/commissions/platform' if current_admin.has_right_of("promotions","index")%>
-                          <%=link_to "推广佣金", '/commissions' if current_admin.has_right_of("promotions","index")%>
+                          <%#=link_to "微店信息",'/admin/weshop/edit' if current_admin.has_right_of("promotions","index")%>
+                          <%#=link_to "关注用户",'/admin/wechat/followers' if current_admin.has_right_of("promotions","index")%>
+                          <%#=link_to "用户分组",'/admin/wechat/groups' if current_admin.has_right_of("promotions","index")%>
+                          <%#=link_to "微信菜单",'/admin/wechat/menu' if current_admin.has_right_of("promotions","index")%>
+                          <%#=link_to "微信群发", '/admin/wechat/batch_sending' if current_admin.has_right_of("promotions","index")%>
+                          <%#=link_to "平台佣金", '/commissions/platform' if current_admin.has_right_of("promotions","index")%>
+                          <%#=link_to "推广佣金", '/commissions' if current_admin.has_right_of("promotions","index")%>
                         </li>
                       </ul>
                     </li>
-                    <%end%>
+                    <%#end%>-->
                     <%if current_admin.has_right_of("trace","index")%>
                     <li class="<%='active' if controller_name=='trace'%>">
                       <a href="#">行为跟踪</a>
@@ -256,14 +252,14 @@
                       </li>
                     </li>
                     <%end%>
-                    
+
 
                   </ul>
 
                 </div><!--/.nav-collapse -->
 
                 <span class="admin-info">
-                  <span><%=current_admin.login_name%></span> | 
+                  <span><%=current_admin.login_name%></span> |
                   <%=link_to "退出",admin_logout_path%>
                 </span>
                 <%end%>

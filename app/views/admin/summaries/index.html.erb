@@ -3,7 +3,7 @@
     <h3 class="title">今日概览</h3>
 
     <table class="table-hover table table-striped">
-    <tr class="table-title">
+      <tr class="table-title">
         <td>日期</td>
         <td>总用户数</td>
         <td>每日新增用户数</td>
@@ -12,42 +12,10 @@
       <tr class="<%= 'info' if index % 2 == 0 %>">
         <td><%= date %></td>
         <td><%= @total_member[index] %></td>
-        <td><a href="javascript:avoid;" onclick="show_new_member()"><%= @total_member[index] - @member_before_today[index] %></a></td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
-
-  <div class='col-md-8 col-md-offset-2 new-member-detail'>
-    <h3 class="title">新增用户</h3>
-    <h4><a href="javascript:void(0);" onclick="show_new_member_amount()">返回</a></h4>
-
-    <table class="table-hover table table-striped">
-    <tr class="table-title">
-        <td>注册时间</td>
-        <td>手机号码</td>
-        <td>用户id</td>
-      </tr>
-      <% @new_members.each_with_index do |new_member, index| %>
-      <tr class="<%= 'info' if index % 2 == 0 %>">
-        <td><%= (Time.zone.at new_member.createtime).strftime('%Y-%m-%d %T') %></td>
-        <td><%= new_member.login_name %></td>
-        <td><%= new_member.uid %></td>
+        <td><a href="/admin/summaries/new_members?index=<%= index %>"><%= @total_member[index] - @member_before_today[index] %></a></td>
       </tr>
       <% end %>
     </table>
   </div>
 </div>
 
-<script type="text/javascript">
-$('.new-member-detail').hide();
-function show_new_member() {
-  $('.new-member-amount').hide();
-  $('.new-member-detail').show();
-}
-
-function show_new_member_amount(){
-  $('.new-member-amount').show();
-  $('.new-member-detail').hide();
-}
-</script>

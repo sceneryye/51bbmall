@@ -1,0 +1,22 @@
+<div class="container summary">
+  <div class='col-md-8 col-md-offset-2 new-member-detail'>
+    <h3 class="title">新增用户</h3>
+    <h4><a href="/admin/summaries">返回</a></h4>
+
+    <table class="table-hover table table-striped">
+      <tr class="table-title">
+        <td>注册时间</td>
+        <td>手机号码</td>
+        <td>用户id</td>
+      </tr>
+      <% @new_members.each_with_index do |new_member, index| %>
+      <tr class="<%= 'info' if index % 2 == 0 %>">
+        <td><%= @dates[params[:index].to_i] %></td>
+        <td><%= new_member.login_name %></td>
+        <td><%= new_member.uid %></td>
+      </tr>
+      <% end %>
+    </table>
+    <%= will_paginate @new_members %>
+  </div>
+</div>
