@@ -59,7 +59,7 @@
 		<%=form_for :order,:url=>orders_path,:html=>{ :class=>"form-horizontal",:id=>"order_form" } do |f|%>
 		<%=hidden_field_tag "member_addr",@def_addr&&@def_addr.addr_id%>
 
-		<div class="section shipment" style="margin:20px 10px;border-bottom:1px solid rgb(240,240,240)">
+		<div class="section shipment" style="margin:20px 10px;border-bottom:1px solid rgb(240,240,240);display:none">
 			<h4 style="font-weight:bold">配送方式</h4>
 			<label class="radio active" style="margin-left:20px;">
 				<%=f.radio_button :shipping_id, 0%><span class="addr-line" style="padding-left:5px;">自提</span>
@@ -70,7 +70,7 @@
 			</label>
 		</div>
 
-		<div class="control-group" style="margin:20px 10px;">
+		<div class="control-group" style="margin:20px 10px;display:none">
 			<h4 style="font-weight:bold;">
 				收货时间
 			</h4>
@@ -101,7 +101,7 @@
 			</div>
 			<div class='form-group' id="part_pay_number" style="margin-left:20px;width:20%;">
 				<%= f.label :part_pay, '您希望使用的余额：' %>
-				<%= f.number_field :part_pay, :id => 'part_pay_amount' %>
+				<%= f.number_field :part_pay, :id => 'part_pay_amount', :value => 0.00 %>
 			</div>
 
 		<!--<label class="radio" style="display:none">
@@ -114,12 +114,11 @@
 		</label>
 		<label class="radio" style="margin-left:20px;">
 			<%=f.radio_button :payment, "wxpay", :checked=>true%> <b>微信支付</b>
-			<span class="extra-desc"><img src="/assets/store/wxpay.png"/></span>
 		</label>
-		<label class="radio" style="margin-left:20px;">
-			<%=f.radio_button :payment, "offline"%> <b>货到付款</b>
+		<!--<label class="radio" style="margin-left:20px;">
+			<%#=f.radio_button :payment, "offline"%> <b>货到付款</b>
 			<span class="extra-desc"></span>
-		</label>
+		</label>-->
 
 		<!--<%# if @advance >= @cart_total %>
 		<label class="radio" style="margin-left:20px;">
@@ -220,8 +219,8 @@
 				<div class="item">
 					<span class="text">商品总额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money sum" data-amount = "<%=@cart_total%>" id="order_amount">
-						<%=@cart_total %>
+					<span class="money sum" data-amount = "<%= (sprintf '%.2f', @cart_total).to_f %>" id="order_amount">
+						<%= sprintf '%.2f', @cart_total %>
 					</span>
 				</div>
 
@@ -245,7 +244,7 @@
 				<div class="item">
 					<span class="text">订单总金额：</span>
 					<span class="rmb-symbol">￥</span>
-					<span class="money" id="final_amount"><%= @cart_total %></span>
+					<span class="money" id="final_amount"><%= sprintf '%.2f', @cart_total %></span>
 				</div>
 
 
@@ -256,7 +255,7 @@
 						<span class="text">预付金额：</span>
 						<span class="rmb-symbol">￥</span>
 						<span class="money part" id="part_amount">
-							0
+							0.00
 						</span>
 					</div>
 					<%end%>
@@ -271,7 +270,7 @@
 					<div class="item">
 						<span class="text">支付金额：</span>
 						<span class="rmb-symbol">￥</span>
-						<span class="money final" id="pay_amount"><%= @cart_total %></span>
+						<span class="money final" id="pay_amount"><%= sprintf '%.2f', @cart_total %></span>
 					</div>
 
 				</div>
@@ -292,8 +291,8 @@
 		//if($('#advance').prop('checked') == false){
 			if($('#advance').attr('checked') == false){
 				$('#part_pay_number').hide();
-				$('#part_amount').text('0');
-				$('#pay_amount').text("<%= @cart_total %>");
+				$('#part_amount').text('0.00');
+				$('#pay_amount').text("<%= sprintf '%.2f', @cart_total %>".toFixed(2));
 			}
 			else {
 				$('#part_pay_number').show();
@@ -303,22 +302,22 @@
 	$('#part_pay_amount').on('change', function(){
 		if($('#advance').attr('checked') == true) {
 			if($('#part_pay_amount').val() < 0) {
-				$('#part_pay_amount').val(0);
+				$('#part_pay_amount').val(0.00);
 				alert('邦邦元宝支付额度不能小于0');
 			}
 			if($('#part_pay_amount').val() > <%= @cart_total %>) {
-				$('#part_pay_amount').val(<%= @cart_total %>);
+				$('#part_pay_amount').val(<%= sprintf '%.2f', @cart_total %>);
 				alert('邦邦元宝支付额度不能大于商品总金额');
 			}
 
 			if($('#part_pay_amount').val() > <%= @advance %>) {
 				alert('您的余额不足，请重新填');
-				$('#part_pay_amount').val(0);
+				$('#part_pay_amount').val(0.00);
 			}
 
-			pay_amount = <%= @cart_total %> - parseFloat($('#part_pay_amount').val());
-			$('#pay_amount').text(pay_amount);
-			$('#part_amount').text($('#part_pay_amount').val());
+			pay_amount = <%= sprintf '%.2f', @cart_total %> - parseFloat($('#part_pay_amount').val());
+			$('#pay_amount').text(pay_amount.toFixed(2));
+			$('#part_amount').text(parseFloat($('#part_pay_amount').val()).toFixed(2));
 		}
 	});
 </script>
