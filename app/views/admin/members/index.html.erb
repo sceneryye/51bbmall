@@ -57,7 +57,8 @@
 
       <% @members.each do |member| %>
       <tr>
-        <% if member.account.manager.nil? %>
+        <% if member.account.present? %>
+        <% if (member.account.try :manager).nil? %>
         <td>
           <%= check_box_tag "ids[]",member.member_id,false,:class =>'operate_ids'%>
         </td>
@@ -75,7 +76,8 @@
         <%if (current_admin.login_name=="admin")%>
         <td><%= link_to "查看",info_admin_member_path(member) %></td>
         <td><%= link_to "编辑",edit_admin_member_path(member) %></td>
-        <td><%= link_to "删除",admin_member_path(member), :method => :delete %></td>
+        <!--<td><%#= link_to "删除",admin_member_path(member), :method => :delete %></td>-->
+        <% end %>
         <%else%>
         <td style="display:none"><%=link_to "查看",info_admin_member_path(member)%></td>
         <td style="display:none"><%=link_to "编辑",edit_admin_member_path(member)%></td>

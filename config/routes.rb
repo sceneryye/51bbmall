@@ -3,6 +3,7 @@ require 'httpclient'
 Modengke::Application.routes.draw do
 
   resources :cases
+  
 
   resources :commissions do
     collection do
@@ -280,6 +281,7 @@ scope :module => "blog" do
       post "send_sms2",:on=>:collection
       get :info,:on=>:member
       put :updateInfo,:on=>:member
+      
     end
 
     resources :cards do
@@ -511,8 +513,7 @@ scope :module => "blog" do
 
   end
 
-  delete 'member' => 'patch/member#destroy'
-
+ 
   namespace :admin do
     resource :summaries do
       collection do
@@ -562,6 +563,8 @@ scope :module => "blog" do
       end
     end
 
+
+
     resources :member_addrs do
      get "mobile"  ,:on=>:collection
      get 'new_memberaddr_add' ,:on=>:collection
@@ -584,6 +587,8 @@ end
 resources :comments,:only=>[:create]
 
 mount Ckeditor::Engine => '/ckeditor'
+
+
 
 
 

@@ -16,21 +16,21 @@
     <th>操作</th>
   </tr>
 
-<% @tags.each do |tag| %>
+<!--<% @tags.each do |tag| %>
   <tr>
-    <td><%=tag.tag_ext.issue_no if tag.tag_ext%></td>
-    <td><%=tag.tag_id%></td>
+    <td><%#=tag.tag_ext.issue_no if tag.tag_ext%></td>
+    <td><%#=tag.tag_id%></td>
     <td>
-      <span style="background-color:<%=tag.tag_bgcolor%>;color:<%=tag.tag_fgcolor%>;padding:3px;">
-        <%= tag.tag_name %>
+      <span style="background-color:<%#=tag.tag_bgcolor%>;color:<%#=tag.tag_fgcolor%>;padding:3px;">
+        <%#= tag.tag_name %>
       </span>
     </td>
-    <td><%=tag.tag_ext.categories if tag.tag_ext%></td>
-    <td><%= image_tag tag.tag_ext.cover_url,:alt=>tag.tag_ext.cover_url,:title=>tag.tag_ext.cover_url,:size=>"100x100" if tag.tag_ext%></td>
-    <td><%= tag.tag_ext.deadline.strftime("%Y-%m-%d %H:%M:%S") if tag.tag_ext&&tag.tag_ext.deadline.present?%></td>
-    <td><%=link_to "编辑",edit_admin_tag_ext_path(tag)%></td>
+    <td><%#=tag.tag_ext.categories if tag.tag_ext%></td>
+    <td><%#= image_tag tag.tag_ext.cover_url,:alt=>tag.tag_ext.cover_url,:title=>tag.tag_ext.cover_url,:size=>"100x100" if tag.tag_ext%></td>
+    <td><%#= tag.tag_ext.deadline.strftime("%Y-%m-%d %H:%M:%S") if tag.tag_ext&&tag.tag_ext.deadline.present?%></td>
+    <td><%#=link_to "编辑",edit_admin_tag_ext_path(tag)%></td>
   </tr>
-<% end %>
+<% end %>-->
 </table>
 
 <div class="pagination">
