@@ -3,33 +3,36 @@
     <h3 class="title">每日概览</h3>
     <%= link_to "更新数据", renew_datas_admin_summaries_path %>
     <table class="table-hover table table-striped" id="summaries-datatable">
-      <thead>
-        <tr class="table-title">
-          <td>日期</td>
-          <td>总用户数</td>
-          <td>每日新增用户数</td>
-          <td>每日新增订单数</td>
-          <td>每日付款订单数</td>
-        </tr>
-      </thead>
-      <% @dates.each_with_index do |date, index| %>
-      <tbody>
-        <tr class="<%= 'info' if index % 2 == 0 %>">
-          <td><%= date %></td>
-          <td><%= @total_member[index] %></td>
-          <td><a href="/admin/summaries/new_members?index=<%= index %>"><%= @total_member[index] - @member_before_today[index] %></a></td>
-          <% if @new_orders_amount[index] == 0 %>
-          <td><%= @new_orders_amount[index] %></td>
-          <% else %>
-          <td><a href="/admin/summaries/new_orders?index=<%= index %>"><%= @new_orders_amount[index] %></a></td>
-          <% end %>
-          <% if @new_orders_payed_amount[index] == 0 %>
-          <td><%= @new_orders_payed_amount[index] %></td>
-          <% else %>
-          <td><a href="/admin/summaries/new_orders?index=<%= index %>&pay_status='1'"><%= @new_orders_payed_amount[index] %></a></td>
-          <% end %>
-        </tr>
-      </tbody>
+      <tr class="table-title">
+        <td>日期</td>
+        <td>总用户数</td>
+        <td>每日新增用户数</td>
+        <td>每日新增订单数</td>
+        <td>每日付款订单数</td>
+      </tr>
+      <tr>
+        <td><%= Time.now.strftime('%F') %></td>
+        <td><%= @total_member_today %></td>
+        <td><%= @new_member_today %></td>
+        <td><%= @new_order_today %></td>
+        <td><%= @new_order_payed_today %></td>
+      </tr>
+      <% @summaries.each_with_index do |summary, index| %>
+      <tr class="<%= 'info' if index % 2 == 0 %>">
+        <td><%= summary.history_date %></td>
+        <td><%= summary.total_member_today %></td>
+        <td><a href="/admin/summaries/new_members?index=<%= index %>"><%= summary.new_member_today %></a></td>
+        <% if @new_orders_amount[index] == 0 %>
+        <td><%= summary.new_order_today %></td>
+        <% else %>
+        <td><a href="/admin/summaries/new_orders?index=<%= index %>"><%= summary.new_order_today %></a></td>
+        <% end %>
+        <% if @new_orders_payed_amount[index] == 0 %>
+        <td><%= summary.new_order_payed_today %></td>
+        <% else %>
+        <td><a href="/admin/summaries/new_orders?index=<%= index %>&pay_status='1'"><%= summary.new_order_payed_today %></a></td>
+        <% end %>
+      </tr>
       <% end %>
     </table>
   </div>
