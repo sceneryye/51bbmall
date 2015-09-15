@@ -46,19 +46,28 @@ class Admin::SummariesController < Admin::BaseController
   end
 
   def renew_datas
-    Ecstore::Summay.new do |s|
-      s.histroy_date = 2015-09-08
-      s.total_member_today = 6
-      s.new_member_today = 2
-    end.save
-    redirect_to admin_summaries_path
-  end
+    today = Time.now.midnight.to_i
+    last_time = (Time.parse Ecstore::Summary.last.history_date).to_i
+    days = (today - last_time) / 24 / 3600
+    (1..days).each do |x|
+      Ecstore::Summary.new do |s|
+        this_day = Time.zone.at last_time + x.day
+        this_day_over = this_day + 1.day
+        s.history_date = this_day.strftime('%F')
+        s.total_member_today = Ecstore::Account.where('createtime < ?', this_day_over.to_i).count
+        s.new_member_today = s.total_member_today - Ecstore::Account.where('createtime < ?', this_day.to_i).count
+        select_order = Ecstore::Order.where('createtime < ? AND createtime > ?', this_day_over, this_day)
+        s.new_order_today = select_order.count
+        s.new_order_payed_today = select_order.where('pay_status = ?', '1')
+      end.save
+      redirect_to admin_summaries_path
+    end
 
-  private
+    private
 
-  def find_dates
-    @dates = Ecstore::Account.select('createtime').map do |t|
-      (Time.zone.at t.createtime).strftime('%F')
-    end.uniq.sort {|a, b| b <=> a}
+    def find_dates
+      @dates = Ecstore::Account.select('createtime').map do |t|
+        (Time.zone.at t.createtime).strftime('%F')
+      end.uniq.sort {|a, b| b <=> a}
+    end
   end
-end
