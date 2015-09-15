@@ -26,7 +26,7 @@ class Admin::SummariesController < Admin::BaseController
       @end_day << today_over
     end
     @new_members = Ecstore::Account.where('createtime > ? AND createtime < ?', @start_day[params[:index].to_i],
-     @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 50)
+     @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 50).order('createtime DESC')
   end
 
 end

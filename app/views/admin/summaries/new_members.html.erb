@@ -11,7 +11,7 @@
       </tr>
       <% @new_members.each_with_index do |new_member, index| %>
       <tr class="<%= 'info' if index % 2 == 0 %>">
-        <td><%= @dates[params[:index].to_i] %></td>
+        <td><%= (Time.zone.at new_member.createtime).strftime('%Y-%m-%d %H:%M:%S') %></td>
         <td><%= new_member.login_name %></td>
         <td><%= new_member.uid %></td>
       </tr>

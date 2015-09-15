@@ -1,54 +1,51 @@
+<div class="container">
+  <%=render "goods_filters"%>
 
-<%=render "goods_filters"%>
-<div class="row">
+
   <div class="col-md-4">
     <div class="btn-group">
-      <%=form_for :good,:url=>import_admin_goods_path,:html => {:multipart => true} ,:method=>:post do |f|%>
-      <%= file_field :good, :file, :id=>'csvfile',:accept => "application/msexcel",:class=>"batch" %>
-      <%= f.submit 'EXCEL批量导入商品', :class => "btn btn-primary" %>
+      <%=form_for :good,:url=>import_admin_goods_path,:html => {:multipart => true, :class => 'form-inline'} ,:method=>:post do |f|%>
+      <span><%= file_field :good, :file, :id=>'csvfile',:accept => "application/msexcel",:class=>"batch" %></span>
+      <span><%= f.submit 'EXCEL批量导入商品', :class => "btn btn-primary" %></span>
       <%end%>
     </div>
-    <div>
-    </div>
-    <div class="col-md-5">
-      <p>
-        <div id="batch_inputs" class="hide"></div>
-        <div id="batch_actions">
-          <%=link_to "添加",'/admin/goods/new',:class=>"btn btn-primary"%>
-          <%=link_to "删除","#",:class=>"btn batch",:data=>{:act=>:destroy},:confirm=>"确定删除吗?"%>
-          <%#=link_to "导出","#",:class=>"btn batch",:data=>{:act=>:export}%>
-          <div class="btn-group">
-           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-             批量操作
-             <span class="caret"></span>
-           </a>
-           <ul class="dropdown-menu">
-             <li><a href="#" data-act="up" class="batch">批量上架</a></li>
-             <li><a href="#" data-act="down" class="batch">批量下架</a></li>
-             <!-- <li class="divider"></li> -->
-             <!-- <li><a href="#">link</a></li> -->
-           </ul>
-         </div>
-         <div class="btn-group">
-           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-             标签
-             <span class="caret"></span>
-           </a>
-           <ul class="dropdown-menu">
-             <li><a href="#tegs"  id="pop_tegs">为选中项打标签</a></li>
-             <li class="divider"></li>
-             <li><a href="/admin/tags?tag_type=goods" target="_blank">标签设置</a></li>
-           </ul>
-         </div>
+  </div>
 
-       </div>
-     </p>
+  <div class="col-md-5">
+    <div id="batch_inputs" class="hide"></div>
+    <div id="batch_actions">
+      <span><%=link_to "添加",'/admin/goods/new',:class=>"btn btn-primary"%></span>
+      <span><%=link_to "删除","#",:class=>"btn batch",:data=>{:act=>:destroy},:confirm=>"确定删除吗?"%></span>
+      <%#=link_to "导出","#",:class=>"btn batch",:data=>{:act=>:export}%>
+      <div class="btn-group">
+       <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+         批量操作
+         <span class="caret"></span>
+       </a>
+       <ul class="dropdown-menu">
+         <li><a href="#" data-act="up" class="batch">批量上架</a></li>
+         <li><a href="#" data-act="down" class="batch">批量下架</a></li>
+       </ul>
+     </div>
+     <div class="btn-group">
+       <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+         标签
+         <span class="caret"></span>
+       </a>
+       <ul class="dropdown-menu">
+         <li><a href="#tegs"  id="pop_tegs">为选中项打标签</a></li>
+         <li class="divider"></li>
+         <li><a href="/admin/tags?tag_type=goods" target="_blank">标签设置</a></li>
+       </ul>
+     </div>
    </div>
  </div>
+
+
  <%=form_for :member,:url=>export_admin_goods_path,:method=>:post do |f|%>
  <%= f.hidden_field :select_all,:class=>"sel_operation", :value => 0 %>
  <input type="hidden" name="all_goods_ids" value="<%=@goods_ids%>" />
- <div id="selection">已选择了<b id="count">0</b>条记录!
+ <div id="selection" style="margin-top:20px;">已选择了<b id="count">0</b>条记录!
   &nbsp;
   <%=link_to "选择全部","#",:id=>"select_all"%>
   &nbsp;
@@ -76,6 +73,7 @@
 
 <div class="pagination">
  <%= will_paginate @goods, :container => false,:params=>{ :page=>params[:page] } %>
+</div>
 </div>
 
 
