@@ -520,6 +520,7 @@ scope :module => "blog" do
         get 'index'
         get 'new_members'
         get 'new_orders'
+        get 'renew_datas'
       end
     end
   end

@@ -14,7 +14,6 @@ Modengke::Application.configure do
   config.action_controller.perform_caching = false
 
   # Logfile
-  RAILS_DEFAULT_LOGGER = Logger.new("#{Rails.root}/log/#{Rails.env}.log")
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false

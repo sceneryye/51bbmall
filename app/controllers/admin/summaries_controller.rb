@@ -1,4 +1,5 @@
 class Admin::SummariesController < Admin::BaseController
+  require 'json'
   before_filter :find_dates
   def index
     @total_member, @member_before_today, @new_orders_amount, @new_orders_payed_amount = [], [], [], []
@@ -8,32 +9,10 @@ class Admin::SummariesController < Admin::BaseController
       today_over = today + 3600 * 24
       @total_member << Ecstore::Account.where('createtime < ?', today_over).count
       @member_before_today << Ecstore::Account.where('createtime < ?', today).count
-      @new_orders_amount << Ecstore::Order.where('createtime < ? AND createtime > ?', today_over, today).count
-      @new_orders_payed_amount << Ecstore::Order.where('createtime < ? AND createtime > ? AND pay_status = ?', today_over, today, '1').count
+      select_order = Ecstore::Order.where('createtime < ? AND createtime > ?', today_over, today)
+      @new_orders_amount << select_order.count
+      @new_orders_payed_amount << select_order.where('pay_status = ?', '1').count
     end
-
-    idisplaystart   = params[:iDisplayStart]
-    idisplaylength  = params[:iDisplayLength]
-    secho = params[:sEcho]
-
-    itotalrecords =  @dates.length
-    items = @dates.limit(idisplaylength).offset(idisplaystart)
-
-    items.each do |itme|
-      today = (Time.parse item).to_i
-      today_over = today + 3600 * 24
-      item_array = []
-      item_array << item
-      item_array << Ecstore::Account.where('createtime < ?', today_over).count
-      item_array << Ecstore::Order.where('createtime < ? AND createtime > ?', today_over, today).count - Ecstore::Account.where('createtime < ?', today).count
-      item_array << Ecstore::Order.where('createtime < ? AND createtime > ?', today_over, today).count
-      item_array << Ecstore::Order.where('createtime < ? AND createtime > ? AND pay_status = ?', today_over, today, '1').count
-    end
-    json_hash.store("aaData",item_array)
-    json_hash.store("iTotalRecords",itotalrecords)
-    json_hash.store("iTotalDisplayRecords",itotalrecords)
-    json_hash.store("sEcho",secho)
-    render json: json_hash
   end
 
   def new_members
@@ -64,6 +43,15 @@ class Admin::SummariesController < Admin::BaseController
       @new_orders = Ecstore::Order.where('createtime > ? AND createtime < ? AND pay_status = ?', @start_day[params[:index].to_i],
        @end_day[params[:index].to_i], '1').paginate(:page => params[:page], :per_page => 20).order('createtime DESC')
     end
+  end
+
+  def renew_datas
+    Ecstore::Summay.new do |s|
+      s.histroy_date = 2015-09-08
+      s.total_member_today = 6
+      s.new_member_today = 2
+    end.save
+    redirect_to admin_summaries_path
   end
 
   private
