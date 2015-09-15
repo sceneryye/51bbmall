@@ -34,10 +34,13 @@ class Admin::SummariesController < Admin::BaseController
       @start_day << today
       @end_day << today_over
     end
-    @new_orders = Ecstore::Order.where('createtime > ? AND createtime < ?', @start_day[params[:index].to_i],
-     @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 20).order('createtime DESC')
-    @new_orders_payed = Ecstore::Order.where('createtime > ? AND createtime < ? AND pay_status = ?', @start_day[params[:index].to_i],
-     @end_day[params[:index].to_i], '1').paginate(:page => params[:page], :per_page => 20).order('createtime DESC')
+    if params[:pay_status].nil?
+      @new_orders = Ecstore::Order.where('createtime > ? AND createtime < ?', @start_day[params[:index].to_i],
+       @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 20).order('createtime DESC')
+    else
+      @new_orders = Ecstore::Order.where('createtime > ? AND createtime < ? AND pay_status = ?', @start_day[params[:index].to_i],
+       @end_day[params[:index].to_i], '1').paginate(:page => params[:page], :per_page => 20).order('createtime DESC')
+    end
   end
 
   private

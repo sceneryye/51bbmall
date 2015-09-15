@@ -1,6 +1,6 @@
 <div class="container summary">
   <div class='col-md-8 col-md-offset-2 new-member-detail'>
-    <h3 class="title">新增订单</h3>
+    <h3 class="title"><%= params[:pay_statys].nil? ? '今日订单' : '今日付款订单' %></h3>
     <h4><a href="/admin/summaries">返回</a></h4>
 
     <table class="table-hover table table-striped">
@@ -11,13 +11,13 @@
         <td>订单号</td>
         <td>是否付款</td> 
       </tr>
-      <% @new_orders_payed.each_with_index do |new_order, index| %>
+      <% @new_orders.each_with_index do |new_order, index| %>
       <tr class="<%= 'info' if index % 2 == 0 %>">
-        <td><%= (Time.zone.at new_order.createtime).strftime('%Y-%m-%d %H:%M:%S') %></td>
-        <td><%= new_order.user.account.login_name %></td>
-        <td><%= new_order.user.account.uid %></td>
-        <td><%= new_order.order_id %></td>
-        <td><%= new_order.pay_status == '1' ? '是' : '否' %></td>
+          <td><%= (Time.zone.at new_order.createtime).strftime('%Y-%m-%d %H:%M:%S') %></td>
+          <td><%= new_order.user.try(:account).try :login_name %></td>
+          <td><%= new_order.user.try(:account).try :uid %></td>
+          <td><a href="/orders/<%= new_order.order_id %>/detail"><%= new_order.order_id %></a></td>
+          <td><%= new_order.pay_status == '1' ? '是' : '否' %></td>
       </tr>
       <% end %>
     </table>
