@@ -7,12 +7,24 @@
         <td>日期</td>
         <td>总用户数</td>
         <td>每日新增用户数</td>
+        <td>每日新增订单数</td>
+        <td>每日付款订单数</td>
       </tr>
       <% @dates.each_with_index do |date, index| %>
       <tr class="<%= 'info' if index % 2 == 0 %>">
         <td><%= date %></td>
         <td><%= @total_member[index] %></td>
         <td><a href="/admin/summaries/new_members?index=<%= index %>"><%= @total_member[index] - @member_before_today[index] %></a></td>
+        <% if @new_orders_amount[index] == 0 %>
+        <td><%= @new_orders_amount[index] %></td>
+        <% else %>
+        <td><a href="/admin/summaries/new_orders?index=<%= index %>"><%= @new_orders_amount[index] %></a></td>
+        <% end %>
+        <% if @new_orders_payed_amount[index] == 0 %>
+        <td><%= @new_orders_payed_amount[index] %></td>
+        <% else %>
+        <td><a href="/admin/summaries/new_orders?index=<%= index %>"><%= @new_orders_payed_amount[index] %></a></td>
+        <% end %>
       </tr>
       <% end %>
     </table>

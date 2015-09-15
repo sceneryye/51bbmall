@@ -519,6 +519,7 @@ scope :module => "blog" do
       collection do
         get 'index'
         get 'new_members'
+        get 'new_orders'
       end
     end
   end
