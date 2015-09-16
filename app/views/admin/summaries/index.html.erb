@@ -10,13 +10,15 @@
         <td>每日新增订单数</td>
         <td>每日付款订单数</td>
       </tr>
+      <% if params[:page] == '1' || params[:page].nil? %>
       <tr>
         <td><%= Time.now.strftime('%F') %></td>
         <td><%= @total_member_today %></td>
-        <td><%= @new_member_today %></td>
+        <td><a href="/admin/summaries/new_members"><%= @new_member_today %></a></td>
         <td><%= @new_order_today %></td>
         <td><%= @new_order_payed_today %></td>
       </tr>
+      <% end %>
       <% @summaries.each_with_index do |summary, index| %>
       <tr class="<%= 'info' if index % 2 == 0 %>">
         <td><%= summary.history_date %></td>
@@ -35,5 +37,25 @@
       </tr>
       <% end %>
     </table>
+    <%= will_paginate @summaries %>
+    <div class="per-page">
+      <span>每页显示</span>
+      <span class="page-numbers"><a onclick="perPage()">3</a></span>
+      <span class="page-numbers"><a onclick="">5</a></span>
+      <span class="page-numbers"><a onclick="">7</a></span>
+      <span class="page-numbers"><a onclick="">9</a></span>
+      <span>条记录</span>
+    </div>
   </div>
 </div>
+
+<script type="text/javascript">
+$('.page-numbers').on('click', function perPage() {
+  $.ajax({
+    url: '/admin/summaries',
+    type: 'GET',
+    data: {'per_page':$(this).text()},
+    success: function(data) {}
+  });
+})
+</script>

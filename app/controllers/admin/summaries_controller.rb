@@ -8,7 +8,6 @@ class Admin::SummariesController < Admin::BaseController
     select_order = Ecstore::Order.where('createtime > ?', Time.now.midnight.to_i)
     @new_order_today = select_order.count
     @new_order_payed_today = select_order.where('pay_status = ?', '1').count
-    
   end
 
   def new_members
@@ -20,8 +19,12 @@ class Admin::SummariesController < Admin::BaseController
       @start_day << today
       @end_day << today_over
     end
-    @new_members = Ecstore::Account.where('createtime > ? AND createtime < ?', @start_day[params[:index].to_i],
-     @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 50).order('createtime DESC')
+    if params[:index]
+      @new_members = Ecstore::Account.where('createtime > ? AND createtime < ?', @start_day[params[:index].to_i],
+       @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 50).order('createtime DESC')
+    else
+      @new_members = Ecstore::Account.where('createtime > ?', Time.now.midnight.to_i).paginate(:page => params[:page], :per_page => 50).order('createtime DESC')
+    end
   end
 
   def new_orders
@@ -65,7 +68,7 @@ class Admin::SummariesController < Admin::BaseController
   private
 
   def find_dates
-    @summaries = Ecstore::Summary.paginate(:page => params[:page], :per_page => 10).sort {|a, b| b.history_date <=> a.history_date}
+    @summaries = Ecstore::Summary.paginate(:page => params[:page], :per_page => (params['per_page'].nil? ? 10 : params['per_page'])).order('id DESC')
     @dates = @summaries.map &:history_date
   end
 end
