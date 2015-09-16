@@ -7,7 +7,16 @@ class HomeController < ApplicationController
 	def index
 
 		@title = "邦邦芒商城"
-		@home = Ecstore::Home.where(:supplier_id=>nil).last
+		@home = Ecstore::Home.last
+		if signed_in?
+		   redirect_to params[:return_url] if params[:return_url].present?
+		end
+	end
+
+	def index1
+
+		@title = "邦邦芒商城"
+		@home = Ecstore::Home.last
 		if signed_in?
 		   redirect_to params[:return_url] if params[:return_url].present?
 		end

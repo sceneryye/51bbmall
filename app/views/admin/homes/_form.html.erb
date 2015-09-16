@@ -190,7 +190,8 @@
  <fieldset id="bags">
       <legend>其他</legend>
       <div class="control-group">
-        <%= f.cktext_area :body, :toolbar => 'Easy',:language=>'zh-cn',:height => 300 %>
+        <%#= f.cktext_area :body, :toolbar => 'Easy',:language=>'zh-cn',:height => 300 %>
+        <%=f.text_area :body%>
       </div>
     </fieldset>
 

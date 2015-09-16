@@ -21,6 +21,7 @@ mount WeixinRailsMiddleware::Engine, at: "/"
 root :to=>"home#index",:constraints=>{ :subdomain=>/^(www)?$/ }
 get 'blank'=>"home#blank"
 get 'home'=>"home#index"
+get 'dynamicpage'=>"home#index1"
 
 
 resources :pages, :only=>[:show]

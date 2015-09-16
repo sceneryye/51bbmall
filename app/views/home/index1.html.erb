@@ -1,0 +1,319 @@
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col-sm-4 col-md-3 col-lg-3 hidden-xs">
+                    <%=render "/home/left_menu"%>
+                </div>
+                <div class="col-sm-8 col-md-9 col-lg-7">
+                    <!-- Home slide -->
+                    <div class="block-slider">
+                        <ul class="home-slider kt-bxslider">
+                            <%@home.sliders.each_with_index do |key,index|%>
+                            <li>
+                                <%=link_to key['link_url'],:target=>"_blank" do%>
+                                    <%=image_tag key['pic_url'] %>
+                                <%end%>
+                            </li>
+                            <%end%>
+                        </ul>
+                    </div>
+                    <!-- ./Home slide -->
+                </div>
+
+                <div class="col-sm-8 col-md-12 col-lg-2">
+                    <div class="block block-banner-owl kt-owl-carousel hidden-xs" ata-margin="0" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":1},"1000":{"items":1}}'>
+                        <div class="page-banner">
+                            <ul class="list-banner">
+                            <!-- <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'> -->
+                                <%@brands = Ecstore::Brand.where(:reco=>true).order("ordernum DESC").limit(8)
+                                i=0
+                                @brands.each do |brand|
+                                 i+=1
+                                 if i%4==1 && i!=1%>
+                                    </ul>
+                                    </div>
+                                    <div class="page-banner">
+                                    <ul class="list-banner">
+                                 <%end%>
+                                 <li>
+                                    <%=link_to brand_path(brand),:title=>brand.brand_name do%>
+                                        <%=image_tag "/images/brands/b#{brand.brand_id}.jpg",:alt=>brand.brand_name %>
+                                    <%end%>
+                                </li>
+                               <%end if @brands%>
+                            </ul>
+                        </div>
+                    </div>
+
+                        <div class="page-banner visible-xs">
+                            <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'>
+                                <%i=0
+                                @brands.each do |brand|
+                                 i+=1%>
+                                 <li>
+                                    <%=link_to brand_path(brand),:title=>brand.brand_name do%>
+                                        <%=image_tag "/images/brands/b#{brand.brand_id}.jpg",:alt=>brand.brand_name %>
+                                    <%end%>
+                                </li>
+                               <%end if @brands && i<4 %>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col-sm-4 col-md-3">
+                    <%=render "/store/shared/special"%>
+                    <%=render "/store/shared/big_save"%>
+
+                    <%=render "/store/shared/top_review"%>
+                    <%=render "/store/shared/hot_tags", :resource=>@home%>
+                </div>
+                <div class="col-sm-8 col-md-9 col-xs-12">
+                    <!-- new-arrivals -->
+                    <div class="block3 block-new-arrivals">
+                        <div class="block-head">
+                            <h3 class="block-title">推荐品牌馆</h3>
+                            <ul class="nav-tab default">
+                                <%i=0%>
+                                <% @suppliers=[131,130,127]%>
+                                <%@suppliers.each do |supplier_id|%>
+                                    <%@supplier = Ecstore::Supplier.where(:id=>supplier_id).first%>
+                                        <%i+=1%>
+                                <li class="<%='active' if i==1%>"><a href="#tab-s-<%=supplier_id%>" data-toggle="tab"><%=@supplier.name%></a></li>
+                                <%end%>
+                            </ul>
+                        </div>
+                        <div class="block-inner">
+                            <div class="tab-container">
+                             <%i=0%>
+                            <%@suppliers.each do |supplier_id|
+                                i+=1%>
+                                <div class="tab-panel <%='active' if i==1%>" id="#tab-s-<%=supplier_id%>">
+
+                                    <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
+                                    <%@goods=Ecstore::Good.where(:marketable =>'true',:supplier_id=>supplier_id).order("p_order ASC, goods_id DESC").limit(4)%>
+                                   <%@goods.each do |good|%>
+                                        <li class="product">
+                                            <div class="product-container">
+                                                <div class="product-left">
+                                                    <div class="product-thumb">
+                                                        <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="Product"></a>
+                                                        <a title="Quick View" href="/products/<%=good.bn%>" class="btn-quick-view">Quick View</a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-right">
+                                                    <div class="product-name" style="height:50px;overfow：hidden;word-wrap: break-word;">
+                                                        <a href="/products/<%=good.bn%>"><%=good.name%></a>
+                                                    </div>
+                                                    <div class="price-box">
+                                                        <span class="product-price">￥<%=good.price%></span>
+                                                        <span class="product-price-old">￥<%=good.mktprice%></span>
+                                                    </div>
+                                                    <div class="product-button">
+                                                        <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/<%=good.bn%>">收藏</a>
+                                                        <a class="btn-add-comparre" title="Add to Compare" href="/products/<%=good.bn%>">比较</a>
+                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/<%=good.bn%>">购买<span class="icon"></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <%end%>
+                                    </ul>
+                                </div>
+                                <%end%>
+                            </div>
+                        </div>
+                        <div class="block-footer">
+                            <div class="text-center banner-hover">
+                                <a href="#"><img src="/images/0000/adv-avantage.png" alt="Banner"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- new-arrivals -->
+                   <!-- Hot deals -->
+                    <div class="block3 block-hotdeals">
+                        <div class="block-head">
+                            <h3 class="block-title">最新上架</h3>
+                            <a class="link-all" href="/tuan">更多</a>
+                        </div>
+                        <div class="block-inner">
+                            <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
+                            <%goods=Ecstore::Good.where(:marketable =>'true').order("p_order ASC, goods_id DESC").limit(4)%>
+                            <%goods.each do |good|%>
+                                <li class="product">
+                                    <div class="product-container">
+                                        <div class="product-left">
+                                            <div class="product-thumb">
+                                                        <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="Product"></a>
+                                                        <a title="Quick View" href="/products/<%=good.bn%>" class="btn-quick-view">Quick View</a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-right">
+                                                    <div class="product-name">
+                                                        <a href="/products/<%=good.bn%>"><%=good.name%></a>
+                                                    </div>
+                                                    <div class="price-box">
+                                                        <span class="product-price">￥<%=good.price%></span>
+                                                        <span class="product-price-old">￥<%=good.mktprice%></span>
+                                                    </div>
+                                            <div class="product-button">
+                                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/<%=good.bn%>">收藏</a>
+                                                        <a class="btn-add-comparre" title="Add to Compare" href="/products/<%=good.bn%>">比较</a>
+                                                        <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/<%=good.bn%>">购买<span class="icon"></span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-count-down">
+                                            <span class="countdown-lastest" data-y="2015" data-m="10" data-d="1" data-h="00" data-i="00" data-s="00"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <%end%>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Hot deals -->
+                    <!-- group banner -->
+                    <div class="group-banner3 banner-hover">
+
+                        <a class="banner banner1" href="/brands/jiapei"><img src="/images/0000/images01.jpg" alt="Banner"></a>
+                        <a class="banner banner2" href="/products/a01300001"><img src="/images/0000/images02.png" alt="Banner"></a>
+                        <a class="banner banner3" href="/products/a01300065"><img src="/images/0000/images03.png" alt="Banner"></a>
+                        <a class="banner banner4" href="/products/a01290003"><img src="/images/0000/images05.png" alt="Banner"></a>
+                    </div>
+                    <!-- ./group banner -->
+
+                    <div class="block3 tab-cat-products">
+                        <%i=0%>
+                        <% @home_galleries=[132,130,126,125,127,128]%>
+                        <div class="block-head">
+                            <ul class="nav-tab tab-category" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":3},"768":{"items":6},"1000":{"items":6},"1200":{"items":6}}'>
+                            <%@home_galleries.each do |tag_id|%>
+                            <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>
+                            <%i+=1%>
+                              <li class="<%='active' if i==1%>"><a href="#tab-<%=tag_id%>" data-toggle="tab"><%=@gallery.tag_name%></a></li>
+                            <%end%>
+                            </ul>
+                        </div>
+                        <div class="block-inner">
+                            <div class="tab-container">
+                                <%i=0%>
+                                <%@home_galleries.each do |tag_id|%>
+                                <%@gallery = Ecstore::TagExt.where(:tag_id=>tag_id).first%>
+                                <%i+=1%>
+                                <%if !@gallery.nil?%>
+                                    <%@categories = Ecstore::Category.where("cat_id in (#{@gallery.categories})").order("p_order")%>
+                                <%end%>
+                                <div class="tab-panel <%='active' if i==1%>" id="tab-<%=tag_id%>">
+                                    <div class="sub-cat">
+                                        <ul>
+                                        <%@categories.each do |category|%>
+                                          <li><%=link_to category.cat_name,cat_path(category)%></li>
+                                        <%end%>
+                                        </ul>
+                                    </div>
+                                    <div class="cat-product">
+                                        <ul class="products kt-owl-carousel" data-responsive='{"0":{"items":2},"600":{"items":2},"768":{"items":2},"1200":{"items":3}}' data-nav="true" data-loop="true" data-margin="22">
+                                        <%goods=Ecstore::Good.where("marketable ='true' and cat_id =#{@categories.first.cat_id}").order("p_order ASC, goods_id DESC").limit(4)%>
+                                        <%goods.each do |good|%>
+                                            <li class="product">
+                                                <div class="product-container">
+                                                    <div class="product-left">
+                                                        <div class="product-thumb">
+                                                            <a class="product-img" href="/products/<%=good.bn%>"><img src="<%=good.medium_pic%>" alt="Product"></a>
+                                                            <a title="Quick View" href="/products/<%=good.bn%>" class="btn-quick-view">Quick View</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-right">
+                                                        <div class="product-name">
+                                                            <a href="/products/<%=good.bn%>"><%=good.name%></a>
+                                                        </div>
+                                                        <div class="price-box">
+                                                            <span class="product-price">￥<%=good.price%></span>
+                                                            <span class="product-price-old">￥<%=good.mktprice%></span>
+                                                        </div>
+                                                        <div class="product-button">
+                                                            <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/<%=good.bn%>">收藏</a>
+                                                            <a class="btn-add-comparre" title="Add to Compare" href="/products/<%=good.bn%>">比较</a>
+                                                            <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/<%=good.bn%>">购买<span class="icon"></span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                           <%end%>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <%end%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <!-- banner -->
+            <div class="block block-banner2">
+                <div class="row">
+                    <div class="box-left col-sm-12 col-md-8">
+                        <div class="col-sm-6">
+                            <div class="inner">
+                                <h4><i>英国诺狮 Norsh</i></h4>
+                                <h3><b>婴儿手工皂</b></h3>
+                                <div class="content-text">
+                                    <p>自然护理,使生活更美好<br>
+
+                               ☆我们在全球选择最安全的原料；<br>
+
+                                          ☆我们选择最自然的生产工艺；<br>
+
+                                          ☆我们创造最环保的生产方式；<br>
+
+                                          ☆我们使用最简洁的包装方法；</p>
+                                </div>
+                                <a href="/brands/norsh" class="button-radius">立即购买<span class="icon"></span></a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="#"><img src="/img/br-banner1.jpg" alt="Banner"></a>
+                        </div>
+                    </div>
+                    <div class="box-right col-sm-12 col-md-4">
+                        <div class="item i1">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h5><i>Norsh</i></h5>
+                                    <h5><b>婴儿牙刷</b></h5>
+                                    <div class="content-text">
+                                        <p>进口硅胶材质，安全无毒；婴幼儿训练牙刷，针对宝宝口腔设计</p>
+                                    </div>
+                                    <a href="/products/a0971005" class="button-radius">立即购买<span class="icon"></span></a>
+                                </div>
+                                <div class="col-sm-4">
+                                    <a class="pull-right" href="/products/a0971005"><img src="/images/a097/a0971005_m.jpg" alt="b8"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item i2" style="background: url(&#39;/img/b9.jpg&#39;) no-repeat right center;">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h5><i>Norsh</i></h5>
+                                    <h5><b>硅胶小软勺0-4岁宝宝 </b></h5>
+                                    <a href="/products/a0971007" class="button-radius">立即购买<span class="icon"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ./banner -->
+
+        </div>
+    </div>
