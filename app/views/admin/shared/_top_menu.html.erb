@@ -6,12 +6,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a> -->
-        <a class="brand" href="#">
 
+        <a class="brand" href="#">
           邦邦芒 管理系统
         </a>
+
+
         <%if admin_signed_in?%>
-        <div class="navbar">
+        <div class="navbar" style="margin-bottom:0;">
           <ul class="nav">
 
             <%if current_admin.has_right_of("topics","index") || current_admin.has_right_of("articles","index")%>

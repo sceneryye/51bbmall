@@ -8,7 +8,7 @@
 		<%=link_to "清除",admin_goods_path,:class=>"btn"%> 
 	<%end%>
 
-	<%=link_to "高级搜索>>","#",:id=>"toggle_search"%>
+	<%=link_to "高级搜索>>","javascript:void(0);",:id=>"toggle_search"%>
 
 	<%=form_for :ad, :url=>search_admin_goods_path,:method=>:get,:remote=>true,:html=>{:class=>"form-search",:id=>"advanced_search"} do |f|%>
 		<%=hidden_field_tag :view,@view%>

@@ -39,7 +39,6 @@ body {
   background-image: url(../blog/menu_bg.png);
 }
 #main {
-  margin-top: 40px;
   background: #ffffff /*url(../blog/main_bg.png) no-repeat*/;
 }
 #main .page-header {
