@@ -1,4 +1,4 @@
-<div class="container">
+
   <%=render "goods_filters"%>
 
 
@@ -74,7 +74,7 @@
 <div class="pagination">
  <%= will_paginate @goods, :container => false,:params=>{ :page=>params[:page] } %>
 </div>
-</div>
+
 
 
 <%=render "admin/shared/modal_tegs", :tegs=> Ecstore::Teg.good_tegs %>
