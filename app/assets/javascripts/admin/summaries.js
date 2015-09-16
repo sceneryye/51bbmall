@@ -1,8 +1,8 @@
-$('.page-numbers').on('click', function perPage() {
+function perPage(x) {
   $.ajax({
     url: '/admin/summaries',
     type: 'GET',
-    data: {'per_page':$(this).text()},
+    data: {'per_page':$(x).text()},
     success: function(data) {}
   });
-})
+}

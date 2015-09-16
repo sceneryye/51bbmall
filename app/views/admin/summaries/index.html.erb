@@ -40,22 +40,18 @@
     <%= will_paginate @summaries %>
     <div class="per-page">
       <span>每页显示</span>
-      <span class="page-numbers"><a onclick="perPage()">3</a></span>
-      <span class="page-numbers"><a onclick="">5</a></span>
-      <span class="page-numbers"><a onclick="">7</a></span>
-      <span class="page-numbers"><a onclick="">9</a></span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">10</a></span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">20</a></span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">50</a></span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">100</a></span>
       <span>条记录</span>
     </div>
   </div>
 </div>
 
 <script type="text/javascript">
-$('.page-numbers').on('click', function perPage() {
-  $.ajax({
-    url: '/admin/summaries',
-    type: 'GET',
-    data: {'per_page':$(this).text()},
-    success: function(data) {}
-  });
-})
+function perPage(x) {
+  var num = parseInt($(x).text()) - 1;
+  $(x).attr('href', '/admin/summaries?per_page=' + num)
+}
 </script>
