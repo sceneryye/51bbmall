@@ -18,17 +18,15 @@ $(document).ready(function(){
 		});
 	};
 	
+	$("#advanced_search").hide();
 	$("#toggle_search").click(function(){
-		//$("#simple_search,#advanced_search").toggle();
-		if($("#simple_search").is(":visible")){
-			$(this).text("高级搜索>>");
-			$('#simple_search').hide();
-			$('#advanced_search').show();
-		}
+		$("#simple_search").toggle();
+		$("#advanced_search").toggle();
 		if($("#advanced_search").is(":visible")){
 			$(this).text("简单搜索>>");
-			$('#simple_search').show();
-			$('#advanced_search').hide();
+		}
+		if($('#simple_search').is(':visible')){
+			$(this).text("高级搜索>>");
 		}
 	});
 
