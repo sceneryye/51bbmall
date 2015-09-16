@@ -17,14 +17,18 @@
       </tr>
       <% end %>
     </table>
-    <%= will_paginate @new_members %>
-    <div class="per-page">
-      <span>每页显示</span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">10</a></span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">20</a></span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">50</a></span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">100</a></span>
-      <span>条记录</span>
+    <div class="row">
+    <div class="col-md-6">
+        <%= will_paginate @new_members %>
+      </div>
+      <div class="per-page col-md-4 pull-right">
+        <span>每页显示</span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">10</a></span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">20</a></span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">50</a></span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">100</a></span>
+        <span>条记录</span>
+      </div>
     </div>
   </div>
 </div>

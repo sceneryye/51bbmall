@@ -14,22 +14,26 @@
 
       <% @new_orders.each_with_index do |new_order, index| %>
       <tr class="<%= 'info' if index % 2 == 0 %>">
-          <td><%= (Time.zone.at new_order.createtime).strftime('%Y-%m-%d %H:%M:%S') %></td>
-          <td><%= new_order.user.try(:account).try :login_name %></td>
-          <td><%= new_order.user.try(:account).try :uid %></td>
-          <td><a href="/orders/<%= new_order.order_id %>/detail"><%= new_order.order_id %></a></td>
-          <td><%= new_order.pay_status == '1' ? '是' : '否' %></td>
+        <td><%= (Time.zone.at new_order.createtime).strftime('%Y-%m-%d %H:%M:%S') %></td>
+        <td><%= new_order.user.try(:account).try :login_name %></td>
+        <td><%= new_order.user.try(:account).try :uid %></td>
+        <td><a href="/orders/<%= new_order.order_id %>/detail"><%= new_order.order_id %></a></td>
+        <td><%= new_order.pay_status == '1' ? '是' : '否' %></td>
       </tr>
       <% end %>
     </table>
-    <%= will_paginate @new_orders %>
-    <div class="per-page">
-      <span>每页显示</span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">10</a></span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">20</a></span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">50</a></span>
-      <span class="page-numbers"><a onclick="perPage(this)" href="">100</a></span>
-      <span>条记录</span>
+    <div class="row">
+      <div class="col-md-6">
+        <%= will_paginate @summaries %>
+      </div>
+      <div class="per-page col-md-4 pull-right">
+        <span>每页显示</span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">10</a></span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">20</a></span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">50</a></span>
+        <span class="page-numbers"><a onclick="perPage(this)" href="">100</a></span>
+        <span>条记录</span>
+      </div>
     </div>
   </div>
 </div>
