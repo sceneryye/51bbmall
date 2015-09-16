@@ -21,9 +21,9 @@ class Admin::SummariesController < Admin::BaseController
     end
     if params[:index]
       @new_members = Ecstore::Account.where('createtime > ? AND createtime < ?', @start_day[params[:index].to_i],
-       @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 50).order('createtime DESC')
+       @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => (params['per_page' ].nil? ? 50 : (params['per_page'].to_i - 1))).order('createtime DESC')
     else
-      @new_members = Ecstore::Account.where('createtime > ?', Time.now.midnight.to_i).paginate(:page => params[:page], :per_page => 50).order('createtime DESC')
+      @new_members = Ecstore::Account.where('createtime > ?', Time.now.midnight.to_i).paginate(:page => params[:page], :per_page => (params['per_page' ].nil? ? 50 : (params['per_page'].to_i - 1))).order('createtime DESC')
     end
   end
 
@@ -37,10 +37,10 @@ class Admin::SummariesController < Admin::BaseController
     end
     if params[:pay_status].nil?
       @new_orders = Ecstore::Order.where('createtime > ? AND createtime < ?', @start_day[params[:index].to_i],
-       @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => 20).order('createtime DESC')
+       @end_day[params[:index].to_i]).paginate(:page => params[:page], :per_page => (params['per_page' ].nil? ? 50 : (params['per_page'].to_i - 1))).order('createtime DESC')
     else
       @new_orders = Ecstore::Order.where('createtime > ? AND createtime < ? AND pay_status = ?', @start_day[params[:index].to_i],
-       @end_day[params[:index].to_i], '1').paginate(:page => params[:page], :per_page => 20).order('createtime DESC')
+       @end_day[params[:index].to_i], '1').paginate(:page => params[:page], :per_page => (params['per_page' ].nil? ? 50 : (params['per_page'].to_i - 1))).order('createtime DESC')
     end
   end
 
@@ -68,7 +68,7 @@ class Admin::SummariesController < Admin::BaseController
   private
 
   def find_dates
-    @summaries = Ecstore::Summary.paginate(:page => params[:page], :per_page => (params['per_page'].nil? ? 10 : params['per_page'])).order('id DESC')
+    @summaries = Ecstore::Summary.paginate(:page => params[:page], :per_page => (params['per_page' ].nil? ? 10 : (params['per_page'].to_i - 1))).order('id DESC')
     @dates = @summaries.map &:history_date
   end
 end

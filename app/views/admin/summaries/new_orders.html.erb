@@ -11,6 +11,7 @@
         <td>订单号</td>
         <td>是否付款</td> 
       </tr>
+
       <% @new_orders.each_with_index do |new_order, index| %>
       <tr class="<%= 'info' if index % 2 == 0 %>">
           <td><%= (Time.zone.at new_order.createtime).strftime('%Y-%m-%d %H:%M:%S') %></td>
@@ -22,5 +23,13 @@
       <% end %>
     </table>
     <%= will_paginate @new_orders %>
+    <div class="per-page">
+      <span>每页显示</span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">10</a></span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">20</a></span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">50</a></span>
+      <span class="page-numbers"><a onclick="perPage(this)" href="">100</a></span>
+      <span>条记录</span>
+    </div>
   </div>
 </div>
