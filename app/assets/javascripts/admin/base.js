@@ -1,6 +1,6 @@
-//= require jquery
+//= require jquery.min
 //= require jquery_ujs
-//= require bootstrap
+//= require bootstrap.min
 $(document).ready(function(){
 	$(document).on("click",".tri-checkbox[checktype='double']",function(){
 		var state = $(this).attr("state");
