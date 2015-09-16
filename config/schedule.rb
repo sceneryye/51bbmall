@@ -21,6 +21,7 @@
 RAILS_ROOT = File.dirname(__FILE__) + '/..'
 
 set :output, "#{RAILS_ROOT}/log/whenever_log.log"
+set :environment, :development
 
 every 1.day, :at => '00:01am' do
   runner 'Ecstore::Account.update_data'
