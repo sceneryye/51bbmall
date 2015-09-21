@@ -79,23 +79,28 @@
                             <h3 class="block-title">推荐品牌馆</h3>
                             <ul class="nav-tab default">
                                 <%i=0%>
-                                <% @suppliers=[131,130,127]%>
+                                <% @suppliers=[131,130,127,132]%>
                                 <%@suppliers.each do |supplier_id|%>
                                     <%@supplier = Ecstore::Supplier.where(:id=>supplier_id).first%>
                                         <%i+=1%>
-                                <li class="<%='active' if i==1%>"><a href="#tab-s-<%=supplier_id%>" data-toggle="tab"><%=@supplier.name%></a></li>
+                                <li class="link-all"><a href="/suppliers/<%=@supplier.id%>" data-toggle="tab"><%=@supplier.name%></a></li>
                                 <%end%>
                             </ul>
                         </div>
                         <div class="block-inner">
-                            <div class="tab-container">
-                             <%i=0%>
-                            <%@suppliers.each do |supplier_id|
-                                i+=1%>
-                                <div class="tab-panel <%='active' if i==1%>" id="#tab-s-<%=supplier_id%>">
-
+                            <div class="tab-container">                           
+                                <div class="tab-panel active" id="#tab-supplier-goods">
                                     <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
-                                    <%@goods=Ecstore::Good.where(:marketable =>'true',:supplier_id=>supplier_id).order("p_order ASC, goods_id DESC").limit(4)%>
+                                    <% goods_ids =""%>
+                                   <% sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Suppliers Goods'"%>
+                                   <% results = ActiveRecord::Base.connection.execute(sql)%>
+                                   <% results.each(:as => :hash) do |row|%>
+                                   <%   goods_ids= row["goods_ids"]%>
+                                   <% end%>
+                                   <% if goods_ids.size>0%>
+                                   <%   sql = " bn in (#{goods_ids})"%>
+                                   <%   @goods = Ecstore::Good.where(sql)%>
+                                   <% end%>
                                    <%@goods.each do |good|%>
                                         <li class="product">
                                             <div class="product-container">
@@ -107,6 +112,7 @@
                                                 </div>
                                                 <div class="product-right">
                                                     <div class="product-name" style="height:50px;overfow：hidden;word-wrap: break-word;">
+                                                    [<%=good.supplier.name if good.supplier_id%>]
                                                         <a href="/products/<%=good.bn%>"><%=good.name%></a>
                                                     </div>
                                                     <div class="price-box">
@@ -124,7 +130,6 @@
                                     <%end%>
                                     </ul>
                                 </div>
-                                <%end%>
                             </div>
                         </div>
                         <div class="block-footer">
