@@ -1,0 +1,160 @@
+<!-- block  top sellers -->
+<%
+goods_ids =""
+    sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Top Sellers'"
+    results = ActiveRecord::Base.connection.execute(sql)
+    results.each(:as => :hash) do |row|
+      goods_ids= row["goods_ids"]
+    end
+    if goods_ids.size>0
+      sql = " bn in (#{goods_ids})"
+      @top_sellers = Ecstore::Good.where(sql)
+    end
+%>
+<div class="block block-top-sellers">
+    <div class="block-head">
+        <div class="block-title">
+            <div class="block-icon">
+                <img src="/img/top-seller-icon.png" alt="store icon">
+            </div>
+            <div class="block-title-text text-sm">top</div>
+            <div class="block-title-text text-lg">SELLERS</div>
+        </div>
+    </div>
+    <div class="block-inner">
+        <ul class="products kt-owl-carousel" data-margin="10" data-items="1" data-autoplay="true" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"1000":{"items":1}}'>
+        <%if 1!=1%>
+        <%@top_sellers.each do |good|%>
+            <li class="product">
+                <div class="product-container">
+                    <div class="product-left">
+                        <div class="product-thumb">
+                            <%=link_to good_path(good.bn), :target=>"_blank",:class=>"product-img" do %>
+                                <%=image_tag good.list_default_pic,:alt=>good.name%>
+                            <%end%>
+                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <div class="product-name">                            
+                            <%=link_to good.name,good_path(good.bn),:target=>"_blank"%>
+                        </div>
+                        <div class="price-box">
+                            <span class="product-price">￥<%=good.price%></span>
+                            <span class="product-price-old">￥<%=good.mktprice%></span>
+                        </div>
+                        <div class="product-star">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                        </div>
+                        <div class="product-button">
+                            <a class="btn-add-wishlist" title="Add to Wishlist" href="<%=good_path(good.bn)%>">收藏</a>
+                            <a class="btn-add-comparre" title="Add to Compare" href="<%=good_path(good.bn)%>">比较</a>
+                            <a class="button-radius btn-add-cart" title="Add to Cart" href="<%=good_path(good.bn)%>">购买<span class="icon"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <%end if @top_sellers%>        
+            <%end%>                                
+        <li class="product">
+                <div class="product-container">
+                    <div class="product-left">
+                        <div class="product-thumb">
+                            <a href="/products/a01300004" class="product-img" target="_blank">
+                                <img alt="比利时啤酒督威啤酒330ml*24" src="/images/a0130/a01300004_m.jpg" />
+</a>                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <div class="product-name">                            
+                            <a href="/products/a01300004" target="_blank">比利时啤酒督威啤酒330ml*24</a>
+                        </div>
+                        <div class="price-box">
+                            <span class="product-price">￥230.0</span>
+                            <span class="product-price-old">￥240.0</span>
+                        </div>
+                        <div class="product-star">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                        </div>
+                        <div class="product-button">
+                            <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01300004">收藏</a>
+                            <a class="btn-add-comparre" title="Add to Compare" href="/products/a01300004">比较</a>
+                            <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01300004">购买<span class="icon"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="product">
+                <div class="product-container">
+                    <div class="product-left">
+                        <div class="product-thumb">
+                            <a href="/products/a01300065" class="product-img" target="_blank">
+                                <img alt="现货 广西百香果新鲜水果西番莲10斤装包邮" src="/images/a0130/a01300065_m.jpg" />
+</a>                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <div class="product-name">                            
+                            <a href="/products/a01300065" target="_blank">现货 广西百香果新鲜水果西番莲10斤装包邮</a>
+                        </div>
+                        <div class="price-box">
+                            <span class="product-price">￥79.0</span>
+                            <span class="product-price-old">￥88.0</span>
+                        </div>
+                        <div class="product-star">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                        </div>
+                        <div class="product-button">
+                            <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01300065">收藏</a>
+                            <a class="btn-add-comparre" title="Add to Compare" href="/products/a01300065">比较</a>
+                            <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01300065">购买<span class="icon"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="product">
+                <div class="product-container">
+                    <div class="product-left">
+                        <div class="product-thumb">
+                            <a href="/products/a01270018" class="product-img" target="_blank">
+                                <img alt="【139美食节特惠】 图林根烤肠3包免邮更送试吃装  仅限江浙沪" src="/images/a0127/a01270002_m.jpg" />
+</a>                            <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <div class="product-name">                            
+                            <a href="/products/a01270018" target="_blank">【139美食节特惠】 图林根烤肠3包免邮更送试吃装  仅限江浙沪</a>
+                        </div>
+                        <div class="price-box">
+                            <span class="product-price">￥180.0</span>
+                            <span class="product-price-old">￥244.0</span>
+                        </div>
+                        <div class="product-star">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                        </div>
+                        <div class="product-button">
+                            <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01270018">收藏</a>
+                            <a class="btn-add-comparre" title="Add to Compare" href="/products/a01270018">比较</a>
+                            <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01270018">购买<span class="icon"></span></a>
+                        </div>
+                    </div>
+                </div>
+        </ul>
+    </div>
+</div>

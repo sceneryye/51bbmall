@@ -13,6 +13,12 @@ class HomeController < ApplicationController
 		end
 	end
 
+	def floor
+		@id = params[:id]
+		@home = Ecstore::Home.last
+		render :layout=>'blank'
+	end
+
 	def index1
 
 		@title = "邦邦芒商城"

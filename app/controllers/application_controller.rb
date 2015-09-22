@@ -37,82 +37,82 @@ rescue Exception => err
 end
 
 
-
-
 private
 
-def adjust_format_for_mobile
-  request.format = :mobile if params[:agent] == "mobile"
-end
-
-def find_session_id
- cookies[:m_id] = request.session_options[:id] unless cookies[:m_id].present?
- @m_id = cookies[:m_id]
-end
-
-def find_cart!
-  if signed_in?
-    @line_items = Ecstore::Cart.where(:member_id=>(current_account.nil? ? current_user.try(:account_id) : current_account.try(:account_id)))
-
-  else
-    member_ident = @m_id
-    @line_items = Ecstore::Cart.where(:member_ident=>member_ident)
+  def adjust_format_for_mobile
+    request.format = :mobile if params[:agent] == "mobile"
   end
-  @cart_total_quantity = @line_items.inject(0){ |t,l| t+=l.quantity }.to_i || 0
-  if cookies[:MLV] == "10"
-    @cart_total =@line_items.select{|x| x.product.present? }.collect{ |x| (x.product.bulk*x.quantity) }.inject(:+) || 0
-  else
-    @cart_total = @line_items.select{|x| x.product.present? }.collect{ |x| (x.product.price*x.quantity) }.inject(:+) || 0
+
+  def find_session_id
+     cookies[:m_id] = request.session_options[:id] unless cookies[:m_id].present?
+     @m_id = cookies[:m_id]
   end
-           #@pmtable = @line_items.select { |line_item| line_item.good.is_suit? }.size == 0
 
-         end
+  def find_cart!
+    if signed_in?
+      @line_items = Ecstore::Cart.where(:member_id=>(current_account.nil? ? current_user.try(:account_id) : current_account.try(:account_id)))
 
-         def find_user
+    else
+      member_ident = @m_id
+      @line_items = Ecstore::Cart.where(:member_ident=>member_ident)
+    end
+    @cart_total_quantity = @line_items.inject(0){ |t,l| t+=l.quantity }.to_i || 0
+    if cookies[:MLV] == "10"
+      @cart_total =@line_items.select{|x| x.product.present? }.collect{ |x| (x.product.bulk*x.quantity) }.inject(:+) || 0
+    else
+      @cart_total = @line_items.select{|x| x.product.present? }.collect{ |x| (x.product.price*x.quantity) }.inject(:+) || 0
+    end
+    #@pmtable = @line_items.select { |line_item| line_item.good.is_suit? }.size == 0
+
+  end
+
+  def find_user
       # if Rails.env == "development"
       #   return  @user = Ecstore::User.find_by_member_id(217)
       # end
 
-      unless signed_in?
-       nologin_times = cookies[:nologin_times] || 0
-       cookies[:nologin_times] = nologin_times.to_i + 1
-     end
-
-
-     return  true if (params[:token].present? || params[:agent] == "mobile") && !signed_in?
-     if signed_in?
-      @user = current_account.try(:user) || current_user.user
-    else
-          # return (render :js=>"window.location.href='#{site_path}'") if request.xhr?
-      	   # redirect_to (site_path)
-        end
-      end
-
-    # find categories
-    def require_top_cats
-      @top_cats = Ecstore::Category.where(:parent_id=>0).where('sell=true or future=true or agent=true').where("cat_name not in (?)",['时装周预售','VIP卡']).order("p_order asc")
+    unless signed_in?
+         nologin_times = cookies[:nologin_times] || 0
+         cookies[:nologin_times] = nologin_times.to_i + 1
     end
 
-    def find_path_seo
 
-      return  unless request.method == "GET"
+      return  true if (params[:token].present? || params[:agent] == "mobile") && !signed_in?
 
-      path  = request.env["PATH_INFO"]
+      if signed_in?
+        @user = current_account.try(:user) || current_user.user
+      else
+            # return (render :js=>"window.location.href='#{site_path}'") if request.xhr?
+        	   # redirect_to (site_path)
+      end
+  end
 
-      metas = Ecstore::MetaSeo.path_metas.where(:path=>path).select do |meta|
-        if meta.params.blank?
-          true
-        else
-          meta.params.select do |key, val|
+    # find categories
+  def require_top_cats
+    @top_cats = Ecstore::Category.where(:parent_id=>0).where('sell=true or future=true or agent=true').where("cat_name not in (?)",['时装周预售','VIP卡']).order("p_order asc")
+  end
+
+  def find_path_seo
+
+    return  unless request.method == "GET"
+
+    path  = request.env["PATH_INFO"]
+
+    metas = Ecstore::MetaSeo.path_metas.where(:path=>path).select do |meta|
+    if meta.params.blank?
+        true
+    else
+        meta.params.select do |key, val|
            reg = Regexp.new("^#{val}$")
            params[key] =~ reg
-         end.size == meta.params.size
-       end
-     end
+        end.size == meta.params.size
+    end
+  end
 
-     @meta_seo  = metas.first
+   @meta_seo  = metas.first
 
    end
+
    def check_token
     if session[:authenticity_token] == params[:authenticity_token]
       session[:authenticity_token] = nil

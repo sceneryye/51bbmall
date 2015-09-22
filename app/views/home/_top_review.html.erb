@@ -14,7 +14,7 @@
                 <% end%>
                 <% if goods_ids.size>0%>
                 <%   sql = " bn in (#{goods_ids})"%>
-                <%   @top_review = Ecstore::Good.where(sql)%>
+                <%   @top_review = Ecstore::Good.where(sql).limit(6)%>
                 <% end
                 i=0
                 %>
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </li>
-                <%if i%5==0%>
+                <%if i%3==0%>
                     </ul>
                     <ul class="list-product">
                 <%end%>

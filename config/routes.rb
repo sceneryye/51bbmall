@@ -16,21 +16,23 @@ Modengke::Application.routes.draw do
   end
 end
 
-mount WeixinRailsMiddleware::Engine, at: "/"
 
 root :to=>"home#index",:constraints=>{ :subdomain=>/^(www)?$/ }
 get 'blank'=>"home#blank"
 get 'home'=>"home#index"
 get 'dynamicpage'=>"home#index1"
 
+resources :home do
+  get 'floor',:on=>:member
+end
+
+
 
 resources :pages, :only=>[:show]
 
 namespace :auth do
   resources :accounts
-  resources :weixin do
-    get 'callback',:on=>:member
-  end
+  
   resources :weibo do
     get 'callback',:on=>:collection
   end
@@ -83,7 +85,6 @@ resources :vshop do
     get 'goods'
     get 'orders'
     get 'members'
-    get 'weixin'
     post "destory"
   end
   member do
@@ -198,16 +199,7 @@ scope :module => "blog" do
     resources :carts do
 
     end
-    resources :wechat do
-      get :menu,:on=>:collection
-      get :menu_edit,:on=>:collection
-      get :followers, :on=>:collection
-      get :followers_import, :on=>:collection
-      get :follower_renew,:on=> :collection
-      get :groups, :on=>:collection
-      get :batch_sending, :on=>:collection
-      get :weixin,:on=>:collection
-    end
+  
     resources :resources
     resources :permissions do
 
@@ -327,7 +319,7 @@ scope :module => "blog" do
       get 'applicants',:on=>:member
     end
 
-    resources :homes
+    resources :homes 
 
     resources :brand_pages do
       get 'toggle', :on=>:member
@@ -394,7 +386,6 @@ scope :module => "blog" do
   scope :module => "store" do
 
     get 'search' => "search#index", :as=> :search
-    get 'mproducts' =>"goods#mproduct", :as=>"goods" ,:controller=>"goods"
     get 'tuan' =>"goods#tuan", :as=>"goods" ,:controller=>"goods"
 
     resources :products, :as=>"goods", :controller=>"goods" do
