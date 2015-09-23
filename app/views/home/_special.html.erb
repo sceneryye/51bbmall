@@ -4,19 +4,7 @@
         <h4 class="widget-title">特别推荐</h4>
     </div>
     <div class="block-inner">
-        <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"768":{"items":1}}'>
-         <% 
-         # goods_ids =""
-         #sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Special'"
-         #results = ActiveRecord::Base.connection.execute(sql)
-         #results.each(:as => :hash) do |row|
-         #   goods_ids= row["goods_ids"]
-         # end
-         # if goods_ids.size>0
-         #   sql = " marketable='true' and bn in (#{goods_ids})"
-         #   @special = Ecstore::Good.where(sql)
-         # end
-          %>
+        <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"768":{"items":1}}'>        
               <%@special.each do |good|%>
                 <li class="product">
                     <div class="product-container">
@@ -46,14 +34,14 @@
                 </li>
                 <%end if @special%>    
 
-        
+<%if special.nil?%>        
                 <li class="product">
                     <div class="product-container">
                         <div class="product-left">
                             <div class="product-thumb">
                                 <a href="/products/a01300011" class="product-img" target="_blank">
                                     <img alt="【包邮】Cloud of fire火焰酒 西班牙进口火焰云 火焰酒起泡酒 魔幻云火焰" src="/images/a0130/a01300011_m.jpg" />
-</a>                                <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                                </a>                                <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
                             </div>
                         </div>
                         <div class="product-right">
@@ -122,6 +110,7 @@
                         </div>
                     </div>
                 </li>  
+        <%end%>
         </ul>
     </div>
 </div>

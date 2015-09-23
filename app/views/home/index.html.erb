@@ -1,1 +1,659 @@
-<%=@home.body.html_safe if @home.body.present?%>
+<%#=@home.body.html_safe if @home.body.present?%>
+<div class="container" id ="waterfall">
+    <div class="row">
+        <div class="col-sm-4 col-md-3 col-lg-3 hidden-xs">
+            <!-- Block vertical-menu -->
+			<div class="block block-vertical-menu">
+			    <div class="vertical-head">
+			        <h5 class="vertical-title">商品分类</h5>
+			    </div>
+			    <div class="vertical-menu-content">
+			        <ul class="vertical-menu-list">
+			            <li class="vertical-menu1"><a class="parent" href="/gallery/22?type=1">佐餐美酒</a>
+			                 <div class="vertical-dropdown-menu" style="width: 901px;">
+			                    <div class="vertical-groups">
+			                        <div class="row">
+			                            <div class="col-sm-3">
+			                                <div class="block-content-vertical-menu border banner-hover">
+			                                    <a href="/products/a01160012"><img src="/images/a0116/a01160012_m.jpg" alt="Banner"></a>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-5">
+			                                <div class="block-content-vertical-menu banner-hover">
+			                                    <a href="/products/a01160012"><img src="/images/brands/b160.jpg" alt="Banner"></a>
+			                                </div>
+			                                <div class="block-content-vertical-menu">
+			                                    <div class="inner">
+			                                        <p>紫罗兰莎当妮酒体精美、口感芬芳，富有平滑感。散发出成熟桃子和甜瓜的芳香，而且又夹带着丰富的奶油层次感，余味中透出新鲜的果酸味。适合与鸡肉及海鲜等搭配，此时饮用最佳。 </p>
+			                                        <a href="/products/a01160012" class="button-radius">立即购买<span class="icon"></span></a>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-4">
+			                                <div class="block-content-vertical-menu border-left">
+			                                    <h3 class="head">商品分类</h3>
+			                                    <div class="inner">
+			                                    <ul class="vertical-menu-link">
+			                                        <li><a href="/gallery/489"><span class="text">啤酒</span></a></li>
+			                                        <li><a href="/gallery/535"><span class="text">葡萄酒</span></a></li>
+			                                        <li><a href="/gallery/564"><span class="text">干红</span></a></li>
+			                                        <li><a href="/gallery/565"><span class="text">干白</span></a></li>
+			                                        <li><a href="/gallery/566"><span class="text">起泡酒</span></a></li>
+			                                        <li><a href="/gallery/616"><span class="text">威士忌</span></a></li>
+			                                        <li><a href="/gallery/623"><span class="text">黄酒</span></a></li>
+			                                        <li><a href="/gallery/624"><span class="text">封缸酒</span></a></li>
+			                                        <li><a href="/gallery/562"><span class="text">白酒</span></a></li>
+			                                    </ul>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			               
+			            </li>
+			            <li class="vertical-menu2">
+			                <a class="parent" href="/gallery/558?type=1">德国香肠</a>
+			                <div class="vertical-dropdown-menu" style="width: 901px;">
+			                    <div class="vertical-groups col-sm-12">
+			                        <div class="row">
+			                            <div class="col-sm-3">
+			                                <div class="block-content-vertical-menu">
+			                                    <h3 class="head">怀特兄弟</h3>
+			                                    <div class="inner">
+			                                        <p> 提起德国美食，不能不提起德国香肠。他们制作的香肠有1500种以上。德国的国菜就是在酸卷心菜上铺满各式香肠。</p>
+			                                        <p>秉承怀特兄弟230余年产品品牌的严格工艺和配方，采用浙江青莲食品的黑毛猪肉，将德国香肠的性价比直接提升到秒杀尖叫的程度。</p>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-9">
+			                                <div class="row mega-products">
+			                                    <div class="col-sm-4 mega-product">
+			                                        <div class="product-avatar">
+			                                            <a class="product-img" href="/products/a01270018"><img src="/images/a0127/a01270002_m.jpg" alt="【139美食节特惠】 图林根烤肠3包免邮更送试吃装  仅限江浙沪"></a>
+			                                        </div>
+			                                        <div class="product-name">
+			                                            <a href="/products/a01270018">【139美食节特惠】 图林根烤肠3包免邮更送试吃装  仅限江浙沪</a>
+			                                        </div>
+			                                        <div class="price-box">
+			                                            <span class="product-price">￥180.0</span>
+			                                            <span class="product-price-old">￥244.0</span>
+			                                        </div>
+			                                        <div class="product-star">
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star-half-o"></i>
+			                                        </div>
+			                                    </div>
+			                                    <div class="col-sm-4 mega-product">
+			                                        <div class="product-avatar">
+			                                            <a class="product-img" href="/products/a01270017"><img src="/images/a0127/a01270005_m.jpg" alt="【139美食节特惠】 德国奶酪肠3包免邮更送试吃装  仅限江浙沪"></a>
+			                                        </div>
+			                                        <div class="product-name">
+			                                            <a href="/products/a01270017">【139美食节特惠】 德国奶酪肠3包免邮更送试吃装  仅限江浙沪</a>
+			                                        </div>
+			                                        <div class="price-box">
+			                                            <span class="product-price">￥238.0</span>
+			                                            <span class="product-price-old">￥324.0</span>
+			                                        </div>
+			                                        <div class="product-star">
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star-half-o"></i>
+			                                        </div>
+			                                    </div>
+			                                    <div class="col-sm-4 mega-product">
+			                                        <div class="product-avatar">
+			                                            <a class="product-img" href="/products/a01270016"><img src="/images/a0127/a01270014_m.jpg" alt="【139美食节特惠】 西班牙烤肠3包免邮更送试吃装  仅限江浙沪"></a>
+			                                        </div>
+			                                        <div class="product-name">
+			                                            <a href="/products/a01270016">【139美食节特惠】 西班牙烤肠3包免邮更送试吃装  仅限江浙沪</a>
+			                                        </div>
+			                                        <div class="price-box">
+			                                            <span class="product-price">￥210.0</span>
+			                                            <span class="product-price-old">￥288.0</span>
+			                                        </div>
+			                                        <div class="product-star">
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star"></i>
+			                                            <i class="fa fa-star-half-o"></i>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </li>
+			            <li class="vertical-menu3">
+			                <a class="parent" href="/gallery/655">养生珍品</a>
+			                <div class="vertical-dropdown-menu" style="width: 901px;">
+			                    <div class="vertical-groups">
+			                        <div class="row">
+			                            <div class="col-sm-3">
+			                                <div class="block-content-vertical-menu border">
+			                                    <h3 class="head">商品分类</h3>
+			                                    <div class="inner">
+			                                    <div class="inner-img">
+			                                        <a href="#"><img src="/img/4.jpg" alt="Banner"></a>
+			                                    </div>
+			                                    <ul class="vertical-menu-link">
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Skincare</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Metkup</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Mobile phone</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Tablet</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                    </ul>
+			                                </div>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3">
+			                                <div class="block-content-vertical-menu border">
+			                                    <h3 class="head">商品分类</h3>
+			                                    <div class="inner">
+			                                    <div class="inner-img">
+			                                        <a href="#"><img src="/img/5.jpg" alt="Banner"></a>
+			                                    </div>
+			                                    <ul class="vertical-menu-link">
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Skincare</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Metkup</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Mobile phone</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Tablet</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                    </ul>
+			                                </div>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3">
+			                                <div class="block-content-vertical-menu border">
+			                                    <h3 class="head">商品分类</h3>
+			                                    <div class="inner">
+			                                    <div class="inner-img">
+			                                        <a href="#"><img src="/img/6.jpg" alt="Banner"></a>
+			                                    </div>
+			                                    <ul class="vertical-menu-link">
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Skincare</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Metkup</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Mobile phone</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Tablet</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                    </ul>
+			                                </div>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3">
+			                                <div class="block-content-vertical-menu border">
+			                                    <h3 class="head">商品分类</h3>
+			                                    <div class="inner">
+			                                    <div class="inner-img">
+			                                        <a href="#"><img src="/img/7.jpg" alt="Banner"></a>
+			                                    </div>
+			                                    <ul class="vertical-menu-link">
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Skincare</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Metkup</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Mobile phone</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                        <li>
+			                                            <a href="#">
+			                                                <span class="text">Tablet</span>
+			                                                <span class="count">(9)</span>
+			                                            </a>
+			                                        </li>
+			                                    </ul>
+			                                </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </li>
+			            <li class="vertical-menu4"><a href="/gallery/611">生鲜果蔬</a></li>
+			            <li class="vertical-menu5"><a href="/gallery/483">进口食品</a></li>
+			            <li class="vertical-menu6"><a href="/gallery/490">婴童天地</a></li>
+			            <li class="vertical-menu7"><a href="/gallery/497">茶叶 &amp; 冲泡饮品</a></li>
+			            <li class="vertical-menu8"><a href="/gallery/567">更多</a></li>
+			        </ul>
+			    </div>
+			</div>
+			<!-- ./Block vertical-menu -->
+        </div>
+        <div class="col-sm-8 col-md-9 col-lg-7">
+            <!-- Home slide -->
+            <div class="block-slider">
+                <ul class="home-slider kt-bxslider">
+                    <li>
+                        <a href="/brands/jiapei" target="_blank">
+                            <img alt="Home03-slide1" src="/images/0000/home03-slide1.jpg" />
+</a>                    </li>
+                    <li>
+                        <a href="/gallery/558" target="_blank">
+                            <img alt="Home03-slide2" src="/images/0000/home03-slide2.jpg" />
+</a>                    </li>
+                    <li>
+                        <a href="/gallery/489" target="_blank">
+                            <img alt="Home03-slide3" src="/images/0000/home03-slide3.jpg" />
+</a>                    </li>
+                    <li>
+                        <a href="/gallery/535" target="_blank">
+                            <img alt="Home03-slide4" src="/images/0000/home03-slide4.jpg" />
+</a>                    </li>
+                </ul>
+            </div>
+            <!-- ./Home slide -->
+        </div>
+
+        <div class="col-sm-8 col-md-12 col-lg-2">
+            <div class="block block-banner-owl kt-owl-carousel hidden-xs" ata-margin="0" data-loop="true" data-nav="true" data-responsive='{"0":{"items":1},"600":{"items":1},"1000":{"items":1}}'>
+                <div class="page-banner">
+                    <ul class="list-banner">
+                    <!-- <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'> -->
+                         <li>
+                            <a href="/brands/shenplu" title="圣培露">
+                                <img alt="圣培露" src="/images/brands/b201.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/weiss" title="怀特兄弟">
+                                <img alt="怀特兄弟" src="/images/brands/b186.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/NUTRILON" title="牛栏 NUTRILON">
+                                <img alt="牛栏 NUTRILON" src="/images/brands/b183.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/baci" title="baci 芭喜">
+                                <img alt="baci 芭喜" src="/images/brands/b175.jpg" />
+</a>                        </li>
+                            </ul>
+                            </div>
+                            <div class="page-banner">
+                            <ul class="list-banner">
+                         <li>
+                            <a href="/brands/tsyk" title="天山鱼客">
+                                <img alt="天山鱼客" src="/images/brands/b164.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/yeshengjungu" title="野生菌菇">
+                                <img alt="野生菌菇" src="/images/brands/b155.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/zmq" title="卓玛泉">
+                                <img alt="卓玛泉" src="/images/brands/b147.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/norsh" title="诺狮">
+                                <img alt="诺狮" src="/images/brands/b142.jpg" />
+</a>                        </li>
+                    </ul>
+                </div>
+            </div>
+
+                <div class="page-banner visible-xs">
+                    <ul class="list-banner block kt-owl-carousel" data-responsive='{"0":{"items":4},"600":{"items":2},"1000":{"items":1}}'>
+                         <li>
+                            <a href="/brands/shenplu" title="圣培露">
+                                <img alt="圣培露" src="/images/brands/b201.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/weiss" title="怀特兄弟">
+                                <img alt="怀特兄弟" src="/images/brands/b186.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/NUTRILON" title="牛栏 NUTRILON">
+                                <img alt="牛栏 NUTRILON" src="/images/brands/b183.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/baci" title="baci 芭喜">
+                                <img alt="baci 芭喜" src="/images/brands/b175.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/tsyk" title="天山鱼客">
+                                <img alt="天山鱼客" src="/images/brands/b164.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/yeshengjungu" title="野生菌菇">
+                                <img alt="野生菌菇" src="/images/brands/b155.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/zmq" title="卓玛泉">
+                                <img alt="卓玛泉" src="/images/brands/b147.jpg" />
+</a>                        </li>
+                         <li>
+                            <a href="/brands/norsh" title="诺狮">
+                                <img alt="诺狮" src="/images/brands/b142.jpg" />
+</a>                        </li>
+                    </ul>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 col-md-3">
+            <!-- specail -->
+<div class="block block-specail3">                   
+    <div class="block-head">
+        <h4 class="widget-title">特别推荐</h4>
+    </div>
+    <div class="block-inner">
+        <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"768":{"items":1}}'>
+
+        
+                <li class="product">
+                    <div class="product-container">
+                        <div class="product-left">
+                            <div class="product-thumb">
+                                <a href="/products/a01300011" class="product-img" target="_blank">
+                                    <img alt="【包邮】Cloud of fire火焰酒 西班牙进口火焰云 火焰酒起泡酒 魔幻云火焰" src="/images/a0130/a01300011_m.jpg" />
+</a>                                <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                            </div>
+                        </div>
+                        <div class="product-right">
+                            <div class="product-name">                            
+                                <a href="/products/a01300011" target="_blank">【包邮】Cloud of fire火焰酒 西班牙进口火焰云 火焰酒起泡酒 魔幻云火焰</a>
+                            </div>
+                            <div class="price-box">
+                                <span class="product-price">￥139.0</span>
+                                <span class="product-price-old">￥158.0</span>
+                            </div>
+                            <div class="product-button">
+                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01300011">收藏</a>
+                                <a class="btn-add-comparre" title="Add to Compare" href="/products/a01300011">比较</a>
+                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01300011">购买<span class="icon"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="product">
+                    <div class="product-container">
+                        <div class="product-left">
+                            <div class="product-thumb">
+                                <a href="/products/a01320013" class="product-img" target="_blank">
+                                    <img alt="意大利原产进口Go*Do 戈多 有机巧克力 35g" src="/images/a0132/a01320001_m.jpg" />
+</a>                                <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                            </div>
+                        </div>
+                        <div class="product-right">
+                            <div class="product-name">                            
+                                <a href="/products/a01320013" target="_blank">意大利原产进口Go*Do 戈多 有机巧克力 35g</a>
+                            </div>
+                            <div class="price-box">
+                                <span class="product-price">￥10.0</span>
+                                <span class="product-price-old">￥18.0</span>
+                            </div>
+                            <div class="product-button">
+                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01320013">收藏</a>
+                                <a class="btn-add-comparre" title="Add to Compare" href="/products/a01320013">比较</a>
+                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01320013">购买<span class="icon"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="product">
+                    <div class="product-container">
+                        <div class="product-left">
+                            <div class="product-thumb">
+                                <a href="/products/a01320004" class="product-img" target="_blank">
+                                    <img alt="希腊进口食品 惬琵妲果酱" src="/images/a0132/a01320004_m.jpg" />
+</a>                                <a title="Quick View" href="#" class="btn-quick-view">Quick View</a>
+                            </div>
+                        </div>
+                        <div class="product-right">
+                            <div class="product-name">                            
+                                <a href="/products/a01320004" target="_blank">希腊进口食品 惬琵妲果酱</a>
+                            </div>
+                            <div class="price-box">
+                                <span class="product-price">￥11.0</span>
+                                <span class="product-price-old">￥39.0</span>
+                            </div>
+                            <div class="product-button">
+                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01320004">收藏</a>
+                                <a class="btn-add-comparre" title="Add to Compare" href="/products/a01320004">比较</a>
+                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01320004">购买<span class="icon"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>  
+        </ul>
+    </div>
+</div>
+<!-- ./specail -->
+        </div>
+        <div class="col-sm-8 col-md-9 col-xs-12">
+            <!-- new-arrivals -->
+            <div class="block3 block-new-arrivals">
+                <div class="block-head">
+                    <h3 class="block-title">推荐品牌馆</h3>
+                    <ul class="nav-tab default">
+                        <li class="link-all"><a href="/suppliers/131" data-toggle="tab">美馔屋</a></li>
+                        <li class="link-all"><a href="/suppliers/130" data-toggle="tab">果鲜帮</a></li>
+                        <li class="link-all"><a href="/suppliers/127" data-toggle="tab">怀特兄弟</a></li>
+                        <li class="link-all"><a href="/suppliers/132" data-toggle="tab">百岁康</a></li>
+                    </ul>
+                </div>
+                <div class="block-inner">
+                    <div class="tab-container">                           
+                        <div class="tab-panel active" id="#tab-supplier-goods">
+                            <ul class="products kt-owl-carousel" data-margin="20" data-loop="true" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":3},"768":{"items":2},"1000":{"items":3},"1200":{"items":4}}'>
+                                <li class="product">
+                                    <div class="product-container">
+                                        <div class="product-left">
+                                            <div class="product-thumb">
+                                                <a class="product-img" href="/products/a01270016"><img src="/images/a0127/a01270014_m.jpg" alt="Product"></a>
+                                                <a title="Quick View" href="/products/a01270016" class="btn-quick-view">Quick View</a>
+                                            </div>
+                                        </div>
+                                        <div class="product-right">
+                                            <div class="product-name">
+                                            [怀特兄弟]
+                                                <a href="/products/a01270016">【139美食节特惠】 西班牙烤肠3包免邮更送试吃装  仅限江浙沪</a>
+                                            </div>
+                                            <div class="price-box">
+                                                <span class="product-price">￥210.0</span>
+                                                <span class="product-price-old">￥288.0</span>
+                                            </div>
+                                            <div class="product-button">
+                                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01270016">收藏</a>
+                                                <a class="btn-add-comparre" title="Add to Compare" href="/products/a01270016">比较</a>
+                                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01270016">购买<span class="icon"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product">
+                                    <div class="product-container">
+                                        <div class="product-left">
+                                            <div class="product-thumb">
+                                                <a class="product-img" href="/products/a01330005"><img src="/images/a0133/a01330005_m.jpg" alt="Product"></a>
+                                                <a title="Quick View" href="/products/a01330005" class="btn-quick-view">Quick View</a>
+                                            </div>
+                                        </div>
+                                        <div class="product-right">
+                                            <div class="product-name">
+                                            [贸威]
+                                                <a href="/products/a01330005">担担拌面套餐 30元起送</a>
+                                            </div>
+                                            <div class="price-box">
+                                                <span class="product-price">￥28.0</span>
+                                                <span class="product-price-old">￥35.0</span>
+                                            </div>
+                                            <div class="product-button">
+                                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01330005">收藏</a>
+                                                <a class="btn-add-comparre" title="Add to Compare" href="/products/a01330005">比较</a>
+                                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01330005">购买<span class="icon"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product">
+                                    <div class="product-container">
+                                        <div class="product-left">
+                                            <div class="product-thumb">
+                                                <a class="product-img" href="/products/a01390004"><img src="/images/a0139/a01390004_m.jpg" alt="Product"></a>
+                                                <a title="Quick View" href="/products/a01390004" class="btn-quick-view">Quick View</a>
+                                            </div>
+                                        </div>
+                                        <div class="product-right">
+                                            <div class="product-name">
+                                            [果鲜帮]
+                                                <a href="/products/a01390004">The Fresh Party「金玉满堂套餐」5人份</a>
+                                            </div>
+                                            <div class="price-box">
+                                                <span class="product-price">￥999.0</span>
+                                                <span class="product-price-old">￥1080.0</span>
+                                            </div>
+                                            <div class="product-button">
+                                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01390004">收藏</a>
+                                                <a class="btn-add-comparre" title="Add to Compare" href="/products/a01390004">比较</a>
+                                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01390004">购买<span class="icon"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product">
+                                    <div class="product-container">
+                                        <div class="product-left">
+                                            <div class="product-thumb">
+                                                <a class="product-img" href="/products/a01400024"><img src="/images/a0140/a01400024_m.jpg" alt="Product"></a>
+                                                <a title="Quick View" href="/products/a01400024" class="btn-quick-view">Quick View</a>
+                                            </div>
+                                        </div>
+                                        <div class="product-right">
+                                            <div class="product-name">
+                                            [美馔屋]
+                                                <a href="/products/a01400024">吉拉多生蚝 #1 (106-145g)/Gillardeau 48只的价格</a>
+                                            </div>
+                                            <div class="price-box">
+                                                <span class="product-price">￥1388.0</span>
+                                                <span class="product-price-old">￥1488.0</span>
+                                            </div>
+                                            <div class="product-button">
+                                                <a class="btn-add-wishlist" title="Add to Wishlist" href="/products/a01400024">收藏</a>
+                                                <a class="btn-add-comparre" title="Add to Compare" href="/products/a01400024">比较</a>
+                                                <a class="button-radius btn-add-cart" title="Add to Cart" href="/products/a01400024">购买<span class="icon"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new-arrivals -->
+        </div>
+    </div>
+    <div class="row" id="floor_temp" style="text-align: center">
+        <img src="/assets/progress.gif">
+    </div>
+</div>
+<script>  
+
+    var floor_id = 1;
+    var floors_num =3;
+    //定义滚动函数
+    function onScroll(event) {
+        //是否到底部（这里是判断离底部还有100px开始载入数据）.
+        var closeToBottom = ($(window).scrollTop() + $(window).height() > $(document).height() - 100);
+        if(closeToBottom && floor_id<=floors_num) {
+            console.log(floor_id);
+            
+            //这里就是AJAX载入的数据
+            var floor_url ="/home/"+floor_id+"/floor";
+            $.ajax({url:floor_url, dataType:"html", success:function(html){
+                     //把新数据追加到对象中
+                     $('#waterfall').append(html);
+                    if(floor_id<floors_num){
+                        $('#waterfall').append($('#floor_temp'));
+                    }
+                    else{
+                         $('#floor_temp').remove();
+                    }
+                    
+                }
+            });
+            floor_id = floor_id +1;
+        }
+    };
+
+    $(document).ready(new function() {
+            //绑定scroll事件.
+            $(document).bind('scroll', onScroll);
+            //第一次布局.
+            // handler = $('#waterfall li');
+            // handler.wookmark(options);
+    });   
+</script>

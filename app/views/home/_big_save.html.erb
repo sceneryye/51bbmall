@@ -4,18 +4,8 @@
         <h4 class="widget-title">限时特价</h4>
     </div>
     <div class="block-inner">
-        <ul class="list-slide kt-owl-carousel owl-carousel owl-theme owl-loaded" data-loop="true" data-nav="true" data-responsive="{"0":{"items":2},"600":{"items":2},"768":{"items":1}}">
-          <% 
-          #goods_ids =""
-          #sql = "select replace(replace(replace(field_vals,'---\n- ',''''),'- ',','''),'\n','''') as goods_ids FROM mdk.sdb_imodec_promotions where name='Big Save'"
-          #results = ActiveRecord::Base.connection.execute(sql)
-          #results.each(:as => :hash) do |row|
-          #   goods_ids= row["goods_ids"]
-          #end
-          #if goods_ids.size>0
-          #  sql = "marketable='true' and bn in (#{goods_ids})"
-          #   @big_save = Ecstore::Good.where(sql)
-          #end%>
+        
+        <ul class="list-slide kt-owl-carousel" data-responsive='{"0":{"items":2},"600":{"items":2},"768":{"items":1}}' data-nav="true" data-loop="true">
             <%@big_save.each do |good|%>
                 <li>
                     <div class="image">
@@ -32,8 +22,9 @@
                     </a>                                 
                   </div>
                 </li>
-            <%end if @big_save%>   
-            <li>
+            <%end if @big_save%>  
+            <%if @big_save.nil?%>
+              <li>
                     <div class="image">
                         <a href="/products/a01300010" target="_blank">
                             <img alt="【包邮】意大利马天尼甜气泡酒，新闺蜜时代官方合作伙伴，转为闺蜜欢庆而生" src="/images/a0130/a01300010_m.jpg" />
@@ -74,7 +65,9 @@
                         立即购买<span class="icon"></span>
                     </a>                                 
                   </div>
-                </li>                
+                </li>
+            <%end%>
+        
          </ul>
     </div>
 </div>
