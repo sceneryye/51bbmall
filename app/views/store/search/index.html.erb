@@ -20,10 +20,10 @@
   </div>
   <div class="row">
     <div class="col-sm-4 col-md-3">
-        <%=render "/store/shared/special"%>
-        <%=render "/store/shared/big_save"%>
-        <%=render "/store/shared/top_review"%>
-        <%=render "/store/shared/hot_tags", :resource=>@home%>                         
+        <%=render "/home/special"%>
+        <%=render "/home/big_save"%>
+        <%=render "/home/top_review"%>
+        <%=render "/home/hot_tags", :resource=>@home%>                         
     </div>
     <div class="col-sm-8 col-md-9">
   		<%if @goods.size > 0%>

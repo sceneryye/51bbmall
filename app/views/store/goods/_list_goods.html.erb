@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/wookmark.min.js"></script>
 <div class="sortPagiBar">
 		
 	<ul class="display-product-option">
@@ -109,13 +110,6 @@
 							<span class="product-price">￥<%=good.price%></span>
                             <span class="product-price-old">￥<%=good.mktprice%></span>
 						</div>
-						<div class="product-star">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                        </div>
                         <div class="product-button">
                         	<a class="btn-add-wishlist" title="Add to Wishlist" href="<%=good_path(good.bn)%>">收藏</a>
                         	<a class="btn-add-comparre" title="Add to Compare" href="<%=good_path(good.bn)%>">比较</a>
@@ -164,3 +158,78 @@
         </div> -->
 	</div>	
 </div>
+
+<script>  
+
+     var handler = null;
+    //定义基本属性.
+    // var options = {
+    //     autoResize: true,
+    //     container: $('#waterfall_main'),
+    //     offset: 2,
+    //     itemWidth: 210
+    // };
+    var options ={
+  align: 'center',
+  autoResize: true,
+  comparator: null,
+  container: $('#waterfall_main'),
+  direction: undefined,
+  ignoreInactiveItems: true,
+  itemWidth: 0,
+  fillEmptySpace: false,
+  flexibleWidth: 0,
+  offset: 2,
+  onLayoutChanged: undefined,
+  outerOffset: 0,
+  possibleFilters: [],
+  resizeDelay: 50,
+  verticalOffset: undefined
+}
+
+// $('#waterfall li').wookmark(options);
+
+    //   var handler = $('#waterfall li');
+    // // handler.wookmarkClear();
+    // handler.wookmark(options);
+ //    var floor_id = 1;
+ //    var floors_num =3;
+ //    //定义滚动函数
+ //    function onScroll(event) {
+ //        //是否到底部（这里是判断离底部还有100px开始载入数据）.
+ //        var closeToBottom = ($(window).scrollTop() + $(window).height() > $(document).height() - 100);
+ //        if(closeToBottom && floor_id<=floors_num) {
+ //            console.log(floor_id);
+ //            //这里就是AJAX载入的数据
+ //            var floor_url ="/home/"+floor_id+"/floor";
+ //             $.ajax({url:floor_url, dataType:"html", success:function(html){
+ //                 //把新数据追加到对象中
+ //                 $('#waterfall').append(html);
+ //                 floor_id = floor_id +1;
+ //            //     $('#waterfall').append(html);
+ //            //     //清除原来的定位
+ //            //     if(handler) handler.wookmarkClear();
+ //            //     //创建新的wookmark对象
+ //            //     handler = $('#waterfall li');
+ //            //     handler.wookmark(options);
+ //                 }
+ //             });
+ //        }
+ //    };
+ // $(document).ready(new function() {
+ //        //绑定scroll事件.
+ //        $(document).bind('scroll', onScroll);
+ //        //第一次布局.
+ //        // handler = $('#waterfall li');
+ //        // handler.wookmark(options);
+ //    });
+
+
+    // $(document).ready(new function() {
+    //     //绑定scroll事件.
+    //     $(document).bind('scroll', onScroll);
+    //     //第一次布局.
+    //     handler = $('#waterfall li');
+    //     handler.wookmark(options);
+    // });
+</script>
