@@ -81,4 +81,5 @@ group :development do
   gem 'meta_request'
   gem "better_errors", '1.1.0'
   gem "binding_of_caller"
+  gem 'rack-mini-profiler'
 end

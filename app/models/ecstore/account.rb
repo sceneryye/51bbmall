@@ -319,7 +319,7 @@ class Ecstore::Account < Ecstore::Base
 	after_save :follow_imodec!
 
 	def self.update_data
-		today = Time.now.midnight.to_i - 1.day
+		today = Time.now.midnight.to_i
 		last_time = (Time.parse Ecstore::Summary.all[-1].history_date).to_i
 		days = (today - last_time) / 24 / 3600
 		if days > 0

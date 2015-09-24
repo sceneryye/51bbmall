@@ -60,10 +60,10 @@ class Auth::BbmallController < ApplicationController
 
       def user_login login_name = nil, passowrd = nil
 
-        auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
-        session[:from] = "external_auth"
-
-        if auth_ext&&!auth_ext.expired?&&auth_ext.provider == '51bbmall'
+        # auth_ext = Ecstore::AuthExt.find_by_id(cookies.signed[:_auth_ext].to_i) if cookies.signed[:_auth_ext]
+        # session[:from] = "external_auth"
+=begin
+        # if auth_ext&&!auth_ext.expired?&&auth_ext.provider == '51bbmall'
           if auth_ext.account.nil?
             cookies.delete :_auth_ext
           else
@@ -71,7 +71,7 @@ class Auth::BbmallController < ApplicationController
           #return render :text => '您已登陆！'
         end
       end
-
+=end  
 
       login_url = 'http://103.16.125.100:9018/user_login'
       info_hash={}
