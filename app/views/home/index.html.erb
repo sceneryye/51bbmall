@@ -624,7 +624,7 @@
 
 																						var floor_id = 1;
 																						var floors_num =3;
-																						var pullDownComplete = true;
+																						var pullDownComplete = true; //防止重复滚动，出现一次性加载完毕所有后续内容。
     //定义滚动函数
     function onScroll(event) {
 
@@ -633,15 +633,16 @@
         if(closeToBottom && floor_id<=floors_num && pullDownComplete == true) {
         	pullDownComplete = false;
         	console.log(floor_id);
-
             //这里就是AJAX载入的数据
             var floor_url ="/home/"+floor_id+"/floor";
+
             $.ajax({url:floor_url, dataType:"html", success:function(html){
                      //把新数据追加到对象中
                      $('#waterfall').append(html);
                      if(floor_id<floors_num){
                      	$('#waterfall').append($('#floor_temp'));
                      	pullDownComplete = true;
+                     	floor_id = floor_id +1;
                      }
                      else{
                      	$('#floor_temp').remove();
@@ -649,9 +650,6 @@
 
                    }
                  });
-            floor_id = floor_id +1;
-
-            
           }
         };
 
