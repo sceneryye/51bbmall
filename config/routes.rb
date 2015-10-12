@@ -4,6 +4,8 @@ Modengke::Application.routes.draw do
 
   resources :cases
   
+# for test
+get '/blank_page' => 'home#blank_page'
 
   resources :commissions do
     collection do

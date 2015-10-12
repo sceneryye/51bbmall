@@ -371,7 +371,7 @@ class Auth::BbmallController < ApplicationController
       account = Ecstore::Account.find_by_login_name(login_name)
       sign_in(account, '1')
       flash[:success] = '登录成功！'
-      redirect_to '/home'
+      redirect_to '/home?from=51bbmall&firstlogin=yes'
     end
 
 
@@ -392,7 +392,7 @@ class Auth::BbmallController < ApplicationController
         unless account.nil?
           sign_in(account, '1')
           flash[:success] = '登录成功！'
-          return redirect_to '/home'
+          return redirect_to '/home?from=51bbmall&firstlogin=no'
         end
         user_info_hash = user_info uid
         if user_info_hash['code'] == 0
@@ -402,9 +402,10 @@ class Auth::BbmallController < ApplicationController
           redirect_to login_path
         end
       else
-        redirect_to '/'
+        redirect_to '/home?from=51bbmall&sign=wrong'
       end
     end
+
 
     private
 

@@ -48,6 +48,10 @@ class HomeController < ApplicationController
 		@title = "邦邦芒商城"
 	end
 
+	def blank_page
+		render :layout => false
+	end
+
 	private
 		def recommend_goods(recommend_name)
 

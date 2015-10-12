@@ -2,6 +2,7 @@ source 'https://ruby.taobao.org'
 
 gem 'rails', '3.2.11'
 
+
 # ARTICLES CONTROLLER
 gem "friendly_id", "~> 4.0.9"
 gem "babosa", "~> 0.3.8"
@@ -17,6 +18,9 @@ gem 'hashie'
 gem 'faraday'
 gem "geocoder"
 gem 'spreadsheet'
+
+#Oneapm
+gem 'oneapm_rpm'
 
 # RC-4 decrypt-encrypt
 gem 'ruby-rc4'
@@ -81,5 +85,5 @@ group :development do
   gem 'meta_request'
   gem "better_errors", '1.1.0'
   gem "binding_of_caller"
-  gem 'rack-mini-profiler'
+  #gem 'rack-mini-profiler'
 end
