@@ -1,7 +1,7 @@
 source 'https://ruby.taobao.org'
 
 gem 'rails', '3.2.11'
-
+gem 'qiniu', '~> 6.2.1'
 
 # ARTICLES CONTROLLER
 gem "friendly_id", "~> 4.0.9"
