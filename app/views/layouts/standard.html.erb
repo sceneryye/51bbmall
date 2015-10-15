@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
-<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/stylesheets/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="/stylesheets/owl.carousel.css">
 <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-ui.css">
@@ -15,27 +15,36 @@
 <link rel="stylesheet" type="text/css" href="/stylesheets/pagination.css">
 <link href="/stylesheets/css" rel="stylesheet" type="text/css">
 
-<script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bxslider/4.1.2/jquery.bxslider.js"></script>
 <script type="text/javascript" src="/js/owl.carousel.min.js"></script>
-<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.js"></script>
 <!-- COUNTDOWN -->
 <script type="text/javascript" src="/js/jquery.plugin.js"></script>
 <script type="text/javascript" src="/js/jquery.countdown.js"></script>
 <!-- ./COUNTDOWN -->
-<script type="text/javascript" src="/js/jquery.actual.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery.actual/1.0.16/jquery.actual.min.js"></script>
 <script type="text/javascript" src="/js/script.js"></script>
 <title>邦邦芒商城</title>
 <style type="text/css"></style></head>
 <body class="option3">
 
-    <!-- ./header -->
+  <!-- ./header -->
 
-    <%=render "/shared/header"%>
+  <%=render "/shared/header"%>
 
-    <%= yield%>
-    <%=render "/shared/footer"%>
+  <%= yield%>
+  <div class='footer'>
+  </div>
+  <script>
+    $(document).ready(function(){
+      $(document).one('scroll',function(){
+        $('.footer').html("<%= escape_javascript(render('/shared/footer')) %>");
+      })
+    })
+  </script>
+  
 
 
 </body>
