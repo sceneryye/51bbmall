@@ -1,14 +1,14 @@
 <link rel="stylesheet" type="text/css" href="/stylesheets/easyzoom.css">
 
 <div class="container product-page">
- <%= render "store/shared/position" if @cat%>        
+ <%= render "store/shared/position" if @cat%>
     <div class="row">
         <div class="row">
         <div class="col-sm-5">
                 <div class="block block-product-image">
                     <div class="product-image easyzoom easyzoom--overlay easyzoom--with-thumbnails">
-                        <a href="<%=@good.big_pic.split(",")[0]%>">
-                            <img src="<%=@good.big_pic.split(",")[0]%>" alt="<%=@good.name%>" width="450" height="450">
+                        <a href="<%= ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[0]) %>">
+                            <img src="<%= ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[0]) %>" alt="<%=@good.name%>" width="450px" height="450px">
                         </a>
                     </div>
                     <div class="text">鼠标悬浮放大商品图片</div>
@@ -16,11 +16,11 @@
                         <ul class="thumbnails kt-owl-carousel" data-margin="10" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"1000":{"items":3}}'>
                          <%for value in 0..(@good.big_pic.split(",").length-1)%>
                             <li>
-                                <a class="<%='selected' if value==0%>" href="<%=@good.big_pic.split(",")[value]%>" data-standard="<%=@good.big_pic.split(",")[value]%>">
-                                    <%=image_tag @good.big_pic.split(",")[value]%>
+                                <a class="<%='selected' if value==0%>" href="<%= ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[value]) %>" data-standard="<%=@good.big_pic.split(",")[value]%>">
+                                    <%= image_tag ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[value]) %>
                                 </a>
                             </li>
-                        <%end%>                               
+                        <%end%>
                         </ul>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <div class="block-product-info">
                         <%=form_for :product,:url=>add_cart_index_path,:html=>{:class=>"form_add_cart",:id=>"add_cart"} do |f|%>
                             <%=f.hidden_field :goods_id,:value=>@good.goods_id%>
-                            <%=f.hidden_field :type_id,:value=>@good.type_id%>            
+                            <%=f.hidden_field :type_id,:value=>@good.type_id%>
                             <h2 class="product-name"><%=@good.name %></h2>
                             <div class="price-box">
                                 <span class="product-price"> ¥<%=@good.default_product.price if @good.default_product%></span>
@@ -44,12 +44,12 @@
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star-half-o"></i>
                             </div>
-                            <div class="desc"><%=raw @good.desc%><br> 
+                            <div class="desc"><%=raw @good.desc%><br>
                                 规格:<%=raw @good.spec_info%>
                             </div>
                             <div class="desc">品牌：<%=@good.brand.brand_name if @good.brand%></div>
                             <%=render :partial=>"store/goods/product/new_spec",:locals=>{ :good=>@good }%>
-                            
+
                             <div class="box-control-button">
                                 <a class="link-wishlist" href="#">收藏</a>
                                 <a class="link-compare" href="#">比较商品</a>
@@ -70,7 +70,7 @@
         <!-- Product tab -->
         <div class="block block-tabs tab-left">
             <div class="block-head">
-                <ul class="nav-tab">                                   
+                <ul class="nav-tab">
                     <li class="active"><a data-toggle="tab" href="#tab-1">商品详情</a></li>
                     <li><a data-toggle="tab" href="#tab-2">商品参数</a></li>
                     <li><a data-toggle="tab" href="#tab-3">会员评价</a></li>
@@ -191,7 +191,7 @@
                                 </p>
                                 <p>
                                     <label class="required">Comment</label>
-                                    <textarea rows="5"></textarea>  
+                                    <textarea rows="5"></textarea>
                                 </p>
                                 <p>
                                     <button class="button">Post review</button>
