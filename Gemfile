@@ -20,7 +20,7 @@ gem "geocoder"
 gem 'spreadsheet'
 
 #Oneapm
-gem 'oneapm_rpm'
+#gem 'oneapm_rpm'
 
 # RC-4 decrypt-encrypt
 gem 'ruby-rc4'

@@ -7,8 +7,8 @@
         <div class="col-sm-5">
                 <div class="block block-product-image">
                     <div class="product-image easyzoom easyzoom--overlay easyzoom--with-thumbnails">
-                        <a href="<%= ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[0]) %>">
-                            <img src="<%= ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[0]) %>" alt="<%=@good.name%>" width="450px" height="450px">
+                        <a href="<%= ("http://www.trade-v.com" + @good.big_pic.split(",")[0]) %>">
+                            <img src="<%= ("http://www.trade-v.com" + @good.big_pic.split(",")[0]) %>" alt="<%=@good.name%>" width="450px" height="450px">
                         </a>
                     </div>
                     <div class="text">鼠标悬浮放大商品图片</div>
@@ -16,8 +16,8 @@
                         <ul class="thumbnails kt-owl-carousel" data-margin="10" data-nav="true" data-responsive='{"0":{"items":2},"600":{"items":2},"1000":{"items":3}}'>
                          <%for value in 0..(@good.big_pic.split(",").length-1)%>
                             <li>
-                                <a class="<%='selected' if value==0%>" href="<%= ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[value]) %>" data-standard="<%=@good.big_pic.split(",")[value]%>">
-                                    <%= image_tag ("http://7xnh1s.com1.z0.glb.clouddn.com" + @good.big_pic.split(",")[value]) %>
+                                <a class="<%='selected' if value==0%>" href="<%= ("http://www.trade-v.com" + @good.big_pic.split(",")[value]) %>" data-standard="<%=@good.big_pic.split(",")[value]%>">
+                                    <%= image_tag ("http://www.trade-v.com" + @good.big_pic.split(",")[value]) %>
                                 </a>
                             </li>
                         <%end%>
