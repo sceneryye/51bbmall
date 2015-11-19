@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
-	<div class="hidden-xs">
-		<h1 class="page-title">当前购物状态</h1>
+		<div class="hidden-xs">
+			<h1 class="page-title">当前购物状态</h1>
 		</div>
 		<div class="page-content page-order">
 			<ul class="step hidden-xs">
@@ -104,17 +104,17 @@
 				<%= f.number_field :part_pay, :id => 'part_pay_amount', :value => 0.00 %>
 			</div>
 
-		<!--<label class="radio" style="display:none">
-			<%#=f.radio_button :payment, "alipay"%> <b>支付宝</b>
-			<span class="extra-desc"><img src="/assets/store/alipay.png"/></span>
-		</label>
-		<label class="radio"  style="display:none">
-			<%#=f.radio_button :payment, "alipaywap"%> <b>支付宝手机</b>
-			<span class="extra-desc"><img src="/assets/store/alipaywap.png"/></span>-->
-		</label>
-		<label class="radio" style="margin-left:20px;">
-			<%=f.radio_button :payment, "wxpay", :checked=>true%> <b>微信支付</b>
-		</label>
+			<label class="radio" style="display:none">
+				<%=f.radio_button :payment, "alipay"%> <b>支付宝</b>
+				<span class="extra-desc"><img src="/assets/store/alipay.png"/></span>
+			</label>
+			<label class="radio"  style="margin-left:20px;">
+				<%=f.radio_button :payment, "alipaywap"%> <b>支付宝手机</b>
+				<span class="extra-desc"><img src="/assets/store/alipaywap.png"/></span>
+			</label>
+			<label class="radio" style="margin-left:20px;">
+				<%=f.radio_button :payment, "wxpay", :checked=>true%> <b>微信支付</b>
+			</label>
 		<!--<label class="radio" style="margin-left:20px;">
 			<%#=f.radio_button :payment, "offline"%> <b>货到付款</b>
 			<span class="extra-desc"></span>

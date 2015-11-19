@@ -468,11 +468,11 @@ scope :module => "blog" do
     end
 
     resources :payments do
-
+      get 'pay', :on => :member
       collection do
         get 'callback'
         get 'debug'
-        get 'pay'
+        
         match ':adapter/notify'=>"payments#notify", :as=>"notify"
         match ':adapter/callback'=>"payments#callback", :as=>"callback"
       end

@@ -55,46 +55,48 @@ class Store::PaymentsController < ApplicationController
 			remark = @order.memo == '' || @order.memo.nil? ? 'no information' : @order.memo
 			#@payment = Ecstore::Payment.find(params.delete(:id))
 			#return redirect_to detail_order_path(@payment.pay_bill.order) if @payment&&@payment.paid?
+			if @payment.pay_app_id == 'alipaywap'
+				# redirect_to pay_payment_path(@payment.payment_id)   暂时停掉。
+			else
 
 
-			
-			if @order.pay_amount == 0 && @order.part_pay > 0
-				money = @order.part_pay.to_i * 100
-				if user_deduct(money, acct_type, remark)
-					@order.update_attributes(:pay_status => '1')
-
-					adapter  = params.delete(:adapter)
-					params.delete :controller
-					params.delete :action
-					@payment.update_attributes :status => 'succ'
-
-					@payment.payment_log.update_attributes({:return_ip=>request.remote_ip,:return_params=> params,:returned_at=>Time.now}) if @payment.payment_log
-
-					@order = @payment.pay_bill.order
-					@user = @payment.user
-					order_num = current_user.member.order_num + 1
-					current_user.member.update_attributes(:order_num => order_num)
-
-					Ecstore::OrderLog.new do |order_log|
-						order_log.rel_id = @order.order_id
-						order_log.op_id = @user.member_id
-						order_log.op_name = @user.login_name
-						order_log.alttime = @order.createtime
-						order_log.behavior = 'payments'
-						order_log.result = "SUCCESS"
-						order_log.log_text = "订单支付成功！"
-					end.save
-					flash[:success] = "订单支付成功，请等待配送！"
-					redirect_to  orders_member_path
-				else 
-					flash[:alert] = "订单支付失败，您可以从新支付订单。"
-					redirect_to  orders_member_path
-				end
-
-			else 
-				if @order.part_pay > 0
-					money = @order.part_pay * 100
+				if @order.pay_amount == 0 && @order.part_pay > 0
+					money = @order.part_pay.to_i * 100
 					if user_deduct(money, acct_type, remark)
+						@order.update_attributes(:pay_status => '1')
+
+						adapter  = params.delete(:adapter)
+						params.delete :controller
+						params.delete :action
+						@payment.update_attributes :status => 'succ'
+
+						@payment.payment_log.update_attributes({:return_ip=>request.remote_ip,:return_params=> params,:returned_at=>Time.now}) if @payment.payment_log
+
+						@order = @payment.pay_bill.order
+						@user = @payment.user
+						order_num = current_user.member.order_num + 1
+						current_user.member.update_attributes(:order_num => order_num)
+
+						Ecstore::OrderLog.new do |order_log|
+							order_log.rel_id = @order.order_id
+							order_log.op_id = @user.member_id
+							order_log.op_name = @user.login_name
+							order_log.alttime = @order.createtime
+							order_log.behavior = 'payments'
+							order_log.result = "SUCCESS"
+							order_log.log_text = "订单支付成功！"
+						end.save
+						flash[:success] = "订单支付成功，请等待配送！"
+						redirect_to  orders_member_path
+					else 
+						flash[:alert] = "订单支付失败，您可以从新支付订单。"
+						redirect_to  orders_member_path
+					end
+
+				else 
+					if @order.part_pay > 0
+						money = @order.part_pay * 100
+						if user_deduct(money, acct_type, remark)
 						#此处调用支付接口
 						flash[:success] = "邦邦元宝支付成功，请支付剩余资金。"
 						redirect_to  orders_member_path
@@ -106,39 +108,41 @@ class Store::PaymentsController < ApplicationController
 			end
 		end
 	end
+end
 
 
 
 
-	def debug
-		render :text=>"show"
-	end
+def debug
+	render :text=>"show"
+end
 
-	def show
-		@payment = Ecstore::Payment.find_by_payment_id(params[:id])
-	end
+def show
+	@payment = Ecstore::Payment.find_by_payment_id(params[:id])
+end
 
-	def pay
-		@payment = Ecstore::Payment.find(params[:id])
-		if @payment && @payment.status == 'ready'
-			adapter = @payment.pay_app_id
-			order_id = @payment.pay_bill.rel_id
-			@modec_pay = ModecPay.new adapter do |pay|
-				pay.return_url = "#{site}/payments/#{adapter}/callback?payment_id=#{@payment.payment_id}"
-				pay.notify_url = "#{site}/payments/#{adapter}/notify?payment_id=#{@payment.payment_id}"
-				pay.pay_id = @payment.payment_id
-				pay.pay_amount = @payment.cur_money.to_f
-				pay.pay_time = Time.now
-				pay.subject = "邦邦芒订单(#{order_id})"
-				pay.installment = @payment.pay_bill.order.installment if @payment.pay_bill.order
-				pay.openid = @user.account.login_name
-				pay.spbill_create_ip = request.remote_ip
-			end
+def pay
+	@payment = Ecstore::Payment.find(params[:id])
+	if @payment && @payment.status == 'ready'
+		adapter = @payment.pay_app_id
+		order_id = @payment.pay_bill.rel_id
+		name = Ecstore::OrderItem.where(:order_id => order_id).first.name
+		@modec_pay = ModecPay.new adapter do |pay|
+			pay.return_url = "#{site}/payments/#{adapter}/callback?payment_id=#{@payment.payment_id}"
+			pay.notify_url = "#{site}/payments/#{adapter}/notify?payment_id=#{@payment.payment_id}"
+			pay.pay_id = @payment.payment_id
+			pay.pay_amount = @payment.cur_money.to_f
+			pay.pay_time = Time.now
+			pay.subject = "#{name}(#{order_id})"
+			pay.installment = @payment.pay_bill.order.installment if @payment.pay_bill.order
+			pay.openid = @user.account.login_name
+			pay.spbill_create_ip = request.remote_ip
+		end
 
-			if adapter=='alipaywap'
-				render :text=>@modec_pay.html_form_alipaywap
-			elsif adapter=='wxpay'
-				render :inline=>@modec_pay.html_form_wxpay
+		if adapter=='alipaywap'
+			render :text=>@modec_pay.html_form_alipaywap
+		elsif adapter=='wxpay'
+			render :inline=>@modec_pay.html_form_wxpay
 		     # render :inline=>@modec_pay.html_form_wxpay,:layout=>"patch"
 		   else
 		   	render :inline=>@modec_pay.html_form

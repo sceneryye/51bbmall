@@ -5,8 +5,10 @@ module ModecPay
 		#@@mer_id = '2088701875473608'
 		#@@private_key  = 'x5cynpqbifj5uauqj1nx8cd79o3no4vy'
 
-    @@mer_id = '2088411414403176'
+     @@mer_id = '2088411414403176'
+    
     @@private_key  = 'hzh3bf969beqkqdbohdxocxlwpgr8278'
+    
 
 		def initialize
 			super

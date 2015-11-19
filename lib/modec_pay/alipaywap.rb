@@ -5,9 +5,13 @@ module ModecPay
 		#@@mer_id = '2088701875473608'
 		#@@private_key  = 'x5cynpqbifj5uauqj1nx8cd79o3no4vy'
 
-    @@mer_id = '2088411414403176'
-    @@private_key  = 'hzh3bf969beqkqdbohdxocxlwpgr8278'
-    @@seller_account_name='maowei@iotps.com'
+    # @@mer_id = '2088411414403176'
+    # @@private_key  = 'hzh3bf969beqkqdbohdxocxlwpgr8278'
+    # @@seller_account_name='maowei@iotps.com'
+
+    @@mer_id = '2088411715278512'
+    @@private_key  = 'zqbwixuzr5k8pcpk2kqtgbsh880t4wof'
+    @@seller_account_name='ibangbang@163.com'
 
 		def initialize
 			super
